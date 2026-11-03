@@ -48,17 +48,14 @@
 </head>
 <body class="h-full flex flex-col">
 
-    <!-- ================= 1. ГЛАВНЫЙ ЭКРАН ПО ВАШЕЙ СХЕМЕ ================= -->
+    <!-- ================= 1. ГЛАВНЫЙ ЭКРАН ================= -->
     <section id="hero-screen" class="h-screen w-full flex flex-col justify-between items-center p-4 sm:p-6 text-center hero-bg relative">
         
         <!-- Верхняя шапка -->
         <div class="w-full max-w-6xl flex justify-between items-center z-10 pt-2">
             <div class="flex items-center space-x-3">
-                <svg class="w-9 h-9 drop-shadow-[0_0_8px_rgba(139,92,246,0.8)]" viewBox="0 0 100 100" fill="none">
-                    <path d="M50 5 L82 18 L95 50 L82 82 L50 95 L18 82 L5 50 L18 18 Z" stroke="#8b5cf6" stroke-width="4" fill="rgba(139,92,246,0.2)"/>
-                    <rect x="25" y="25" width="50" height="50" transform="rotate(22.5 50 50)" stroke="#00f0ff" stroke-width="3" fill="none"/>
-                    <circle cx="50" cy="50" r="18" fill="#8b5cf6"/>
-                </svg>
+                <!-- РЕАЛЬНЫЙ ФИРМЕННЫЙ ЛОГОТИП ИЗ ФАЙЛА ZIONCITY_logo.jfif -->
+                <img src="ZIONCITY_logo.jfif" alt="ZION.CITY Logo" class="w-9 h-9 sm:w-10 sm:h-10 object-contain rounded-lg drop-shadow-[0_0_10px_rgba(139,92,246,0.8)]">
                 <span class="font-orbitron font-black text-lg sm:text-xl tracking-widest text-white">ZION<span class="text-purple-500">.CITY</span></span>
             </div>
             <div class="bg-black/60 px-3.5 py-1.5 rounded-full border border-cyan-500/50 backdrop-blur-md flex items-center space-x-2">
@@ -69,7 +66,7 @@
 
         <div class="mt-auto mb-auto z-10"></div>
 
-        <!-- Текст и кнопка внизу по схеме -->
+        <!-- Текст и кнопка внизу -->
         <div class="z-10 flex flex-col items-center pb-6 max-w-xl">
             <h2 class="font-orbitron font-black text-xl sm:text-2xl tracking-wider text-cyan-400 mb-1 drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
                 ZION.CITY
@@ -97,10 +94,7 @@
         <aside class="w-full lg:w-80 bg-[#070c1e] border-r border-cyan-500/20 p-4 flex flex-col justify-between shrink-0 h-screen sticky top-0 overflow-y-auto">
             <div>
                 <div class="flex items-center space-x-3 mb-4 pb-3 border-b border-gray-800">
-                    <svg class="w-6 h-6 text-purple-400" viewBox="0 0 100 100" fill="none">
-                        <path d="M50 5 L82 18 L95 50 L82 82 L50 95 L18 82 L5 50 L18 18 Z" stroke="#8b5cf6" stroke-width="6"/>
-                        <circle cx="50" cy="50" r="20" fill="#8b5cf6"/>
-                    </svg>
+                    <img src="ZIONCITY_logo.jfif" alt="ZION.CITY Logo" class="w-7 h-7 object-contain rounded-md drop-shadow-[0_0_8px_rgba(139,92,246,0.8)]">
                     <div>
                         <h2 class="font-orbitron font-bold text-xs text-white">ZION.CITY MENU</h2>
                         <span class="text-[9px] text-cyan-400 font-mono">ПОЛНЫЙ ОТЧЕТ: 26 ГЛАВ</span>
@@ -109,7 +103,6 @@
 
                 <!-- Список глав 1 - 26 -->
                 <nav class="space-y-1 text-xs" id="chapters-nav">
-                    <!-- Заполняется скриптом динамически для точности -->
                 </nav>
             </div>
 
@@ -123,13 +116,11 @@
         <main class="flex-1 p-4 sm:p-8 lg:p-12 overflow-y-auto max-w-5xl">
             <div class="hud-card p-6 sm:p-10">
                 <div id="chapter-content" class="space-y-4 text-gray-300 leading-relaxed text-sm sm:text-base">
-                    <!-- Сюда динамически загружается текст выбранной главы -->
                 </div>
             </div>
         </main>
     </div>
 
-    <!-- База данных текста всех 26 глав из официального документа -->
     <script>
         const chaptersData = {
             1: {
@@ -137,15 +128,15 @@
                 text: `
                     <span class="text-[10px] font-mono text-cyan-400 bg-cyan-950/80 px-2.5 py-1 rounded border border-cyan-800 uppercase">Глава 1</span>
                     <h2 class="text-xl sm:text-2xl font-orbitron font-bold text-white mt-3 mb-4">Executive Summary (Исполнительное резюме)</h2>
-                    <p><strong>1.1. Ключевой тезис и миссия проекта.</strong> Современный цифровой мир, построенный на парадигме Web 2.0, исчерпал себя[cite: 108]. Транснациональные монополии превратили персональные данные людей в сырье для таргетированной рекламы и манипуляций, а мировая финансовая система стала инструментом санкционного давления и тотального контроля[cite: 108].</p>
-                    <p>В проекте ZION.CITY мы доказываем обратное: технологии могут и должны служить человеку[cite: 108]. Мы создали архитектуру, где пользователь является единственным суверенным владельцем своих данных, а искусственный интеллект выступает персональным защитником и помощником, работающим локально на собственном оборудовании владельца[cite: 108].</p>
-                    <p><strong>1.2. Текущий статус реализации (по состоянию на октябрь 2026 года):</strong> Развернута базовая веб-платформа (zioncity.app), объединяющая восемь функциональных модулей на базе когнитивной архитектуры. Заключено официальное пятилетнее Соглашение (май 2026 г.) между Правительством Херсонской области, АО «КРЭХО» и Консорциумом «ZION.CITY» на создание Цифрового финансового центра (ЦФЦ) в рамках СЭЗ[cite: 108].</p>
+                    <p><strong>1.1. Ключевой тезис и миссия проекта.</strong> Современный цифровой мир, построенный на парадигме Web 2.0, исчерпал себя. Транснациональные монополии превратили персональные данные людей в сырье для таргетированной рекламы и манипуляций, а мировая финансовая система стала инструментом санкционного давления и тотального контроля.</p>
+                    <p>В проекте ZION.CITY мы доказываем обратное: технологии могут и должны служить человеку. Мы создали архитектуру, где пользователь является единственным суверенным владельцем своих данных, а искусственный интеллект выступает персональным защитником и помощником, работающим локально на собственном оборудовании владельца.</p>
+                    <p><strong>1.2. Текущий статус реализации (по состоянию на октябрь 2026 года):</strong> Развернута базовая веб-платформа (zioncity.app), объединяющая восемь функциональных модулей на базе когнитивной архитектуры. Заключено официальное пятилетнее Соглашение (май 2026 г.) между Правительством Херсонской области, АО «КРЭХО» и Консорциумом «ZION.CITY» на создание Цифрового финансового центра (ЦФЦ) в рамках СЭЗ.</p>
                     <p><strong>1.3. Архитектурное резюме (Пять суверенных уровней):</strong><br>
-                    1. Уровень 0 (Оборудование): Узлы D.I.O.S., Apple Mac Mini / Mac Studio с чипами М4/М5, смартфоны[cite: 108].<br>
-                    2. Уровень 1 (Транспорт): Сеть Zion.Mesh на базе Reticulum и LoRa[cite: 108].<br>
-                    3. Уровень 2 (Финансы): Суверенный Реестр ALTYN с консенсусом DPoS+A[cite: 108].<br>
-                    4. Уровень 3 (Приложения): Платформа с 8 когнитивными модулями и ИИ ЭРИК[cite: 108].<br>
-                    5. Уровень 4-5 (Институциональный контур): Оператор АО «КРЭХО»[cite: 108].</p>
+                    1. Уровень 0 (Оборудование): Узлы D.I.O.S., Apple Mac Mini / Mac Studio с чипами М4/М5, смартфоны.<br>
+                    2. Уровень 1 (Транспорт): Сеть Zion.Mesh на базе Reticulum и LoRa.<br>
+                    3. Уровень 2 (Финансы): Суверенный Реестр ALTYN с консенсусом DPoS+A.<br>
+                    4. Уровень 3 (Приложения): Платформа с 8 когнитивными модулями и ИИ ЭРИК.<br>
+                    5. Уровень 4-5 (Институциональный контур): Оператор АО «КРЭХО».</p>
                 `
             },
             2: {
@@ -153,10 +144,10 @@
                 text: `
                     <span class="text-[10px] font-mono text-cyan-400 bg-cyan-950/80 px-2.5 py-1 rounded border border-cyan-800 uppercase">Глава 2</span>
                     <h2 class="text-xl sm:text-2xl font-orbitron font-bold text-white mt-3 mb-4">Происхождение и Философия ZION.CITY</h2>
-                    <p><strong>2.1. Цивилизационный тупик Web 2.0.</strong> Под давлением корпоративного капитала технологии превратились в глобальную систему цифрового феодализма (Surveillance Capitalism). Когнитивное истощение, узурпация данных и паразитическая экономика издержек делают человека уязвимым[cite: 109, 110].</p>
-                    <p><strong>2.2. Философский базис.</strong> Основой ZION.CITY является триада Научно-Интеллектуальных Информационных Моделей Безопасности (НИИМБ): <em>Творчество</em>, <em>Гармония</em> и <em>Любовь</em>[cite: 110, 111].</p>
-                    <p><strong>2.3. Принцип Стива Джобса.</strong> Движение от пользовательского опыта к скрытой сложной инженерной инфраструктуре (Edge AI на Apple Silicon, меш-сети LoRa, суверенный реестр)[cite: 111, 112].</p>
-                    <p><strong>2.4. «Оцифрованная порядочность».</strong> Замена платной спам-рекламы алгоритмом ANRC на базе анализа реальных повторных транзакций (>65%) и агентного сарафанного радио[cite: 112].</p>
+                    <p><strong>2.1. Цивилизационный тупик Web 2.0.</strong> Под давлением корпоративного капитала технологии превратились в глобальную систему цифрового феодализма (Surveillance Capitalism). Когнитивное истощение, узурпация данных и паразитическая экономика издержек делают человека уязвимым.</p>
+                    <p><strong>2.2. Философский базис.</strong> Основой ZION.CITY является триада Научно-Интеллектуальных Информационных Моделей Безопасности (НИИМБ): <em>Творчество</em>, <em>Гармония</em> и <em>Любовь</em>.</p>
+                    <p><strong>2.3. Принцип Стива Джобса.</strong> Движение от пользовательского опыта к скрытой сложной инженерной инфраструктуре (Edge AI на Apple Silicon, меш-сети LoRa, суверенный реестр).</p>
+                    <p><strong>2.4. «Оцифрованная порядочность».</strong> Замена платной спам-рекламы алгоритмом ANRC на базе анализа реальных повторных транзакций (>65%) и агентного сарафанного радио.</p>
                 `
             },
             3: {
@@ -164,9 +155,9 @@
                 text: `
                     <span class="text-[10px] font-mono text-cyan-400 bg-cyan-950/80 px-2.5 py-1 rounded border border-cyan-800 uppercase">Глава 3</span>
                     <h2 class="text-xl sm:text-2xl font-orbitron font-bold text-white mt-3 mb-4">Парадигма Web 4.0</h2>
-                    <p><strong>3.1. Формальное определение.</strong> Web 4.0 — это эпоха симбиоза человека и суверенного искусственного интеллекта на базе Edge-вычислений[cite: 113]. Переход от пользователя-владельца (Web 3.0) к пользователю-принципалу, делегирующему задачи персональному агенту[cite: 113, 114].</p>
-                    <p><strong>3.2. Архитектурный переход.</strong> Агентное исполнение (Agent-Mediated Execution), единое Global Workspace и строгие Confirmation Gates для защиты критических точек[cite: 114].</p>
-                    <p><strong>3.3. Синтез Proto-AGI.</strong> Реализация общей персональной когниции за счет единой модели мира, управляемой памяти (mind-mem MCP) и агентной координации (ANRC)[cite: 114, 115].</p>
+                    <p><strong>3.1. Формальное определение.</strong> Web 4.0 — это эпоха симбиоза человека и суверенного искусственного интеллекта на базе Edge-вычислений. Переход от пользователя-владельца (Web 3.0) к пользователю-принципалу, делегирующему задачи персональному агенту.</p>
+                    <p><strong>3.2. Архитектурный переход.</strong> Агентное исполнение (Agent-Mediated Execution), единое Global Workspace и строгие Confirmation Gates для защиты критических точек.</p>
+                    <p><strong>3.3. Синтез Proto-AGI.</strong> Реализация общей персональной когниции за счет единой модели мира, управляемой памяти (mind-mem MCP) и агентной координации (ANRC).</p>
                 `
             },
             4: {
@@ -174,16 +165,16 @@
                 text: `
                     <span class="text-[10px] font-mono text-cyan-400 bg-cyan-950/80 px-2.5 py-1 rounded border border-cyan-800 uppercase">Глава 4</span>
                     <h2 class="text-xl sm:text-2xl font-orbitron font-bold text-white mt-3 mb-4">Архитектура экосистемы (ЦПКМ)</h2>
-                    <p><strong>4.1. Концепция ЦПКМ:</strong> «Централизованный Профиль, Контекстные Модули» на базе Теории глобального рабочего пространства (Global Workspace Theory) Б. Баарса[cite: 115].</p>
+                    <p><strong>4.1. Концепция ЦПКМ:</strong> «Централизованный Профиль, Контекстные Модули» на базе Теории глобального рабочего пространства (Global Workspace Theory) Б. Баарса.</p>
                     <p><strong>4.2. 8 когнитивных модулей:</strong><br>
-                    1. <strong>Семья:</strong> Лимбическое ядро, безопасность близких[cite: 115, 116].<br>
-                    2. <strong>Новости:</strong> Информационная лента без алгоритмов гнева[cite: 116].<br>
-                    3. <strong>Журнал:</strong> Зашифрованное блокчейн-хранилище документов[cite: 116].<br>
-                    4. <strong>Сервисы:</strong> Поиск мастеров по сарафанному радио[cite: 116].<br>
-                    5. <strong>Организации:</strong> CRM для МСП и прямой прием платежей[cite: 116].<br>
-                    6. <strong>Маркетплейс:</strong> Торговля, IoT и DFA активы[cite: 116].<br>
-                    7. <strong>Финансы:</strong> Управление ALTYN COIN и TOKEN, ИИ АДАМ[cite: 116].<br>
-                    8. <strong>События:</strong> Координация инициатив и встреч[cite: 116].</p>
+                    1. <strong>Семья:</strong> Лимбическое ядро, безопасность близких.<br>
+                    2. <strong>Новости:</strong> Информационная лента без алгоритмов гнева.<br>
+                    3. <strong>Журнал:</strong> Зашифрованное блокчейн-хранилище документов.<br>
+                    4. <strong>Сервисы:</strong> Поиск мастеров по сарафанному радио.<br>
+                    5. <strong>Организации:</strong> CRM для МСП и прямой прием платежей.<br>
+                    6. <strong>Маркетплейс:</strong> Торговля, IoT и DFA активы.<br>
+                    7. <strong>Финансы:</strong> Управление ALTYN COIN и TOKEN, ИИ АДАМ.<br>
+                    8. <strong>События:</strong> Координация инициатив и встреч.</p>
                 `
             },
             5: {
@@ -191,9 +182,9 @@
                 text: `
                     <span class="text-[10px] font-mono text-cyan-400 bg-cyan-950/80 px-2.5 py-1 rounded border border-cyan-800 uppercase">Глава 5</span>
                     <h2 class="text-xl sm:text-2xl font-orbitron font-bold text-white mt-3 mb-4">Суверенный Реестр ALTYN и правовой контур</h2>
-                    <p><strong>5.1. Архитектура Суверенного Реестра ALTYN (CPA).</strong> Отказ от уязвимой анонимности публичных блокчейнов. Верифицированные КУС-узлы, консенсус DPoS+A (3 из 5) и правовой арбитраж[cite: 117, 118].</p>
-                    <p><strong>5.2. Товарное обеспечение Just-in-Time.</strong> Привязка расчетной единицы к физическому обороту критических ресурсов БРИКС+ (пшеница, нефть, газ, металлы)[cite: 118].</p>
-                    <p><strong>5.3. Пилотный плацдарм.</strong> Соглашение с Правительством Херсонской области и АО «КРЭХО» на создание Цифрового финансового центра (ЦФЦ) в СЭЗ по ФЗ-259[cite: 119].</p>
+                    <p><strong>5.1. Архитектура Суверенного Реестра ALTYN (CPA).</strong> Отказ от уязвимой анонимности публичных блокчейнов. Верифицированные КУС-узлы, консенсус DPoS+A (3 из 5) и правовой арбитраж.</p>
+                    <p><strong>5.2. Товарное обеспечение Just-in-Time.</strong> Привязка расчетной единицы к физическому обороту критических ресурсов БРИКС+ (пшеница, нефть, газ, металлы).</p>
+                    <p><strong>5.3. Пилотный плацдарм.</strong> Соглашение с Правительством Херсонской области и АО «КРЭХО» на создание Цифрового финансового центра (ЦФЦ) в СЭЗ по ФЗ-259.</p>
                 `
             },
             6: {
@@ -201,5 +192,223 @@
                 text: `
                     <span class="text-[10px] font-mono text-cyan-400 bg-cyan-950/80 px-2.5 py-1 rounded border border-cyan-800 uppercase">Глава 6</span>
                     <h2 class="text-xl sm:text-2xl font-orbitron font-bold text-white mt-3 mb-4">Техническое ядро и системная архитектура</h2>
-                    <p><strong>6.1. Пять суверенных слоев:</strong> От оборудования D.I.O.S. до финансового расчетного контура ASL[cite: 120].</p>
-                    <p><strong>6.2. Индустриальный стек:</strong> Frontend на React и Tailwind CSS, Backend на FastAPI (Python),
+                    <p><strong>6.1. Пять суверенных слоев:</strong> От оборудования D.I.O.S. до финансового расчетного контура ASL.</p>
+                    <p><strong>6.2. Индустриальный стек:</strong> Frontend на React и Tailwind CSS, Backend на FastAPI (Python), MongoDB, Redis и SQLite для автономного офлайн-режима. ElasticSearch для DFA Marketplace.</p>
+                `
+            },
+            7: {
+                title: "ГЛАВА 7: NETWORK & MESH INFRASTRUCTURE (СЕТЕВАЯ И МЕШ-ИНФРАСТРУКТУРА)",
+                text: `
+                    <span class="text-[10px] font-mono text-cyan-400 bg-cyan-950/80 px-2.5 py-1 rounded border border-cyan-800 uppercase">Глава 7</span>
+                    <h2 class="text-xl sm:text-2xl font-orbitron font-bold text-white mt-3 mb-4">Сетевая и Меш-инфраструктура</h2>
+                    <p><strong>7.1. Протокол Offline-First.</strong> Независимость от глобального интернета и облаков AWS/Azure.</p>
+                    <p><strong>7.2. Архитектура ZION.MESH.</strong> Использование протокола Reticulum, LXMF, радиомодулей LoRa SX1262 и Wi-Fi HaLow для передачи данных со скоростью от 500 бит/с в условиях блэкаута.</p>
+                    <p><strong>7.3. Полевая апробация.</strong> Развертывание 80-110 узлов в МФК «Огни Москвы» (Строгино) и в агропромышленном комплексе Херсонской области.</p>
+                `
+            },
+            8: {
+                title: "ГЛАВА 8: NODE & SUPER-NODE TOPOLOGY (ТОПОЛОГИЯ УЗЛОВ И СУПЕРНОД)",
+                text: `
+                    <span class="text-[10px] font-mono text-cyan-400 bg-cyan-950/80 px-2.5 py-1 rounded border border-cyan-800 uppercase">Глава 8</span>
+                    <h2 class="text-xl sm:text-2xl font-orbitron font-bold text-white mt-3 mb-4">Топология узлов и супернод</h2>
+                    <p><strong>8.1. Edge-вычисления (D.I.O.S.).</strong> Перенос нагрузки на аппаратные чипы Apple Silicon (M4/M5), обеспечивающие локальный запуск ИИ.</p>
+                    <p><strong>8.2. Иерархия узлов:</strong> Мобильные узлы, стандартные ноды D.I.O.S. (ПК / Mac Mini) и региональные суперноды на Mac Studio M5 Ultra (1 ТБ RAM) со стейкингом от 5 000 ALTYN TOKEN, обрабатывающие до 5 000 транзакций в секунду.</p>
+                `
+            },
+            9: {
+                title: "ГЛАВА 9: AI ORCHESTRATION — ЭРИК И АДАМ (ИИ-ОРКЕСТРАЦИЯ)",
+                text: `
+                    <span class="text-[10px] font-mono text-cyan-400 bg-cyan-950/80 px-2.5 py-1 rounded border border-cyan-800 uppercase">Глава 9</span>
+                    <h2 class="text-xl sm:text-2xl font-orbitron font-bold text-white mt-3 mb-4">ИИ-оркестрация: Агенты ЭРИК и АДАМ</h2>
+                    <p><strong>9.1. ИИ-агент ЭРИК.</strong> Персональный компаньон, запускаемый локально на чипах M4/M5 (модели Qwen3, Gemma 3). Автоматизирует бытовую рутину, защищает приватность и реализует агентную коммерцию (A2A).</p>
+                    <p><strong>9.2. ИИ-агент АДАМ.</strong> Институциональный финансовый агент для управления ЦФА, превентивного AML-контроля и верификации смарт-контрактов в Цепи Криптографической Верификации (ЦКВ).</p>
+                `
+            },
+            10: {
+                title: "ГЛАВА 10: IDENTITY, CRYPTOGRAPHY & SECURITY (ИДЕНТИЧНОСТЬ И БЕЗОПАСНОСТЬ)",
+                text: `
+                    <span class="text-[10px] font-mono text-cyan-400 bg-cyan-950/80 px-2.5 py-1 rounded border border-cyan-800 uppercase">Глава 10</span>
+                    <h2 class="text-xl sm:text-2xl font-orbitron font-bold text-white mt-3 mb-4">Идентификация, криптография и безопасность</h2>
+                    <p><strong>10.1. Криптографический стек.</strong> Подписи Ed25519, хеширование BLAKE3, сквозное шифрование Curve25519 (X25519) + AES-256 и защита Argon2id.</p>
+                    <p><strong>10.2. Защита от угроз.</strong> Устойчивость к атакам Сивиллы за счет обязательного КУС и стейкинга, а также защита от DDoS за счет децентрализации.</p>
+                `
+            },
+            11: {
+                title: "ГЛАВА 11: FINANCIAL & SETTLEMENT ARCHITECTURE (ФИНАНСОВЫЙ КЛИРИНГ)",
+                text: `
+                    <span class="text-[10px] font-mono text-cyan-400 bg-cyan-950/80 px-2.5 py-1 rounded border border-cyan-800 uppercase">Глава 11</span>
+                    <h2 class="text-xl sm:text-2xl font-orbitron font-bold text-white mt-3 mb-4">Финансовая и клиринговая архитектура</h2>
+                    <p><strong>11.1. Трансграничный клиринг БРИКС+.</strong> Использование ALTYN COIN как независимого моста между национальными экономиками для обхода SWIFT. Финализация расчетов за 2-5 секунд.</p>
+                    <p><strong>11.2. Resource-Backed Clearing.</strong> Привязка расчетов к реальным контрактам на поставку зерна, нефти и газа через встроенную сырьевую биржу.</p>
+                `
+            },
+            12: {
+                title: "ГЛАВА 12: ALTYN TOKENOMICS & MONETARY POLICY (ТОКЕНОМИКА И МОНЕТАРНАЯ ПОЛИТИКА)",
+                text: `
+                    <span class="text-[10px] font-mono text-cyan-400 bg-cyan-950/80 px-2.5 py-1 rounded border border-cyan-800 uppercase">Глава 12</span>
+                    <h2 class="text-xl sm:text-2xl font-orbitron font-bold text-white mt-3 mb-4">Токеномика и монетарная политика</h2>
+                    <p><strong>12.1. Двухуровневая модель:</strong><br>
+                    - <strong>ALTYN TOKEN:</strong> Инфраструктурный ЦФА, жесткий хард-кап 35 млн, залог для супернод, получение дивидендов.<br>
+                    - <strong>ALTYN COIN:</strong> Универсальная расчетная единица (УЦРЕ) с динамической эмиссией и привязкой к корзине БРИКС+ / $1 USD.</p>
+                    <p><strong>12.2. Антиинфляционный баланс.</strong> Автоматическое сжигание коинов при выводе в фиат и минтинг Just-in-Time под реальные коммерческие контракты.</p>
+                `
+            },
+            13: {
+                title: "ГЛАВА 13: FEE MODEL & VALUE DISTRIBUTION (МОДЕЛЬ КОМИССИЙ И ДОХОДЫ)",
+                text: `
+                    <span class="text-[10px] font-mono text-cyan-400 bg-cyan-950/80 px-2.5 py-1 rounded border border-cyan-800 uppercase">Глава 13</span>
+                    <h2 class="text-xl sm:text-2xl font-orbitron font-bold text-white mt-3 mb-4">Модель комиссий и распределение доходов</h2>
+                    <p><strong>13.1. Перераспределение маржи.</strong> Микро-комиссии сети 0.1-0.5% вместо 3-30% у банковских эквайеров. 100% доходов распределяется среди стейкеров ALTYN TOKEN.</p>
+                    <p><strong>13.2. Беспроцентное финансирование (0% Риба).</strong> Залоговые беспроцентные кредиты для реального сектора на 10-30 лет, совместимые с принципами исламского банкинга.</p>
+                `
+            },
+            14: {
+                title: "ГЛАВА 14: MARKETPLACE & DIGITAL SERVICES (МАРКЕТПЛЕЙС И СЕРВИСЫ)",
+                text: `
+                    <span class="text-[10px] font-mono text-cyan-400 bg-cyan-950/80 px-2.5 py-1 rounded border border-cyan-800 uppercase">Глава 14</span>
+                    <h2 class="text-xl sm:text-2xl font-orbitron font-bold text-white mt-3 mb-4">Маркетплейс и цифровые сервисы</h2>
+                    <p>Интеграция модулей «Сервисы» (ANRC-подбор специалистов), «Организации» (CRM для МСП) и «Вещи» (IoT-микротранзакции для умных устройств).</p>
+                `
+            },
+            15: {
+                title: "ГЛАВА 15: FINANCIAL CENTER IN YOUR POCKET (ФИНАНСОВЫЙ ЦЕНТР В КАРМАНЕ)",
+                text: `
+                    <span class="text-[10px] font-mono text-cyan-400 bg-cyan-950/80 px-2.5 py-1 rounded border border-cyan-800 uppercase">Глава 15</span>
+                    <h2 class="text-xl sm:text-2xl font-orbitron font-bold text-white mt-3 mb-4">Стратегия «Финансовый центр в кармане»</h2>
+                    <p>Полнофункциональный супер-App без посредников: мультивалютный кошелек, DFA Marketplace, пенсионный накопительный счет со сложными процентами и ИИ-ассистент ADAM.</p>
+                `
+            },
+            16: {
+                title: "ГЛАВА 16: BUSINESS MODEL & UNIT ECONOMICS (БИЗНЕС-МОДЕЛЬ)",
+                text: `
+                    <span class="text-[10px] font-mono text-cyan-400 bg-cyan-950/80 px-2.5 py-1 rounded border border-cyan-800 uppercase">Глава 16</span>
+                    <h2 class="text-xl sm:text-2xl font-orbitron font-bold text-white mt-3 mb-4">Бизнес-модель и юнит-экономика</h2>
+                    <p>Отказ от паразитических комиссий Web 2.0. Нулевые затраты на маркетинг благодаря агентскому сарафанному радио (ANRC) и минимальные операционные издержки за счет ИИ-автоматизации.</p>
+                `
+            },
+            17: {
+                title: "ГЛАВА 17: USER JOURNEY SCENARIOS (ПОЛЬЗОВАТЕЛЬСКИЕ СЦЕНАРИИ)",
+                text: `
+                    <span class="text-[10px] font-mono text-cyan-400 bg-cyan-950/80 px-2.5 py-1 rounded border border-cyan-800 uppercase">Глава 17</span>
+                    <h2 class="text-xl sm:text-2xl font-orbitron font-bold text-white mt-3 mb-4">Сценарии пользовательского пути (User Journey)</h2>
+                    <p>Практические кейсы для гражданина и семьи (жизнь без когнитивной перегрузки), предпринимателя МСП (быстрый запуск бизнеса) и инвестора / оператора ноды (пассивный доход).</p>
+                `
+            },
+            18: {
+                title: "ГЛАВА 18: ECOSYSTEM GOVERNANCE & DAO MECHANICS (УПРАВЛЕНИЕ)",
+                text: `
+                    <span class="text-[10px] font-mono text-cyan-400 bg-cyan-950/80 px-2.5 py-1 rounded border border-cyan-800 uppercase">Глава 18</span>
+                    <h2 class="text-xl sm:text-2xl font-orbitron font-bold text-white mt-3 mb-4">Управление экосистемой и механика DAO</h2>
+                    <p>Прогрессивная децентрализация на базе консенсуса DPoS+A с авторитетным надзором лицензированного оператора (АО «КРЭХО») и Ассоциацией частных инвесторов.</p>
+                `
+            },
+            19: {
+                title: "ГЛАВА 19: BRICS+ & INTERNATIONAL EXPANSION (МЕЖДУНАРОДНАЯ ЭКСПАНСИЯ)",
+                text: `
+                    <span class="text-[10px] font-mono text-cyan-400 bg-cyan-950/80 px-2.5 py-1 rounded border border-cyan-800 uppercase">Глава 19</span>
+                    <h2 class="text-xl sm:text-2xl font-orbitron font-bold text-white mt-3 mb-4">Интеграция в БРИКС+, ЕАЭС и ШОС</h2>
+                    <p>Дедолларизация мировой торговли, создание «Цифрового шелкового пути», открытые API для интеграции с китайскими промышленными партнерами и дорожная карта масштабирования.</p>
+                `
+            },
+            20: {
+                title: "ГЛАВА 20: LEGAL, REGULATORY & COMPLIANCE (ЮРИДИЧЕСКИЙ АНАЛИЗ)",
+                text: `
+                    <span class="text-[10px] font-mono text-cyan-400 bg-cyan-950/80 px-2.5 py-1 rounded border border-cyan-800 uppercase">Глава 20</span>
+                    <h2 class="text-xl sm:text-2xl font-orbitron font-bold text-white mt-3 mb-4">Юридический анализ и комплаенс</h2>
+                    <p>Полная гармонизация с ФЗ-259 («О ЦФА»), ФЗ-152 («О персональных данных»), превентивный AML/KYC контроль через ИИ-агента АДАМ и институциональный арбитраж.</p>
+                `
+            },
+            21: {
+                title: "ГЛАВА 21: RISK MANAGEMENT & MITIGATION (УПРАВЛЕНИЕ РИСКАМИ)",
+                text: `
+                    <span class="text-[10px] font-mono text-cyan-400 bg-cyan-950/80 px-2.5 py-1 rounded border border-cyan-800 uppercase">Глава 21</span>
+                    <h2 class="text-xl sm:text-2xl font-orbitron font-bold text-white mt-3 mb-4">Управление рисками и митигация</h2>
+                    <p>Устранение рисков на уровне математики и смарт-контрактов: защита от нецелевого расходования капитала (смарт-бюджеты и водопад траншей), защита от дампов и мошенничества.</p>
+                `
+            },
+            22: {
+                title: "ГЛАВА 22: ROADMAP & IMPLEMENTATION MILESTONES (ДОРОЖНАЯ КАРТА)",
+                text: `
+                    <span class="text-[10px] font-mono text-cyan-400 bg-cyan-950/80 px-2.5 py-1 rounded border border-cyan-800 uppercase">Глава 22</span>
+                    <h2 class="text-xl sm:text-2xl font-orbitron font-bold text-white mt-3 mb-4">Дорожная карта реализации</h2>
+                    <p>Стратегия «До и после 2026 года»: Фаза 1 (MVP и пилот в Херсонской СЭЗ с КРЭХО), Фаза 2 (Публичный запуск ЦФА и интеграция со Сбером и ВТБ), Фаза 3 (Масштабирование на пространстве БРИКС+).</p>
+                `
+            },
+            23: {
+                title: "ГЛАВА 23: RED TEAM RISK ASSESSMENT (МАТРИЦА РИСКОВ RED TEAM)",
+                text: `
+                    <span class="text-[10px] font-mono text-cyan-400 bg-cyan-950/80 px-2.5 py-1 rounded border border-cyan-800 uppercase">Глава 23</span>
+                    <h2 class="text-xl sm:text-2xl font-orbitron font-bold text-white mt-3 mb-4">Матрица рисков Red Team и защита от спекуляций</h2>
+                    <p>Результаты стресс-тестирования независимой группой аудита: архитектурные барьеры против атак Сивиллы, рыночных пампов/дампов и физических блэкаутов.</p>
+                `
+            },
+            24: {
+                title: "ГЛАВА 24: EXTRATERRITORIAL ANCHOR — «ОГНИ МОСКВЫ» (СТРОГИНО)",
+                text: `
+                    <span class="text-[10px] font-mono text-cyan-400 bg-cyan-950/80 px-2.5 py-1 rounded border border-cyan-800 uppercase">Глава 24</span>
+                    <h2 class="text-xl sm:text-2xl font-orbitron font-bold text-white mt-3 mb-4">Внетерриториальный якорь — МФК «Огни Москвы»</h2>
+                    <p>Физическое базирование проекта на искусственном полуострове 32 гектара в Строгино. Дата-центры супернод на Mac Studio M5 Ultra и полевой полигон из 80-110 радиоузлов Zion.Mesh.</p>
+                `
+            },
+            25: {
+                title: "ГЛАВА 25: ARCHITECTURAL GAPS & FUTURE EVOLUTION (ПРОБЕЛЫ И ЭВОЛЮЦИЯ)",
+                text: `
+                    <span class="text-[10px] font-mono text-cyan-400 bg-cyan-950/80 px-2.5 py-1 rounded border border-cyan-800 uppercase">Глава 25</span>
+                    <h2 class="text-xl sm:text-2xl font-orbitron font-bold text-white mt-3 mb-4">Архитектурные пробелы и эволюция системы</h2>
+                    <p>Открытый инженерный анализ ограничений в Mesh-сетях, синхронизации гетерогенных баз данных и межъюрисдикционной гармонизации законов с долгосрочным вектором к AGI-платформе (2027-2030).</p>
+                `
+            },
+            26: {
+                title: "ГЛАВА 26: CONCLUSIONS & APPENDICES (ЗАКЛЮЧЕНИЕ И ПРИЛОЖЕНИЯ)",
+                text: `
+                    <span class="text-[10px] font-mono text-cyan-400 bg-cyan-950/80 px-2.5 py-1 rounded border border-cyan-800 uppercase">Глава 26</span>
+                    <h2 class="text-xl sm:text-2xl font-orbitron font-bold text-white mt-3 mb-4">Заключение и библиографический указатель</h2>
+                    <p>Манифест цифрового суверенитета, глоссарий ключевых терминов (ЦПКМ, ALTYN COIN, TOKEN, Zion.Mesh, ERIC & ADAM) и полный перечень библиографических источников, белых книг и законов (ФЗ-259, ФЗ-152).</p>
+                `
+            }
+        };
+
+        const navContainer = document.getElementById('chapters-nav');
+        for (let i = 1; i <= 26; i++) {
+            const btn = document.createElement('button');
+            btn.id = `btn-ch-${i}`;
+            btn.className = `nav-btn w-full text-left px-3 py-2 rounded-lg text-xs font-medium border border-transparent transition-all flex items-center justify-between ${i === 1 ? 'active' : 'text-gray-400 hover:text-white'}`;
+            btn.innerHTML = `<span>Глава ${i}</span><span class="font-mono text-[9px] opacity-60">${i < 10 ? '0'+i : i}</span>`;
+            btn.onclick = () => loadChapter(i);
+            navContainer.appendChild(btn);
+        }
+
+        function loadChapter(num) {
+            for (let i = 1; i <= 26; i++) {
+                const b = document.getElementById(`btn-ch-${i}`);
+                if (b) {
+                    b.classList.remove('active');
+                    b.classList.add('text-gray-400');
+                }
+            }
+            const activeBtn = document.getElementById(`btn-ch-${num}`);
+            if (activeBtn) {
+                activeBtn.classList.add('active');
+                activeBtn.classList.remove('text-gray-400');
+            }
+
+            document.getElementById('chapter-content').innerHTML = chaptersData[num].text;
+            document.getElementById('portal-content').scrollTo(0,0);
+        }
+
+        loadChapter(1);
+
+        function openPortal() {
+            document.getElementById('hero-screen').classList.add('hidden');
+            document.getElementById('portal-content').classList.remove('hidden');
+            window.scrollTo(0,0);
+        }
+
+        function returnToHero() {
+            document.getElementById('portal-content').classList.add('hidden');
+            document.getElementById('hero-screen').classList.remove('hidden');
+            window.scrollTo(0,0);
+        }
+    </script>
+</body>
+</html>
