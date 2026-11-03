@@ -40,6 +40,12 @@
             box-shadow: 0 0 12px rgba(0, 240, 255, 0.4);
         }
 
+        /* Убираем серый квадратный фон у логотипа в стиле cyberpunk */
+        .transparent-logo {
+            mix-blend-mode: screen;
+            filter: contrast(120%) brightness(110%);
+        }
+
         /* Кастомный скроллбар для меню */
         aside::-webkit-scrollbar { width: 4px; }
         aside::-webkit-scrollbar-track { background: #030611; }
@@ -54,8 +60,8 @@
         <!-- Верхняя шапка -->
         <div class="w-full max-w-6xl flex justify-between items-center z-10 pt-2">
             <div class="flex items-center space-x-3">
-                <!-- РЕАЛЬНЫЙ ФИРМЕННЫЙ ЛОГОТИП ИЗ ФАЙЛА ZIONCITY_logo.jfif -->
-                <img src="ZIONCITY_logo.jfif" alt="ZION.CITY Logo" class="w-9 h-9 sm:w-10 sm:h-10 object-contain rounded-lg drop-shadow-[0_0_10px_rgba(139,92,246,0.8)]">
+                <!-- Логотип без фона с режимом смешивания -->
+                <img src="ZIONCITY_logo.jfif" alt="ZION.CITY Logo" class="w-10 h-10 sm:w-11 sm:h-11 object-contain transparent-logo">
                 <span class="font-orbitron font-black text-lg sm:text-xl tracking-widest text-white">ZION<span class="text-purple-500">.CITY</span></span>
             </div>
             <div class="bg-black/60 px-3.5 py-1.5 rounded-full border border-cyan-500/50 backdrop-blur-md flex items-center space-x-2">
@@ -94,7 +100,7 @@
         <aside class="w-full lg:w-80 bg-[#070c1e] border-r border-cyan-500/20 p-4 flex flex-col justify-between shrink-0 h-screen sticky top-0 overflow-y-auto">
             <div>
                 <div class="flex items-center space-x-3 mb-4 pb-3 border-b border-gray-800">
-                    <img src="ZIONCITY_logo.jfif" alt="ZION.CITY Logo" class="w-7 h-7 object-contain rounded-md drop-shadow-[0_0_8px_rgba(139,92,246,0.8)]">
+                    <img src="ZIONCITY_logo.jfif" alt="ZION.CITY Logo" class="w-8 h-8 object-contain transparent-logo">
                     <div>
                         <h2 class="font-orbitron font-bold text-xs text-white">ZION.CITY MENU</h2>
                         <span class="text-[9px] text-cyan-400 font-mono">ПОЛНЫЙ ОТЧЕТ: 26 ГЛАВ</span>
