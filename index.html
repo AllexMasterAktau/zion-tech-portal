@@ -40,12 +40,6 @@
             box-shadow: 0 0 12px rgba(0, 240, 255, 0.4);
         }
 
-        /* Убираем серый квадратный фон у логотипа в стиле cyberpunk */
-        .transparent-logo {
-            mix-blend-mode: screen;
-            filter: contrast(120%) brightness(110%);
-        }
-
         /* Кастомный скроллбар для меню */
         aside::-webkit-scrollbar { width: 4px; }
         aside::-webkit-scrollbar-track { background: #030611; }
@@ -60,8 +54,24 @@
         <!-- Верхняя шапка -->
         <div class="w-full max-w-6xl flex justify-between items-center z-10 pt-2">
             <div class="flex items-center space-x-3">
-                <!-- Логотип без фона с режимом смешивания -->
-                <img src="ZIONCITY_logo.jfif" alt="ZION.CITY Logo" class="w-10 h-10 sm:w-11 sm:h-11 object-contain transparent-logo">
+                <!-- ВЕКТОРНЫЙ ЛОГОТИП БЕЗ КАКОГО-ЛИБО ФОНА (SVG) -->
+                <svg class="w-9 h-9 sm:w-10 sm:h-10 drop-shadow-[0_0_12px_rgba(139,92,246,0.9)]" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g transform="translate(100,100)">
+                        <path d="M -25 -95 L 75 -95 L 75 -75 L -75 -75 L -75 25 Z" fill="#6d28d9" stroke="#8b5cf6" stroke-width="4"/>
+                        <path d="M -25 -95 L 75 -95 L 75 -75 L -75 -75 L -75 25 Z" fill="#6d28d9" stroke="#8b5cf6" stroke-width="4" transform="rotate(90)"/>
+                        <path d="M -25 -95 L 75 -95 L 75 -75 L -75 -75 L -75 25 Z" fill="#6d28d9" stroke="#8b5cf6" stroke-width="4" transform="rotate(180)"/>
+                        <path d="M -25 -95 L 75 -95 L 75 -75 L -75 -75 L -75 25 Z" fill="#6d28d9" stroke="#8b5cf6" stroke-width="4" transform="rotate(270)"/>
+                        <circle cx="0" cy="0" r="48" fill="url(#sphereGradientTop)"/>
+                        <circle cx="-15" cy="-15" r="14" fill="#ffffff" opacity="0.45"/>
+                    </g>
+                    <defs>
+                        <radialGradient id="sphereGradientTop" cx="35%" cy="35%" r="65%">
+                            <stop offset="0%" stop-color="#a78bfa"/>
+                            <stop offset="60%" stop-color="#6d28d9"/>
+                            <stop offset="100%" stop-color="#3b0764"/>
+                        </radialGradient>
+                    </defs>
+                </svg>
                 <span class="font-orbitron font-black text-lg sm:text-xl tracking-widest text-white">ZION<span class="text-purple-500">.CITY</span></span>
             </div>
             <div class="bg-black/60 px-3.5 py-1.5 rounded-full border border-cyan-500/50 backdrop-blur-md flex items-center space-x-2">
@@ -100,7 +110,23 @@
         <aside class="w-full lg:w-80 bg-[#070c1e] border-r border-cyan-500/20 p-4 flex flex-col justify-between shrink-0 h-screen sticky top-0 overflow-y-auto">
             <div>
                 <div class="flex items-center space-x-3 mb-4 pb-3 border-b border-gray-800">
-                    <img src="ZIONCITY_logo.jfif" alt="ZION.CITY Logo" class="w-8 h-8 object-contain transparent-logo">
+                    <svg class="w-7 h-7 drop-shadow-[0_0_8px_rgba(139,92,246,0.8)]" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g transform="translate(100,100)">
+                            <path d="M -25 -95 L 75 -95 L 75 -75 L -75 -75 L -75 25 Z" fill="#6d28d9" stroke="#8b5cf6" stroke-width="4"/>
+                            <path d="M -25 -95 L 75 -95 L 75 -75 L -75 -75 L -75 25 Z" fill="#6d28d9" stroke="#8b5cf6" stroke-width="4" transform="rotate(90)"/>
+                            <path d="M -25 -95 L 75 -95 L 75 -75 L -75 -75 L -75 25 Z" fill="#6d28d9" stroke="#8b5cf6" stroke-width="4" transform="rotate(180)"/>
+                            <path d="M -25 -95 L 75 -95 L 75 -75 L -75 -75 L -75 25 Z" fill="#6d28d9" stroke="#8b5cf6" stroke-width="4" transform="rotate(270)"/>
+                            <circle cx="0" cy="0" r="48" fill="url(#sphereGradientSide)"/>
+                            <circle cx="-15" cy="-15" r="14" fill="#ffffff" opacity="0.45"/>
+                        </g>
+                        <defs>
+                            <radialGradient id="sphereGradientSide" cx="35%" cy="35%" r="65%">
+                                <stop offset="0%" stop-color="#a78bfa"/>
+                                <stop offset="60%" stop-color="#6d28d9"/>
+                                <stop offset="100%" stop-color="#3b0764"/>
+                            </radialGradient>
+                        </defs>
+                    </svg>
                     <div>
                         <h2 class="font-orbitron font-bold text-xs text-white">ZION.CITY MENU</h2>
                         <span class="text-[9px] text-cyan-400 font-mono">ПОЛНЫЙ ОТЧЕТ: 26 ГЛАВ</span>
@@ -404,7 +430,7 @@
 
         loadChapter(1);
 
-        function openPortal() {
+        >function openPortal() {
             document.getElementById('hero-screen').classList.add('hidden');
             document.getElementById('portal-content').classList.remove('hidden');
             window.scrollTo(0,0);
