@@ -98,8 +98,8 @@
     <!-- ================= 2. ИНТЕРАКТИВНЫЙ ПОРТАЛ С 26 ГЛАВАМИ ================= -->
     <div id="portal-content" class="flex-1 flex flex-col lg:flex-row min-h-screen hidden">
         
-        <!-- Боковое меню с 26 полными названиями глав -->
-        <aside class="w-full lg:w-96 bg-[#070c1e] border-r border-cyan-500/20 p-4 flex flex-col justify-between shrink-0 h-screen sticky top-0 overflow-y-auto">
+        <!-- Расширенное боковое меню с 26 полными названиями глав -->
+        <aside class="w-full lg:w-[420px] bg-[#070c1e] border-r border-cyan-500/20 p-4 flex flex-col justify-between shrink-0 h-screen sticky top-0 overflow-y-auto">
             <div>
                 <div class="flex items-center space-x-3 mb-4 pb-3 border-b border-gray-800">
                     <img src="ZIONCITY_logo.png" alt="ZION.CITY Logo" class="w-7 h-7 object-contain drop-shadow-[0_0_8px_rgba(139,92,246,0.8)]">
@@ -110,7 +110,7 @@
                 </div>
 
                 <!-- Список глав 1 - 26 -->
-                <nav class="space-y-1 text-xs" id="chapters-nav">
+                <nav class="space-y-1.5 text-xs" id="chapters-nav">
                 </nav>
             </div>
 
@@ -380,8 +380,9 @@
         for (let i = 1; i <= 26; i++) {
             const btn = document.createElement('button');
             btn.id = `btn-ch-${i}`;
-            btn.className = `nav-btn w-full text-left px-3.5 py-2.5 rounded-lg text-xs font-medium border border-transparent transition-all flex items-center justify-between ${i === 1 ? 'active' : 'text-gray-400 hover:text-white'}`;
-            btn.innerHTML = `<span class="truncate pr-2">${chaptersData[i].title}</span><span class="font-mono text-[9px] opacity-60 shrink-0">${i < 10 ? '0'+i : i}</span>`;
+            // Убираем truncate, чтобы текст переносился на новую строку и был полностью виден
+            btn.className = `nav-btn w-full text-left px-3.5 py-2.5 rounded-lg text-xs font-medium border border-transparent transition-all flex items-start justify-between gap-2 ${i === 1 ? 'active' : 'text-gray-400 hover:text-white'}`;
+            btn.innerHTML = `<span class="leading-snug">${chaptersData[i].title}</span><span class="font-mono text-[9px] opacity-60 shrink-0 mt-0.5">${i < 10 ? '0'+i : i}</span>`;
             btn.onclick = () => loadChapter(i);
             navContainer.appendChild(btn);
         }
