@@ -20,26 +20,10 @@
 
         .font-orbitron { font-family: 'Orbitron', sans-serif; }
 
-        /* Фоновое изображение теперь полностью умещается на экране без обрезки */
+        /* Фоновое изображение (со львом и овечкой) */
         .hero-bg {
-            background: linear-gradient(to bottom, rgba(3, 6, 17, 0.7), rgba(3, 6, 17, 0.95)), url('bg.jpg') no-repeat center center / contain;
+            background: linear-gradient(to bottom, rgba(3, 6, 17, 0.55), rgba(3, 6, 17, 0.92)), url('bg.jpg') no-repeat center center / contain;
             background-color: #030611;
-        }
-
-        .neon-box {
-            border: 2px solid #00f0ff;
-            box-shadow: 0 0 20px rgba(0, 240, 255, 0.5), inset 0 0 15px rgba(0, 240, 255, 0.2);
-            backdrop-filter: blur(4px);
-        }
-
-        .neon-text-cyan {
-            color: #00f0ff;
-            text-shadow: 0 0 12px rgba(0, 240, 255, 0.8);
-        }
-
-        .neon-text-pink {
-            color: #ff007f;
-            text-shadow: 0 0 12px rgba(255, 0, 127, 0.8);
         }
 
         .hud-card {
@@ -59,11 +43,11 @@
 </head>
 <body class="h-full flex flex-col">
 
-    <!-- ================= 1. ГЛАВНЫЙ ЭКРАН ================= -->
+    <!-- ================= 1. ГЛАВНЫЙ ЭКРАН ПО ВАШЕЙ СХЕМЕ ================= -->
     <section id="hero-screen" class="h-screen w-full flex flex-col justify-between items-center p-4 sm:p-6 text-center hero-bg relative">
         
         <!-- Верхняя шапка -->
-        <div class="w-full max-w-6xl flex justify-between items-center z-10">
+        <div class="w-full max-w-6xl flex justify-between items-center z-10 pt-2">
             <div class="flex items-center space-x-3">
                 <svg class="w-9 h-9 drop-shadow-[0_0_8px_rgba(139,92,246,0.8)]" viewBox="0 0 100 100" fill="none">
                     <path d="M50 5 L82 18 L95 50 L82 82 L50 95 L18 82 L5 50 L18 18 Z" stroke="#8b5cf6" stroke-width="4" fill="rgba(139,92,246,0.2)"/>
@@ -78,31 +62,29 @@
             </div>
         </div>
 
-        <!-- Центральная часть заставки -->
-        <div class="my-auto z-10 flex flex-col items-center max-w-3xl">
-            
-            <!-- Заголовок системы -->
-            <h1 class="font-orbitron font-bold text-xs sm:text-base md:text-lg tracking-wider text-cyan-300 uppercase mb-3 max-w-2xl leading-relaxed drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]">
-                Социально-финансово-экономическая система <span class="text-white font-black block sm:inline">ZION.CITY</span>
-            </h1>
+        <!-- Центральная / Нижняя часть заставки по вашей разметке -->
+        <div class="mt-auto mb-auto z-10 flex flex-col items-center max-w-2xl pt-20">
+            <!-- Место под картинку (фоновое изображение со львом и овечкой гармонично заполняет этот блок) -->
+        </div>
 
-            <!-- Неоновая вывеска WEB 4.0 -->
-            <div class="mb-6 px-6 py-2.5 rounded-2xl bg-black/50 neon-box inline-block">
-                <span class="font-orbitron font-black text-2xl sm:text-4xl md:text-5xl tracking-widest">
-                    <span class="neon-text-cyan">WEB</span> <span class="neon-text-pink">4.0</span>
-                </span>
-            </div>
+        <!-- Текст и кнопка внизу по схеме -->
+        <div class="z-10 flex flex-col items-center pb-6 max-w-xl">
+            <h2 class="font-orbitron font-black text-xl sm:text-2xl tracking-wider text-cyan-400 mb-1 drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
+                ZION.CITY
+            </h2>
+            <p class="text-xs sm:text-sm text-gray-300 font-medium tracking-wide mb-4 uppercase drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)]">
+                финансовая модель нового поколения
+            </p>
 
-            <!-- Кнопка Подробнее -->
-            <button onclick="openPortal()" class="px-8 py-3.5 rounded-xl font-orbitron font-bold text-xs sm:text-sm tracking-widest uppercase bg-gradient-to-r from-cyan-500 via-purple-600 to-pink-500 text-white shadow-[0_0_25px_rgba(0,240,255,0.5)] hover:scale-105 transition-transform duration-300 flex items-center space-x-3 cursor-pointer">
-                <span>Подробнее</span>
-                <span class="text-base">↓</span>
+            <button onclick="openPortal()" class="px-8 py-3.5 rounded-xl font-orbitron font-bold text-xs sm:text-sm tracking-widest uppercase bg-gradient-to-r from-cyan-500 via-purple-600 to-pink-500 text-white shadow-[0_0_25px_rgba(0,240,255,0.5)] hover:scale-105 transition-transform duration-300 flex items-center space-x-2 cursor-pointer">
+                <span>ПОДРОБНЕЕ</span>
+                <span>↓</span>
             </button>
         </div>
 
         <!-- Копирайт -->
         <div class="w-full text-center z-10 pb-2">
-            <span class="text-[10px] font-mono text-gray-400 uppercase tracking-widest drop-shadow">Консорциум ZION.CITY • Intelligent Business Systems 2026</span>
+            <span class="text-[10px] font-mono text-gray-500 uppercase tracking-widest">Консорциум ZION.CITY • Intelligent Business Systems 2026</span>
         </div>
     </section>
 
