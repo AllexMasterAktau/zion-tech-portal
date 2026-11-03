@@ -20,7 +20,7 @@
 
         .font-orbitron { font-family: 'Orbitron', sans-serif; }
 
-        /* Фоновое изображение (со львом и овечкой) */
+        /* Фоновое изображение первого экрана */
         .hero-bg {
             background: linear-gradient(to bottom, rgba(3, 6, 17, 0.55), rgba(3, 6, 17, 0.92)), url('bg.jpg') no-repeat center center / contain;
             background-color: #030611;
@@ -39,6 +39,11 @@
             color: #ffffff;
             box-shadow: 0 0 12px rgba(0, 240, 255, 0.4);
         }
+
+        /* Кастомный скроллбар для меню */
+        aside::-webkit-scrollbar { width: 4px; }
+        aside::-webkit-scrollbar-track { background: #030611; }
+        aside::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 2px; }
     </style>
 </head>
 <body class="h-full flex flex-col">
@@ -62,10 +67,7 @@
             </div>
         </div>
 
-        <!-- Центральная / Нижняя часть заставки по вашей разметке -->
-        <div class="mt-auto mb-auto z-10 flex flex-col items-center max-w-2xl pt-20">
-            <!-- Место под картинку (фоновое изображение со львом и овечкой гармонично заполняет этот блок) -->
-        </div>
+        <div class="mt-auto mb-auto z-10"></div>
 
         <!-- Текст и кнопка внизу по схеме -->
         <div class="z-10 flex flex-col items-center pb-6 max-w-xl">
@@ -82,233 +84,122 @@
             </button>
         </div>
 
-        <!-- Копирайт -->
         <div class="w-full text-center z-10 pb-2">
             <span class="text-[10px] font-mono text-gray-500 uppercase tracking-widest">Консорциум ZION.CITY • Intelligent Business Systems 2026</span>
         </div>
     </section>
 
 
-    <!-- ================= 2. ИНТЕРАКТИВНЫЙ ПОРТАЛ С МЕНЮ ================= -->
+    <!-- ================= 2. ИНТЕРАКТИВНЫЙ ПОРТАЛ С 26 ГЛАВАМИ ================= -->
     <div id="portal-content" class="flex-1 flex flex-col lg:flex-row min-h-screen hidden">
         
-        <!-- Боковое меню -->
-        <aside class="w-full lg:w-80 bg-[#070c1e] border-r border-cyan-500/20 p-6 flex flex-col justify-between shrink-0">
+        <!-- Боковое меню с 26 главами -->
+        <aside class="w-full lg:w-80 bg-[#070c1e] border-r border-cyan-500/20 p-4 flex flex-col justify-between shrink-0 h-screen sticky top-0 overflow-y-auto">
             <div>
-                <div class="flex items-center space-x-3 mb-6 pb-4 border-b border-gray-800">
-                    <svg class="w-7 h-7 text-purple-400" viewBox="0 0 100 100" fill="none">
+                <div class="flex items-center space-x-3 mb-4 pb-3 border-b border-gray-800">
+                    <svg class="w-6 h-6 text-purple-400" viewBox="0 0 100 100" fill="none">
                         <path d="M50 5 L82 18 L95 50 L82 82 L50 95 L18 82 L5 50 L18 18 Z" stroke="#8b5cf6" stroke-width="6"/>
                         <circle cx="50" cy="50" r="20" fill="#8b5cf6"/>
                     </svg>
                     <div>
-                        <h2 class="font-orbitron font-bold text-sm text-white">ZION.CITY MENU</h2>
-                        <span class="text-[10px] text-cyan-400 font-mono">26 ГЛАВ ОТЧЕТА</span>
+                        <h2 class="font-orbitron font-bold text-xs text-white">ZION.CITY MENU</h2>
+                        <span class="text-[9px] text-cyan-400 font-mono">ПОЛНЫЙ ОТЧЕТ: 26 ГЛАВ</span>
                     </div>
                 </div>
 
-                <nav class="space-y-2">
-                    <button onclick="switchTab('exec')" id="btn-exec" class="nav-btn active w-full text-left px-4 py-3 rounded-xl text-xs font-semibold border border-transparent transition-all flex items-center justify-between">
-                        <span>1. Executive Summary</span>
-                        <span class="font-mono text-[10px] text-cyan-400">01</span>
-                    </button>
-                    <button onclick="switchTab('philosophy')" id="btn-philosophy" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-xs font-semibold border border-transparent transition-all flex items-center justify-between text-gray-400 hover:text-white">
-                        <span>2. Философия & Web 4.0</span>
-                        <span class="font-mono text-[10px] text-gray-500">02-03</span>
-                    </button>
-                    <button onclick="switchTab('ecosystem')" id="btn-ecosystem" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-xs font-semibold border border-transparent transition-all flex items-center justify-between text-gray-400 hover:text-white">
-                        <span>3. Модули ЦПКМ (8 модулей)</span>
-                        <span class="font-mono text-[10px] text-gray-500">04</span>
-                    </button>
-                    <button onclick="switchTab('altyn')" id="btn-altyn" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-xs font-semibold border border-transparent transition-all flex items-center justify-between text-gray-400 hover:text-white">
-                        <span>4. Реестр ALTYN & Токеномика</span>
-                        <span class="font-mono text-[10px] text-gray-500">05-12</span>
-                    </button>
-                    <button onclick="switchTab('mesh')" id="btn-mesh" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-xs font-semibold border border-transparent transition-all flex items-center justify-between text-gray-400 hover:text-white">
-                        <span>5. Zion.Mesh & Ноды D.I.O.S.</span>
-                        <span class="font-mono text-[10px] text-gray-500">07-08</span>
-                    </button>
-                    <button onclick="switchTab('ai')" id="btn-ai" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-xs font-semibold border border-transparent transition-all flex items-center justify-between text-gray-400 hover:text-white">
-                        <span>6. ИИ ERIC & ADAM</span>
-                        <span class="font-mono text-[10px] text-gray-500">09</span>
-                    </button>
-                    <button onclick="switchTab('anchor')" id="btn-anchor" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-xs font-semibold border border-transparent transition-all flex items-center justify-between text-gray-400 hover:text-white">
-                        <span>7. МФК «Огни Москвы»</span>
-                        <span class="font-mono text-[10px] text-gray-500">24</span>
-                    </button>
+                <!-- Список глав 1 - 26 -->
+                <nav class="space-y-1 text-xs" id="chapters-nav">
+                    <!-- Заполняется скриптом динамически для точности -->
                 </nav>
             </div>
 
-            <div class="mt-8 pt-4 border-t border-gray-800 text-[11px] text-gray-500 font-mono flex justify-between items-center">
+            <div class="mt-6 pt-3 border-t border-gray-800 text-[11px] text-gray-500 font-mono flex justify-between items-center bg-[#070c1e] sticky bottom-0 py-2">
                 <span>Alexandr Kharchenko</span>
                 <button onclick="returnToHero()" class="text-cyan-400 hover:underline">▲ Главная</button>
             </div>
         </aside>
 
-        <!-- Основная область с содержимым -->
-        <main class="flex-1 p-4 sm:p-8 lg:p-10 overflow-y-auto max-w-6xl">
-            
-            <!-- HUD метрики -->
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-                <div class="hud-card p-4 flex justify-between items-center">
-                    <div>
-                        <span class="text-[10px] font-mono uppercase text-gray-400 block">Total Citizens</span>
-                        <span class="font-orbitron font-bold text-2xl text-cyan-400">610</span>
-                    </div>
-                    <span class="text-2xl">👤</span>
-                </div>
-                <div class="hud-card p-4 flex justify-between items-center">
-                    <div>
-                        <span class="text-[10px] font-mono uppercase text-gray-400 block">Active Mesh Nodes</span>
-                        <span class="font-orbitron font-bold text-2xl text-pink-400">110</span>
-                    </div>
-                    <span class="text-2xl">📡</span>
-                </div>
-                <div class="hud-card p-4 flex justify-between items-center">
-                    <div>
-                        <span class="text-[10px] font-mono uppercase text-gray-400 block">Transactions / sec</span>
-                        <span class="font-orbitron font-bold text-2xl text-emerald-400">5 000</span>
-                    </div>
-                    <span class="text-2xl">⚡</span>
+        <!-- Основная область отображения текста главы -->
+        <main class="flex-1 p-4 sm:p-8 lg:p-12 overflow-y-auto max-w-5xl">
+            <div class="hud-card p-6 sm:p-10">
+                <div id="chapter-content" class="space-y-4 text-gray-300 leading-relaxed text-sm sm:text-base">
+                    <!-- Сюда динамически загружается текст выбранной главы -->
                 </div>
             </div>
-
-            <!-- Секции отчёта -->
-            <section id="content-exec" class="space-y-6">
-                <div class="hud-card p-6 sm:p-8">
-                    <span class="text-[10px] font-mono text-cyan-400 bg-cyan-950/80 px-2.5 py-1 rounded border border-cyan-800 uppercase">Глава 1 // Резюме</span>
-                    <h2 class="text-xl sm:text-2xl font-orbitron font-bold text-white mt-3 mb-4">Исполнительное резюме и Миссия ZION.CITY</h2>
-                    <p class="text-sm text-gray-300 leading-relaxed mb-4">
-                        Современный цифровой мир на базе Web 2.0 исчерпал себя[cite: 53]. ZION.CITY создает суверенную архитектуру, где пользователь является собственником своих данных[cite: 53].
-                    </p>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-                        <div class="bg-black/50 p-4 rounded-xl border border-gray-800">
-                            <h3 class="font-bold text-cyan-300 text-sm mb-2">Пять Уровней Архитектуры</h3>
-                            <ul class="text-xs text-gray-400 space-y-2">
-                                <li>• <strong class="text-gray-200">Слой 0:</strong> D.I.O.S., Apple M4/M5[cite: 54]</li>
-                                <li>• <strong class="text-gray-200">Слой 1:</strong> Zion.Mesh, Reticulum[cite: 54]</li>
-                                <li>• <strong class="text-gray-200">Слой 2:</strong> Реестр ALTYN, DPoS+A[cite: 54]</li>
-                                <li>• <strong class="text-gray-200">Слой 3:</strong> 8 когнитивных модулей, ИИ ЭРИК[cite: 54]</li>
-                                <li>• <strong class="text-gray-200">Слой 4-5:</strong> Оператор КРЭХО и СЭЗ[cite: 54]</li>
-                            </ul>
-                        </div>
-                        <div class="bg-black/50 p-4 rounded-xl border border-gray-800 text-center flex flex-col justify-center">
-                            <span class="text-xs font-mono text-pink-400 mb-2">Институциональный базис</span>
-                            <p class="text-xs text-gray-300">Соглашение с Правительством Херсонской области и АО «КРЭХО» по созданию ЦФЦ в СЭЗ[cite: 53].</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section id="content-philosophy" class="space-y-6 hidden">
-                <div class="hud-card p-6 sm:p-8">
-                    <span class="text-[10px] font-mono text-pink-400 bg-pink-950/80 px-2.5 py-1 rounded border border-pink-800 uppercase">Глава 2 & 3 // Философия</span>
-                    <h2 class="text-xl sm:text-2xl font-orbitron font-bold text-white mt-3 mb-4">Парадигма Web 4.0 & Оцифрованная Порядочность</h2>
-                    <p class="text-sm text-gray-300">Агентное исполнение и алгоритм сарафанного радио (ANRC) на базе повторных покупок (>65%)[cite: 58, 60].</p>
-                </div>
-            </section>
-
-            <section id="content-ecosystem" class="space-y-6 hidden">
-                <div class="hud-card p-6 sm:p-8">
-                    <span class="text-[10px] font-mono text-purple-400 bg-purple-950/80 px-2.5 py-1 rounded border border-purple-800 uppercase">Глава 4 // ЦПКМ</span>
-                    <h2 class="text-xl sm:text-2xl font-orbitron font-bold text-white mt-3 mb-4">8 Модулей Экосистемы</h2>
-                    <p class="text-sm text-gray-300">Семья, Новости, Журнал, Сервисы, Организации, Маркетплейс, Финансы, События[cite: 63].</p>
-                </div>
-            </section>
-
-            <section id="content-altyn" class="space-y-6 hidden">
-                <div class="hud-card p-6 sm:p-8">
-                    <span class="text-[10px] font-mono text-emerald-400 bg-emerald-950/80 px-2.5 py-1 rounded border border-emerald-800 uppercase">Глава 5 & 12 // Токеномика</span>
-                    <h2 class="text-xl sm:text-2xl font-orbitron font-bold text-white mt-3 mb-4">Реестр ALTYN & Двухуровневая Система</h2>
-                    <p class="text-sm text-gray-300">ALTYN TOKEN (хард-кап 35 млн) + ALTYN COIN (расчетная единица БРИКС+)[cite: 77].</p>
-                </div>
-            </section>
-
-            <section id="content-mesh" class="space-y-6 hidden">
-                <div class="hud-card p-6 sm:p-8">
-                    <span class="text-[10px] font-mono text-cyan-400 bg-cyan-950/80 px-2.5 py-1 rounded border border-cyan-800 uppercase">Глава 7 & 8 // Mesh</span>
-                    <h2 class="text-xl sm:text-2xl font-orbitron font-bold text-white mt-3 mb-4">Zion.Mesh & Ноды D.I.O.S.</h2>
-                    <div class="bg-black/60 p-4 rounded-xl border border-gray-800 mt-4">
-                        <div class="relative h-44 w-full"><canvas id="meshChart"></canvas></div>
-                    </div>
-                </div>
-            </section>
-
-            <section id="content-ai" class="space-y-6 hidden">
-                <div class="hud-card p-6 sm:p-8">
-                    <span class="text-[10px] font-mono text-purple-400 bg-purple-950/80 px-2.5 py-1 rounded border border-purple-800 uppercase">Глава 9 // ИИ</span>
-                    <h2 class="text-xl sm:text-2xl font-orbitron font-bold text-white mt-3 mb-4">Агенты ERIC & ADAM</h2>
-                    <p class="text-sm text-gray-300">Персональный экзекутор ЭРИК и комплаенс-агент АДАМ[cite: 74].</p>
-                </div>
-            </section>
-
-            <section id="content-anchor" class="space-y-6 hidden">
-                <div class="hud-card p-6 sm:p-8">
-                    <span class="text-[10px] font-mono text-pink-400 bg-pink-950/80 px-2.5 py-1 rounded border border-pink-800 uppercase">Глава 24 // Якорь</span>
-                    <h2 class="text-xl sm:text-2xl font-orbitron font-bold text-white mt-3 mb-4">МФК «Огни Москвы» в Строгино</h2>
-                    <p class="text-sm text-gray-300">Физический узел супернод и радиомодулей Zion.Mesh на участке 32 гектара[cite: 40, 92].</p>
-                </div>
-            </section>
-
         </main>
     </div>
 
-    <!-- Скрипт переключения -->
+    <!-- База данных текста всех 26 глав из официального документа -->
     <script>
-        function openPortal() {
-            document.getElementById('hero-screen').classList.add('hidden');
-            document.getElementById('portal-content').classList.remove('hidden');
-            window.scrollTo(0,0);
-        }
-
-        function returnToHero() {
-            document.getElementById('portal-content').classList.add('hidden');
-            document.getElementById('hero-screen').classList.remove('hidden');
-            window.scrollTo(0,0);
-        }
-
-        function switchTab(tabId) {
-            const tabs = ['exec', 'philosophy', 'ecosystem', 'altyn', 'mesh', 'ai', 'anchor'];
-            tabs.forEach(id => {
-                document.getElementById('content-' + id).classList.add('hidden');
-                const btn = document.getElementById('btn-' + id);
-                if (btn) { btn.classList.remove('active'); btn.classList.add('text-gray-400'); }
-            });
-            document.getElementById('content-' + tabId).classList.remove('hidden');
-            const activeBtn = document.getElementById('btn-' + tabId);
-            if (activeBtn) { activeBtn.classList.add('active'); activeBtn.classList.remove('text-gray-400'); }
-        }
-
-        let chartInitialized = false;
-        document.getElementById('btn-mesh').addEventListener('click', () => {
-            if(!chartInitialized) {
-                const ctx = document.getElementById('meshChart').getContext('2d');
-                new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00', '24:00'],
-                        datasets: [{
-                            label: 'Скорость Mesh (бит/с)',
-                            data: [500, 750, 1200, 2400, 1800, 3100, 4800],
-                            borderColor: '#00f0ff',
-                            backgroundColor: 'rgba(0, 240, 255, 0.1)',
-                            borderWidth: 2,
-                            fill: true,
-                            tension: 0.4
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: { legend: { display: false } },
-                        scales: {
-                            x: { ticks: { color: '#6b7280' }, grid: { color: 'rgba(255,255,255,0.05)' } },
-                            y: { ticks: { color: '#6b7280' }, grid: { color: 'rgba(255,255,255,0.05)' } }
-                        }
-                    }
-                });
-                chartInitialized = true;
-            }
-        });
-    </script>
-</body>
-</html>
+        const chaptersData = {
+            1: {
+                title: "ГЛАВА 1: EXECUTIVE SUMMARY (ИСПОЛНИТЕЛЬНОЕ РЕЗЮМЕ)",
+                text: `
+                    <span class="text-[10px] font-mono text-cyan-400 bg-cyan-950/80 px-2.5 py-1 rounded border border-cyan-800 uppercase">Глава 1</span>
+                    <h2 class="text-xl sm:text-2xl font-orbitron font-bold text-white mt-3 mb-4">Executive Summary (Исполнительное резюме)</h2>
+                    <p><strong>1.1. Ключевой тезис и миссия проекта.</strong> Современный цифровой мир, построенный на парадигме Web 2.0, исчерпал себя[cite: 108]. Транснациональные монополии превратили персональные данные людей в сырье для таргетированной рекламы и манипуляций, а мировая финансовая система стала инструментом санкционного давления и тотального контроля[cite: 108].</p>
+                    <p>В проекте ZION.CITY мы доказываем обратное: технологии могут и должны служить человеку[cite: 108]. Мы создали архитектуру, где пользователь является единственным суверенным владельцем своих данных, а искусственный интеллект выступает персональным защитником и помощником, работающим локально на собственном оборудовании владельца[cite: 108].</p>
+                    <p><strong>1.2. Текущий статус реализации (по состоянию на октябрь 2026 года):</strong> Развернута базовая веб-платформа (zioncity.app), объединяющая восемь функциональных модулей на базе когнитивной архитектуры. Заключено официальное пятилетнее Соглашение (май 2026 г.) между Правительством Херсонской области, АО «КРЭХО» и Консорциумом «ZION.CITY» на создание Цифрового финансового центра (ЦФЦ) в рамках СЭЗ[cite: 108].</p>
+                    <p><strong>1.3. Архитектурное резюме (Пять суверенных уровней):</strong><br>
+                    1. Уровень 0 (Оборудование): Узлы D.I.O.S., Apple Mac Mini / Mac Studio с чипами М4/М5, смартфоны[cite: 108].<br>
+                    2. Уровень 1 (Транспорт): Сеть Zion.Mesh на базе Reticulum и LoRa[cite: 108].<br>
+                    3. Уровень 2 (Финансы): Суверенный Реестр ALTYN с консенсусом DPoS+A[cite: 108].<br>
+                    4. Уровень 3 (Приложения): Платформа с 8 когнитивными модулями и ИИ ЭРИК[cite: 108].<br>
+                    5. Уровень 4-5 (Институциональный контур): Оператор АО «КРЭХО»[cite: 108].</p>
+                `
+            },
+            2: {
+                title: "ГЛАВА 2: ORIGIN & PHILOSOPHY OF ZION.CITY (ПРОИСХОЖДЕНИЕ И ФИЛОСОФИЯ)",
+                text: `
+                    <span class="text-[10px] font-mono text-cyan-400 bg-cyan-950/80 px-2.5 py-1 rounded border border-cyan-800 uppercase">Глава 2</span>
+                    <h2 class="text-xl sm:text-2xl font-orbitron font-bold text-white mt-3 mb-4">Происхождение и Философия ZION.CITY</h2>
+                    <p><strong>2.1. Цивилизационный тупик Web 2.0.</strong> Под давлением корпоративного капитала технологии превратились в глобальную систему цифрового феодализма (Surveillance Capitalism). Когнитивное истощение, узурпация данных и паразитическая экономика издержек делают человека уязвимым[cite: 109, 110].</p>
+                    <p><strong>2.2. Философский базис.</strong> Основой ZION.CITY является триада Научно-Интеллектуальных Информационных Моделей Безопасности (НИИМБ): <em>Творчество</em>, <em>Гармония</em> и <em>Любовь</em>[cite: 110, 111].</p>
+                    <p><strong>2.3. Принцип Стива Джобса.</strong> Движение от пользовательского опыта к скрытой сложной инженерной инфраструктуре (Edge AI на Apple Silicon, меш-сети LoRa, суверенный реестр)[cite: 111, 112].</p>
+                    <p><strong>2.4. «Оцифрованная порядочность».</strong> Замена платной спам-рекламы алгоритмом ANRC на базе анализа реальных повторных транзакций (>65%) и агентного сарафанного радио[cite: 112].</p>
+                `
+            },
+            3: {
+                title: "ГЛАВА 3: THE WEB 4.0 PARADIGM (ПАРАДИГМА WEB 4.0)",
+                text: `
+                    <span class="text-[10px] font-mono text-cyan-400 bg-cyan-950/80 px-2.5 py-1 rounded border border-cyan-800 uppercase">Глава 3</span>
+                    <h2 class="text-xl sm:text-2xl font-orbitron font-bold text-white mt-3 mb-4">Парадигма Web 4.0</h2>
+                    <p><strong>3.1. Формальное определение.</strong> Web 4.0 — это эпоха симбиоза человека и суверенного искусственного интеллекта на базе Edge-вычислений[cite: 113]. Переход от пользователя-владельца (Web 3.0) к пользователю-принципалу, делегирующему задачи персональному агенту[cite: 113, 114].</p>
+                    <p><strong>3.2. Архитектурный переход.</strong> Агентное исполнение (Agent-Mediated Execution), единое Global Workspace и строгие Confirmation Gates для защиты критических точек[cite: 114].</p>
+                    <p><strong>3.3. Синтез Proto-AGI.</strong> Реализация общей персональной когниции за счет единой модели мира, управляемой памяти (mind-mem MCP) и агентной координации (ANRC)[cite: 114, 115].</p>
+                `
+            },
+            4: {
+                title: "ГЛАВА 4: ZION.CITY ECOSYSTEM ARCHITECTURE (АРХИТЕКТУРА ЭКОСИСТЕМЫ)",
+                text: `
+                    <span class="text-[10px] font-mono text-cyan-400 bg-cyan-950/80 px-2.5 py-1 rounded border border-cyan-800 uppercase">Глава 4</span>
+                    <h2 class="text-xl sm:text-2xl font-orbitron font-bold text-white mt-3 mb-4">Архитектура экосистемы (ЦПКМ)</h2>
+                    <p><strong>4.1. Концепция ЦПКМ:</strong> «Централизованный Профиль, Контекстные Модули» на базе Теории глобального рабочего пространства (Global Workspace Theory) Б. Баарса[cite: 115].</p>
+                    <p><strong>4.2. 8 когнитивных модулей:</strong><br>
+                    1. <strong>Семья:</strong> Лимбическое ядро, безопасность близких[cite: 115, 116].<br>
+                    2. <strong>Новости:</strong> Информационная лента без алгоритмов гнева[cite: 116].<br>
+                    3. <strong>Журнал:</strong> Зашифрованное блокчейн-хранилище документов[cite: 116].<br>
+                    4. <strong>Сервисы:</strong> Поиск мастеров по сарафанному радио[cite: 116].<br>
+                    5. <strong>Организации:</strong> CRM для МСП и прямой прием платежей[cite: 116].<br>
+                    6. <strong>Маркетплейс:</strong> Торговля, IoT и DFA активы[cite: 116].<br>
+                    7. <strong>Финансы:</strong> Управление ALTYN COIN и TOKEN, ИИ АДАМ[cite: 116].<br>
+                    8. <strong>События:</strong> Координация инициатив и встреч[cite: 116].</p>
+                `
+            },
+            5: {
+                title: "ГЛАВА 5: ALTYN & ALTYN CPA REGISTRY (СУВЕРЕННЫЙ РЕЕСТР АЛТЫН И КРЭХО)",
+                text: `
+                    <span class="text-[10px] font-mono text-cyan-400 bg-cyan-950/80 px-2.5 py-1 rounded border border-cyan-800 uppercase">Глава 5</span>
+                    <h2 class="text-xl sm:text-2xl font-orbitron font-bold text-white mt-3 mb-4">Суверенный Реестр ALTYN и правовой контур</h2>
+                    <p><strong>5.1. Архитектура Суверенного Реестра ALTYN (CPA).</strong> Отказ от уязвимой анонимности публичных блокчейнов. Верифицированные КУС-узлы, консенсус DPoS+A (3 из 5) и правовой арбитраж[cite: 117, 118].</p>
+                    <p><strong>5.2. Товарное обеспечение Just-in-Time.</strong> Привязка расчетной единицы к физическому обороту критических ресурсов БРИКС+ (пшеница, нефть, газ, металлы)[cite: 118].</p>
+                    <p><strong>5.3. Пилотный плацдарм.</strong> Соглашение с Правительством Херсонской области и АО «КРЭХО» на создание Цифрового финансового центра (ЦФЦ) в СЭЗ по ФЗ-259[cite: 119].</p>
+                `
+            },
+            6: {
+                title: "ГЛАВА 6: TECHNICAL CORE ARCHITECTURE (ТЕХНИЧЕСКОЕ ЯДРО)",
+                text: `
+                    <span class="text-[10px] font-mono text-cyan-400 bg-cyan-950/80 px-2.5 py-1 rounded border border-cyan-800 uppercase">Глава 6</span>
+                    <h2 class="text-xl sm:text-2xl font-orbitron font-bold text-white mt-3 mb-4">Техническое ядро и системная архитектура</h2>
+                    <p><strong>6.1. Пять суверенных слоев:</strong> От оборудования D.I.O.S. до финансового расчетного контура ASL[cite: 120].</p>
+                    <p><strong>6.2. Индустриальный стек:</strong> Frontend на React и Tailwind CSS, Backend на FastAPI (Python),
