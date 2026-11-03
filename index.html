@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ru" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>High-Tech Portal | Dashboard</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js для графиков -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Эффект стекла и футуристичный фон */
+        body {
+            background-color: #030712;
+            color: #f3f4f6;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+        .glass-card {
+            background: rgba(17, 24, 39, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(75, 85, 99, 0.3);
+        }
+    </style>
+</head>
+<body class="min-h-screen p-6 md:p-12">
+
+    <!-- Шапка -->
+    <header class="max-w-6xl mx-auto flex justify-between items-center mb-12 border-b border-gray-800 pb-6">
+        <div>
+            <h1 class="text-2xl font-black tracking-wider text-cyan-400">ZION // SYSTEM</h1>
+            <p class="text-xs text-gray-400">Secure Node Architecture & Telemetry</p>
+        </div>
+        <div class="flex items-center space-x-2">
+            <span class="inline-block w-3 h-3 bg-emerald-500 rounded-full animate-pulse"></span>
+            <span class="text-xs text-emerald-400 font-mono">NODES ONLINE</span>
+        </div>
+    </header>
+
+    <!-- Основной контент -->
+    <main class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <!-- Левая колонка: Описание / Чертеж -->
+        <div class="glass-card p-6 rounded-2xl md:col-span-1 flex flex-col justify-between">
+            <div>
+                <h2 class="text-lg font-bold text-cyan-300 mb-2">Архитектурный узел</h2>
+                <p class="text-sm text-gray-400 mb-4">Децентрализованная маршрутизация и шифрование потоков данных в реальном времени.</p>
+                <!-- Имитация чертежа через SVG -->
+                <div class="border border-cyan-500/30 rounded-xl p-4 bg-black/40 flex items-center justify-center h-48">
+                    <svg class="w-32 h-32 text-cyan-400 animate-spin" style="animation-duration: 20s;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 2v20m10-10H2m15.364-7.364l-14.728 14.728m0-14.728l14.728 14.728"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="mt-6">
+                <span class="text-xs text-gray-500 block font-mono">SECURE PROTOCOL: ED25519</span>
+            </div>
+        </div>
+
+        <!-- Правая колонка: График -->
+        <div class="glass-card p-6 rounded-2xl md:col-span-2 flex flex-col justify-between">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-lg font-bold text-cyan-300">Динамика транзакций и нагрузки</h2>
+                <span class="text-xs font-mono bg-cyan-950 text-cyan-400 px-2 py-1 rounded border border-cyan-800">Live Data</span>
+            </div>
+            <!-- Контейнер для графика Chart.js -->
+            <div class="relative h-64 w-full">
+                <canvas id="techChart"></canvas>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Скрипт инициализации графика -->
+    <script>
+        const ctx = document.getElementById('techChart').getContext('2d');
+        const techChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00', '24:00'],
+                datasets: [{
+                    label: 'Пропускная способность (tx/s)',
+                    data: [120, 190, 300, 550, 420, 680, 850],
+                    borderColor: '#22d3ee',
+                    backgroundColor: 'rgba(34, 211, 238, 0.1)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { labels: { color: '#9ca3af' } }
+                },
+                scales: {
+                    x: { grid: { color: 'rgba(75, 85, 99, 0.1)' }, ticks: { color: '#9ca3af' } },
+                    y: { grid: { color: 'rgba(75, 85, 99, 0.1)' }, ticks: { color: '#9ca3af' } }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
