@@ -148,7 +148,7 @@
         </aside>
 
         <!-- Основная область с адаптированной шириной и отступами -->
-        <main class="flex-1 p-4 sm:p-8 lg:p-12 overflow-y-auto w-full">
+        <main id="main-content-area" class="flex-1 p-4 sm:p-8 lg:p-12 overflow-y-auto w-full h-screen">
             <div class="hud-card p-6 sm:p-12 w-full max-w-none mx-auto shadow-2xl">
                 <div id="chapter-content" class="space-y-6 text-gray-300 leading-relaxed text-base sm:text-lg">
                 </div>
@@ -870,7 +870,7 @@
                 `
             },
             26: {
-                title: "ГЛАВА 26: CONCLUSIONS & APPENDICES (ЗАКЛЮЧЕНИЕ И ИСТОЧНИКИ)",
+                title: "Глава 26: Заключение и библиографический указатель",
                 text: `
                     <span class="text-[11px] font-mono text-cyan-400 bg-cyan-950/80 px-3 py-1 rounded border border-cyan-800 uppercase">Глава 26</span>
                     <h2 class="text-2xl sm:text-3xl font-orbitron font-bold text-white mt-3 mb-4">Заключение и библиографический указатель</h2>
@@ -953,7 +953,12 @@
             }
 
             document.getElementById('chapter-content').innerHTML = chaptersData[num].text;
-            document.getElementById('portal-content').scrollTo(0,0);
+            
+            // Плавный сброс прокрутки именно блока с контентом наверх
+            const mainArea = document.getElementById('main-content-area');
+            if (mainArea) {
+                mainArea.scrollTo({ top: 0, behavior: 'smooth' });
+            }
         }
 
         loadChapter(1);
@@ -961,7 +966,8 @@
         function openPortal() {
             document.getElementById('hero-screen').classList.add('hidden');
             document.getElementById('portal-content').classList.remove('hidden');
-            window.scrollTo(0,0);
+            const mainArea = document.getElementById('main-content-area');
+            if (mainArea) mainArea.scrollTo(0, 0);
         }
 
         function returnToHero() {
