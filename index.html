@@ -20,19 +20,25 @@
 
         .font-orbitron { font-family: 'Orbitron', sans-serif; }
 
-        .neon-border-cyan {
-            border: 1px solid #00f0ff;
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.3), inset 0 0 10px rgba(0, 240, 255, 0.1);
+        /* Полноэкранный фон с изображением льва и овечки */
+        .hero-bg {
+            background: linear-gradient(to bottom, rgba(3, 6, 17, 0.45), rgba(3, 6, 17, 0.85)), url('bg.jpg') no-repeat center center / cover;
+        }
+
+        .neon-box {
+            border: 2px solid #00f0ff;
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.5), inset 0 0 15px rgba(0, 240, 255, 0.2);
+            backdrop-filter: blur(4px);
         }
 
         .neon-text-cyan {
             color: #00f0ff;
-            text-shadow: 0 0 10px rgba(0, 240, 255, 0.6);
+            text-shadow: 0 0 12px rgba(0, 240, 255, 0.8);
         }
 
         .neon-text-pink {
             color: #ff007f;
-            text-shadow: 0 0 10px rgba(255, 0, 127, 0.6);
+            text-shadow: 0 0 12px rgba(255, 0, 127, 0.8);
         }
 
         .hud-card {
@@ -43,75 +49,67 @@
         }
 
         .nav-btn.active {
-            background: linear-gradient(90deg, rgba(0,240,255,0.15) 0%, rgba(255,0,127,0.15) 100%);
+            background: linear-gradient(90deg, rgba(0,240,255,0.2) 0%, rgba(255,0,127,0.2) 100%);
             border-color: #00f0ff;
             color: #ffffff;
-            box-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+            box-shadow: 0 0 12px rgba(0, 240, 255, 0.4);
         }
     </style>
 </head>
 <body class="h-full flex flex-col">
 
-    <!-- ================= 1. ГЛАВНЫЙ ЭКРАН (СТРОГО ОДИН ЭКРАН БЕЗ ПРОКРУТКИ) ================= -->
-    <section id="hero-screen" class="h-screen w-full flex flex-col justify-between items-center p-4 sm:p-6 text-center bg-gradient-to-b from-[#030611] via-[#070c1e] to-[#030611] relative overflow-hidden">
+    <!-- ================= 1. ГЛАВНЫЙ ЭКРАН (ПОЛНОЭКРАННЫЙ ФОН СО ЛЬВОМ И ОВЕЧКОЙ) ================= -->
+    <section id="hero-screen" class="h-screen w-full flex flex-col justify-between items-center p-4 sm:p-8 text-center hero-bg relative">
         
         <!-- Верхняя шапка -->
         <div class="w-full max-w-6xl flex justify-between items-center z-10">
-            <div class="flex items-center space-x-2.5">
-                <svg class="w-8 h-8" viewBox="0 0 100 100" fill="none">
+            <div class="flex items-center space-x-3">
+                <svg class="w-9 h-9 drop-shadow-[0_0_8px_rgba(139,92,246,0.8)]" viewBox="0 0 100 100" fill="none">
                     <path d="M50 5 L82 18 L95 50 L82 82 L50 95 L18 82 L5 50 L18 18 Z" stroke="#8b5cf6" stroke-width="4" fill="rgba(139,92,246,0.2)"/>
                     <rect x="25" y="25" width="50" height="50" transform="rotate(22.5 50 50)" stroke="#00f0ff" stroke-width="3" fill="none"/>
                     <circle cx="50" cy="50" r="18" fill="#8b5cf6"/>
                 </svg>
-                <span class="font-orbitron font-black text-base sm:text-lg tracking-widest text-white">ZION<span class="text-purple-500">.CITY</span></span>
+                <span class="font-orbitron font-black text-lg sm:text-xl tracking-widest text-white">ZION<span class="text-purple-500">.CITY</span></span>
             </div>
-            <div class="bg-black/60 px-3 py-1 rounded-full border border-cyan-500/40 flex items-center space-x-2">
+            <div class="bg-black/60 px-3.5 py-1.5 rounded-full border border-cyan-500/50 backdrop-blur-md flex items-center space-x-2">
                 <span class="w-2 h-2 bg-emerald-400 rounded-full animate-ping"></span>
-                <span class="text-[10px] font-mono text-emerald-400 uppercase tracking-wider">Web 4.0 Live</span>
+                <span class="text-xs font-mono text-emerald-400 uppercase tracking-wider">Web 4.0 Live</span>
             </div>
         </div>
 
-        <!-- Центральный контент заставки -->
-        <div class="my-auto z-10 flex flex-col items-center max-w-2xl">
+        <!-- Центральная часть заставки -->
+        <div class="my-auto z-10 flex flex-col items-center max-w-3xl">
             
             <!-- Заголовок системы -->
-            <h1 class="font-orbitron font-bold text-xs sm:text-sm md:text-base tracking-wider text-cyan-300 uppercase mb-3 max-w-xl leading-snug">
-                ZION.CITY <span class="text-white font-black">финансовая модель нового поколения</span>
+            <h1 class="font-orbitron font-bold text-sm sm:text-lg md:text-xl tracking-wider text-cyan-300 uppercase mb-4 max-w-2xl leading-relaxed drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]">
+                Социально-финансово-экономическая система <span class="text-white font-black block sm:inline">ZION.CITY</span>
             </h1>
 
-            <!-- Неоновый блок WEB 4.0 со Львом и Ягненком -->
-            <div class="mb-4 px-6 py-2 rounded-xl border border-cyan-400 neon-border-cyan bg-black/60 inline-block">
-                <span class="font-orbitron font-black text-2xl sm:text-4xl tracking-widest">
+            <!-- Неоновая вывеска WEB 4.0 -->
+            <div class="mb-8 px-8 py-3 rounded-2xl bg-black/50 neon-box inline-block">
+                <span class="font-orbitron font-black text-3xl sm:text-5xl md:text-6xl tracking-widest">
                     <span class="neon-text-cyan">WEB</span> <span class="neon-text-pink">4.0</span>
                 </span>
             </div>
 
-            <!-- Изображение льва и овечки (ваша заставка) -->
-            <div class="relative w-36 h-36 sm:w-44 sm:h-44 rounded-2xl overflow-hidden border-2 border-cyan-500/50 shadow-[0_0_25px_rgba(0,240,255,0.3)] mb-4">
-                <img src="https://images.unsplash.com/photo-1534188753412-3e26d1d618d6?q=80&w=600&auto=format&fit=crop" alt="Lion and Lamb Web 4.0" class="w-full h-full object-cover">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end justify-center pb-2">
-                    <span class="text-[10px] font-mono text-cyan-300 uppercase tracking-widest">Суверенитет & Гармония</span>
-                </div>
-            </div>
-
             <!-- Кнопка Подробнее -->
-            <button onclick="openPortal()" class="px-8 py-3.5 rounded-xl font-orbitron font-bold text-xs sm:text-sm tracking-wider uppercase bg-gradient-to-r from-cyan-500 via-purple-600 to-pink-500 text-white shadow-[0_0_20px_rgba(0,240,255,0.4)] hover:scale-105 transition-transform duration-300 flex items-center space-x-2 cursor-pointer">
+            <button onclick="openPortal()" class="px-10 py-4 rounded-xl font-orbitron font-bold text-sm tracking-widest uppercase bg-gradient-to-r from-cyan-500 via-purple-600 to-pink-500 text-white shadow-[0_0_30px_rgba(0,240,255,0.5)] hover:scale-105 transition-transform duration-300 flex items-center space-x-3 cursor-pointer">
                 <span>Подробнее</span>
-                <span>↓</span>
+                <span class="text-lg">↓</span>
             </button>
         </div>
 
-        <!-- Нижний копирайт -->
+        <!-- Копирайт -->
         <div class="w-full text-center z-10 pb-2">
-            <span class="text-[10px] font-mono text-gray-500 uppercase tracking-widest">Консорциум ZION.CITY • Intelligent Business Systems 2026</span>
+            <span class="text-[11px] font-mono text-gray-400 uppercase tracking-widest drop-shadow">Консорциум ZION.CITY • Intelligent Business Systems 2026</span>
         </div>
     </section>
 
 
-    <!-- ================= 2. ОСНОВНОЙ ПОРТАЛ И ДОКУМЕНТАЦИЯ (СКРЫТ ДО КЛИКА) ================= -->
+    <!-- ================= 2. ИНТЕРАКТИВНЫЙ ПОРТАЛ С МЕНЮ ================= -->
     <div id="portal-content" class="flex-1 flex flex-col lg:flex-row min-h-screen hidden">
         
-        <!-- Меню навигации слева -->
+        <!-- Боковое меню -->
         <aside class="w-full lg:w-80 bg-[#070c1e] border-r border-cyan-500/20 p-6 flex flex-col justify-between shrink-0">
             <div>
                 <div class="flex items-center space-x-3 mb-6 pb-4 border-b border-gray-800">
@@ -159,11 +157,11 @@
 
             <div class="mt-8 pt-4 border-t border-gray-800 text-[11px] text-gray-500 font-mono flex justify-between items-center">
                 <span>Alexandr Kharchenko</span>
-                <button onclick="returnToHero()" class="text-cyan-400 hover:underline">▲ На главную</button>
+                <button onclick="returnToHero()" class="text-cyan-400 hover:underline">▲ Главная</button>
             </div>
         </aside>
 
-        <!-- Основной контент разделов -->
+        <!-- Основная область с содержимым -->
         <main class="flex-1 p-4 sm:p-8 lg:p-10 overflow-y-auto max-w-6xl">
             
             <!-- HUD метрики -->
@@ -191,30 +189,28 @@
                 </div>
             </div>
 
-            <!-- Разделы документации -->
+            <!-- Секции отчёта -->
             <section id="content-exec" class="space-y-6">
                 <div class="hud-card p-6 sm:p-8">
                     <span class="text-[10px] font-mono text-cyan-400 bg-cyan-950/80 px-2.5 py-1 rounded border border-cyan-800 uppercase">Глава 1 // Резюме</span>
                     <h2 class="text-xl sm:text-2xl font-orbitron font-bold text-white mt-3 mb-4">Исполнительное резюме и Миссия ZION.CITY</h2>
                     <p class="text-sm text-gray-300 leading-relaxed mb-4">
-                        Современный цифровой мир на базе Web 2.0 исчерпал себя[cite: 53]. Транснациональные монополии превратили данные людей в сырье для таргетинга[cite: 53]. ZION.CITY создает архитектуру, где пользователь — суверенный владелец своих данных[cite: 53].
+                        Современный цифровой мир на базе Web 2.0 исчерпал себя[cite: 53]. ZION.CITY создает суверенную архитектуру, где пользователь является собственником своих данных[cite: 53].
                     </p>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
                         <div class="bg-black/50 p-4 rounded-xl border border-gray-800">
-                            <h3 class="font-bold text-cyan-300 text-sm mb-2">Пять Суверенных Уровней</h3>
+                            <h3 class="font-bold text-cyan-300 text-sm mb-2">Пять Уровней Архитектуры</h3>
                             <ul class="text-xs text-gray-400 space-y-2">
-                                <li>• <strong class="text-gray-200">Слой 0 (Hardware):</strong> Узлы D.I.O.S., Apple M4/M5[cite: 54].</li>
-                                <li>• <strong class="text-gray-200">Слой 1 (Transport):</strong> Zion.Mesh, Reticulum[cite: 54].</li>
-                                <li>• <strong class="text-gray-200">Слой 2 (Finance):</strong> Суверенный Реестр ALTYN, DPoS+A[cite: 54].</li>
-                                <li>• <strong class="text-gray-200">Слой 3 (App):</strong> 8 когнитивных модулей, ИИ ЭРИК[cite: 54].</li>
-                                <li>• <strong class="text-gray-200">Слой 4-5 (Mandate):</strong> АО «КРЭХО» и СЭЗ[cite: 54].</li>
+                                <li>• <strong class="text-gray-200">Слой 0:</strong> D.I.O.S., Apple M4/M5[cite: 54]</li>
+                                <li>• <strong class="text-gray-200">Слой 1:</strong> Zion.Mesh, Reticulum[cite: 54]</li>
+                                <li>• <strong class="text-gray-200">Слой 2:</strong> Реестр ALTYN, DPoS+A[cite: 54]</li>
+                                <li>• <strong class="text-gray-200">Слой 3:</strong> 8 когнитивных модулей, ИИ ЭРИК[cite: 54]</li>
+                                <li>• <strong class="text-gray-200">Слой 4-5:</strong> Оператор КРЭХО и СЭЗ[cite: 54]</li>
                             </ul>
                         </div>
-                        <div class="bg-black/50 p-4 rounded-xl border border-gray-800 flex flex-col justify-center items-center text-center">
-                            <span class="text-xs font-mono text-pink-400 mb-2">Институциональный фундамент</span>
-                            <p class="text-xs text-gray-300 leading-relaxed">
-                                Соглашение с Правительством Херсонской области и Корпорацией КРЭХО на создание ЦФЦ в СЭЗ[cite: 53].
-                            </p>
+                        <div class="bg-black/50 p-4 rounded-xl border border-gray-800 text-center flex flex-col justify-center">
+                            <span class="text-xs font-mono text-pink-400 mb-2">Институциональный базис</span>
+                            <p class="text-xs text-gray-300">Соглашение с Правительством Херсонской области и АО «КРЭХО» по созданию ЦФЦ в СЭЗ[cite: 53].</p>
                         </div>
                     </div>
                 </div>
@@ -224,9 +220,7 @@
                 <div class="hud-card p-6 sm:p-8">
                     <span class="text-[10px] font-mono text-pink-400 bg-pink-950/80 px-2.5 py-1 rounded border border-pink-800 uppercase">Глава 2 & 3 // Философия</span>
                     <h2 class="text-xl sm:text-2xl font-orbitron font-bold text-white mt-3 mb-4">Парадигма Web 4.0 & Оцифрованная Порядочность</h2>
-                    <p class="text-sm text-gray-300 leading-relaxed mb-4">
-                        Переход от пользователя-оператора к принципалу. Агент ЭРИК находит сервисы через реальные показатели повторных транзакций[cite: 58].
-                    </p>
+                    <p class="text-sm text-gray-300">Агентное исполнение и алгоритм сарафанного радио (ANRC) на базе повторных покупок (>65%)[cite: 58, 60].</p>
                 </div>
             </section>
 
@@ -242,7 +236,7 @@
                 <div class="hud-card p-6 sm:p-8">
                     <span class="text-[10px] font-mono text-emerald-400 bg-emerald-950/80 px-2.5 py-1 rounded border border-emerald-800 uppercase">Глава 5 & 12 // Токеномика</span>
                     <h2 class="text-xl sm:text-2xl font-orbitron font-bold text-white mt-3 mb-4">Реестр ALTYN & Двухуровневая Система</h2>
-                    <p class="text-sm text-gray-300">ALTYN TOKEN (хард-кап 35 млн) и ALTYN COIN (расчетная монета под ресурсы БРИКС+)[cite: 77].</p>
+                    <p class="text-sm text-gray-300">ALTYN TOKEN (хард-кап 35 млн) + ALTYN COIN (расчетная единица БРИКС+)[cite: 77].</p>
                 </div>
             </section>
 
@@ -260,7 +254,7 @@
                 <div class="hud-card p-6 sm:p-8">
                     <span class="text-[10px] font-mono text-purple-400 bg-purple-950/80 px-2.5 py-1 rounded border border-purple-800 uppercase">Глава 9 // ИИ</span>
                     <h2 class="text-xl sm:text-2xl font-orbitron font-bold text-white mt-3 mb-4">Агенты ERIC & ADAM</h2>
-                    <p class="text-sm text-gray-300">Персональный экзекутор ЭРИК и финансовый комплаенс-агент АДАМ[cite: 74].</p>
+                    <p class="text-sm text-gray-300">Персональный экзекутор ЭРИК и комплаенс-агент АДАМ[cite: 74].</p>
                 </div>
             </section>
 
@@ -268,14 +262,14 @@
                 <div class="hud-card p-6 sm:p-8">
                     <span class="text-[10px] font-mono text-pink-400 bg-pink-950/80 px-2.5 py-1 rounded border border-pink-800 uppercase">Глава 24 // Якорь</span>
                     <h2 class="text-xl sm:text-2xl font-orbitron font-bold text-white mt-3 mb-4">МФК «Огни Москвы» в Строгино</h2>
-                    <p class="text-sm text-gray-300">Физический форпост на полуострове 32 гектара, суперноды Mac Studio и полигон LoRa-сетей[cite: 40, 92].</p>
+                    <p class="text-sm text-gray-300">Физический узел супернод и радиомодулей Zion.Mesh на участке 32 гектара[cite: 40, 92].</p>
                 </div>
             </section>
 
         </main>
     </div>
 
-    <!-- Логика переключения экранов -->
+    <!-- Скрипт переключения -->
     <script>
         function openPortal() {
             document.getElementById('hero-screen').classList.add('hidden');
@@ -301,7 +295,6 @@
             if (activeBtn) { activeBtn.classList.add('active'); activeBtn.classList.remove('text-gray-400'); }
         }
 
-        // График
         let chartInitialized = false;
         document.getElementById('btn-mesh').addEventListener('click', () => {
             if(!chartInitialized) {
