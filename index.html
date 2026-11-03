@@ -11,16 +11,20 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600;700&display=swap');
 
+        /* Жесткая блокировка выделения и копирования для всей страницы */
+        * {
+            -webkit-user-select: none !important;
+            -moz-user-select: none !important;
+            -ms-user-select: none !important;
+            user-select: none !important;
+            -webkit-touch-callout: none !important;
+        }
+
         body {
             background-color: #030611;
             color: #e5e7eb;
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
-            /* Запрет выделения текста на всей странице */
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
         }
 
         .font-orbitron { font-family: 'Orbitron', sans-serif; }
@@ -415,45 +419,18 @@
         }
 
         // ================= ЗАЩИТА ОТ КОПИРОВАНИЯ И ПРОСМОТРА КОДА ================= //
+        document.addEventListener('contextmenu', e => e.preventDefault());
 
-        // 1. Отключение правого клика мыши (контекстного меню)
-        document.addEventListener('contextmenu', function(e) {
-            e.preventDefault();
-        });
-
-        // 2. Блокировка горячих клавиш (Ctrl+C, Ctrl+U, Ctrl+S, F12 и т.д.)
         document.addEventListener('keydown', function(e) {
-            // F12
-            if (e.key === 'F12') {
-                e.preventDefault();
-                return false;
-            }
-            // Ctrl+Shift+I / Ctrl+Shift+J / Ctrl+Shift+C (Инструменты разработчика)
-            if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j' || e.key === 'C' || e.key === 'c')) {
-                e.preventDefault();
-                return false;
-            }
-            // Ctrl+U (Просмотр исходного кода)
-            if (e.ctrlKey && (e.key === 'U' || e.key === 'u')) {
-                e.preventDefault();
-                return false;
-            }
-            // Ctrl+S (Сохранение страницы)
-            if (e.ctrlKey && (e.key === 'S' || e.key === 's')) {
-                e.preventDefault();
-                return false;
-            }
-            // Ctrl+C (Копирование)
-            if (e.ctrlKey && (e.key === 'C' || e.key === 'c')) {
+            if (e.key === 'F12' || 
+                (e.ctrlKey && e.shiftKey && ['I','i','J','j','C','c'].includes(e.key)) || 
+                (e.ctrlKey && ['U','u','S','s','C','c'].includes(e.key))) {
                 e.preventDefault();
                 return false;
             }
         });
 
-        // 3. Запрет перетаскивания текста и картинок
-        document.addEventListener('dragstart', function(e) {
-            e.preventDefault();
-        });
+        document.addEventListener('dragstart', e => e.preventDefault());
     </script>
 </body>
 </html>
