@@ -16,6 +16,11 @@
             color: #e5e7eb;
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
+            /* Запрет выделения текста на всей странице */
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
         .font-orbitron { font-family: 'Orbitron', sans-serif; }
@@ -46,7 +51,7 @@
         aside::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 2px; }
     </style>
 </head>
-<body class="h-full flex flex-col">
+<body class="h-full flex flex-col" oncontextmenu="return false;">
 
     <!-- ================= 1. ГЛАВНЫЙ ЭКРАН ================= -->
     <section id="hero-screen" class="h-screen w-full flex flex-col justify-between items-center p-4 sm:p-6 text-center hero-bg relative">
@@ -372,7 +377,6 @@
             const btn = document.createElement('button');
             btn.id = `btn-ch-${i}`;
             btn.className = `nav-btn w-full text-left px-3.5 py-2.5 rounded-lg text-xs font-medium border border-transparent transition-all flex items-center justify-between ${i === 1 ? 'active' : 'text-gray-400 hover:text-white'}`;
-            // Вывод полных названий глав в боковом меню
             btn.innerHTML = `<span class="truncate pr-2">${chaptersData[i].title}</span><span class="font-mono text-[9px] opacity-60 shrink-0">${i < 10 ? '0'+i : i}</span>`;
             btn.onclick = () => loadChapter(i);
             navContainer.appendChild(btn);
@@ -409,6 +413,47 @@
             document.getElementById('hero-screen').classList.remove('hidden');
             window.scrollTo(0,0);
         }
+
+        // ================= ЗАЩИТА ОТ КОПИРОВАНИЯ И ПРОСМОТРА КОДА ================= //
+
+        // 1. Отключение правого клика мыши (контекстного меню)
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+
+        // 2. Блокировка горячих клавиш (Ctrl+C, Ctrl+U, Ctrl+S, F12 и т.д.)
+        document.addEventListener('keydown', function(e) {
+            // F12
+            if (e.key === 'F12') {
+                e.preventDefault();
+                return false;
+            }
+            // Ctrl+Shift+I / Ctrl+Shift+J / Ctrl+Shift+C (Инструменты разработчика)
+            if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j' || e.key === 'C' || e.key === 'c')) {
+                e.preventDefault();
+                return false;
+            }
+            // Ctrl+U (Просмотр исходного кода)
+            if (e.ctrlKey && (e.key === 'U' || e.key === 'u')) {
+                e.preventDefault();
+                return false;
+            }
+            // Ctrl+S (Сохранение страницы)
+            if (e.ctrlKey && (e.key === 'S' || e.key === 's')) {
+                e.preventDefault();
+                return false;
+            }
+            // Ctrl+C (Копирование)
+            if (e.ctrlKey && (e.key === 'C' || e.key === 'c')) {
+                e.preventDefault();
+                return false;
+            }
+        });
+
+        // 3. Запрет перетаскивания текста и картинок
+        document.addEventListener('dragstart', function(e) {
+            e.preventDefault();
+        });
     </script>
 </body>
 </html>
