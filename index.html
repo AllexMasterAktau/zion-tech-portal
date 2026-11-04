@@ -28,15 +28,17 @@
         .font-orbitron { font-family: 'Orbitron', sans-serif; }
         .font-mono-tech { font-family: 'JetBrains Mono', monospace; }
 
-        /* Фоновое изображение главного экрана */
+        /* Идеальная адаптация главного экрана: вся композиция (лев и овечка) видна целиком */
         .hero-bg {
-            background: linear-gradient(to bottom, rgba(3, 6, 17, 0.25), rgba(3, 6, 17, 0.88)), url('bg.jpg') no-repeat center 35% / cover;
+            background: linear-gradient(to bottom, rgba(3, 6, 17, 0.4), rgba(3, 6, 17, 0.92)), url('bg.jpg') no-repeat center center;
+            background-size: contain;
             background-color: #030611;
         }
 
         @media (min-width: 1024px) {
             .hero-bg {
-                background-position: center 30%;
+                background-size: auto 100vh; /* Полноэкранный режим по высоте на ПК */
+                background-position: center bottom;
             }
         }
 
@@ -127,8 +129,8 @@
             </div>
         </div>
 
-        <!-- Центральный блок (смещен ниже, над овечкой) -->
-        <div class="z-10 flex flex-col items-center text-center mt-auto mb-auto pt-24 sm:pt-36 lg:pt-48 pb-6">
+        <!-- Центральный контентный блок, смещенный ниже, чтобы не загораживать льва -->
+        <div class="z-15 flex flex-col items-center text-center my-auto pt-28 sm:pt-40 lg:pt-52 pb-4">
             <h1 class="font-orbitron font-black text-3xl sm:text-5xl lg:text-6xl tracking-widest text-cyan-300 mb-3 drop-shadow-[0_0_20px_rgba(0,240,255,0.5)]">
                 WEB 4.0
             </h1>
