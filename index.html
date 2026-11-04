@@ -6,10 +6,8 @@
     <title>ZION.CITY // Web 4.0 Ecosystem</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&display=swap');
 
         /* Жесткая блокировка выделения и копирования для всей страницы */
         * {
@@ -28,15 +26,23 @@
         }
 
         .font-orbitron { font-family: 'Orbitron', sans-serif; }
+        .font-mono-tech { font-family: 'JetBrains Mono', monospace; }
 
-        /* Фоновое изображение первого экрана */
+        /* Фоновое изображение для мобильных */
         .hero-bg {
-            background: linear-gradient(to bottom, rgba(3, 6, 17, 0.55), rgba(3, 6, 17, 0.92)), url('bg.jpg') no-repeat center center / contain;
+            background: linear-gradient(to bottom, rgba(3, 6, 17, 0.25), rgba(3, 6, 17, 0.88)), url('bg.jpg') no-repeat center 35% / cover;
             background-color: #030611;
         }
 
+        /* Настройка для ПК */
+        @media (min-width: 1024px) {
+            .hero-bg {
+                background-position: center 30%;
+            }
+        }
+
         .hud-card {
-            background: rgba(10, 15, 30, 0.9);
+            background: rgba(10, 15, 30, 0.92);
             backdrop-filter: blur(16px);
             border: 1px solid rgba(0, 240, 255, 0.2);
             border-radius: 12px;
@@ -49,10 +55,35 @@
             box-shadow: 0 0 12px rgba(0, 240, 255, 0.4);
         }
 
-        /* Кастомный скроллбар для меню */
-        aside::-webkit-scrollbar { width: 4px; }
-        aside::-webkit-scrollbar-track { background: #030611; }
-        aside::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 2px; }
+        /* Стиль для перерисованных схем из документа */
+        .doc-schema {
+            background: rgba(3, 8, 22, 0.95);
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            border-radius: 10px;
+            padding: 1.25rem;
+            margin: 1.5rem 0;
+            box-shadow: inset 0 0 20px rgba(0, 240, 255, 0.05), 0 4px 20px rgba(0, 0, 0, 0.6);
+            overflow-x: auto;
+        }
+
+        /* Кастомный скроллбар */
+        aside::-webkit-scrollbar, main::-webkit-scrollbar, .doc-schema::-webkit-scrollbar { width: 4px; height: 4px; }
+        aside::-webkit-scrollbar-track, main::-webkit-scrollbar, .doc-schema::-webkit-scrollbar-track { background: #030611; }
+        aside::-webkit-scrollbar-thumb, main::-webkit-scrollbar, .doc-schema::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 2px; }
+
+        /* Стили для мобильного аккордеона */
+        .mob-content-box {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-in-out;
+        }
+        .mob-item.active .mob-content-box {
+            max-height: 25000px;
+        }
+        .mob-item.active {
+            border-color: #00f0ff;
+            box-shadow: 0 0 12px rgba(0, 240, 255, 0.2);
+        }
 
         /* Стили таблиц в главах */
         .content-table {
@@ -63,7 +94,8 @@
             background: rgba(3, 6, 17, 0.6);
             border: 1px solid rgba(0, 240, 255, 0.2);
             border-radius: 8px;
-            overflow: hidden;
+            overflow-x: auto;
+            display: block;
         }
         .content-table th, .content-table td {
             padding: 12px 16px;
@@ -79,13 +111,13 @@
         }
     </style>
 </head>
-<body class="h-full flex flex-col" oncontextmenu="return false;">
+<body class="h-full flex flex-col min-h-screen" oncontextmenu="return false;">
 
     <!-- ================= 1. ГЛАВНЫЙ ЭКРАН ================= -->
-    <section id="hero-screen" class="h-screen w-full flex flex-col justify-between items-center p-4 sm:p-6 text-center hero-bg relative">
+    <section id="hero-screen" class="min-h-screen w-full flex flex-col justify-between items-center p-4 sm:p-8 hero-bg relative">
         
         <!-- Верхняя шапка -->
-        <div class="w-full max-w-6xl flex justify-between items-center z-10 pt-2">
+        <div class="w-full max-w-7xl flex justify-between items-center z-10 pt-2">
             <div class="flex items-center space-x-3">
                 <img src="ZIONCITY_logo.png" alt="ZION.CITY Logo" class="w-9 h-9 sm:w-10 sm:h-10 object-contain drop-shadow-[0_0_10px_rgba(139,92,246,0.8)]">
                 <span class="font-orbitron font-black text-lg sm:text-xl tracking-widest text-white">ZION<span class="text-purple-500">.CITY</span></span>
@@ -96,18 +128,23 @@
             </div>
         </div>
 
-        <div class="mt-auto mb-auto z-10"></div>
-
-        <!-- Текст и кнопка внизу -->
-        <div class="z-10 flex flex-col items-center pb-6 max-w-3xl px-4">
-            <h2 class="font-orbitron font-black text-xl sm:text-2xl tracking-wider text-cyan-400 mb-1 drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
+        <!-- Центральный блок (смещен ниже, чтобы не закрывать льва и находиться над овечкой) -->
+        <div class="z-10 flex flex-col items-center text-center mt-auto mb-auto pt-24 sm:pt-36 lg:pt-48 pb-6">
+            <h1 class="font-orbitron font-black text-3xl sm:text-5xl lg:text-6xl tracking-widest text-cyan-300 mb-3 drop-shadow-[0_0_20px_rgba(0,240,255,0.5)]">
+                WEB 4.0
+            </h1>
+            
+            <h2 class="font-orbitron font-black text-xl sm:text-2xl tracking-wider text-cyan-400 mb-2 drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
                 ZION.CITY
             </h2>
             <p class="text-xs sm:text-sm text-gray-300 font-medium tracking-wide mb-3 uppercase drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)]">
                 финансовая модель нового поколения
             </p>
-            <p class="text-xs sm:text-sm md:text-base text-cyan-200/90 font-light tracking-wide mb-6 drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)] max-w-2xl leading-relaxed">
-                Архитектура Цифрового Суверенитета, Симбиотического ИИ<br>и Наднациональной Товарно-Клиринговой Экосистемы БРИКС+.
+            
+            <!-- Текст в две аккуратные строки -->
+            <p class="text-xs sm:text-sm md:text-base text-cyan-200/90 font-light tracking-wide mb-6 sm:mb-8 drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)] max-w-2xl leading-relaxed px-2">
+                Архитектура Цифрового Суверенитета, Симбиотического ИИ<br class="hidden sm:inline">
+                и Наднациональной Товарно-Клиринговой Экосистемы БРИКС+.
             </p>
 
             <button onclick="openPortal()" class="px-8 py-3.5 rounded-xl font-orbitron font-bold text-xs sm:text-sm tracking-widest uppercase bg-gradient-to-r from-cyan-500 via-purple-600 to-pink-500 text-white shadow-[0_0_25px_rgba(0,240,255,0.5)] hover:scale-105 transition-transform duration-300 flex items-center space-x-2 cursor-pointer">
@@ -117,43 +154,63 @@
         </div>
 
         <div class="w-full text-center z-10 pb-2">
-            <span class="text-[10px] font-mono text-gray-500 uppercase tracking-widest">Консорциум ZION.CITY • Intelligent Business Systems 2026</span>
+            <span class="text-[10px] font-mono text-gray-400 uppercase tracking-widest drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">Консорциум ZION.CITY • Intelligent Business Systems 2026</span>
         </div>
     </section>
 
 
-    <!-- ================= 2. ИНТЕРАКТИВНЫЙ ПОРТАЛ С 26 ГЛАВАМИ ================= -->
-    <div id="portal-content" class="flex-1 flex flex-col lg:flex-row min-h-screen hidden">
+    <!-- ================= 2. ИНТЕРАКТИВНЫЙ ПОРТАЛ (ПК И МОБИЛЬНЫЕ ВЕРСИИ) ================= -->
+    <div id="portal-content" class="flex-1 flex flex-col min-h-screen hidden">
         
-        <!-- Расширенное боковое меню с 26 полными названиями глав -->
-        <aside class="w-full lg:w-[420px] bg-[#070c1e] border-r border-cyan-500/20 p-4 flex flex-col justify-between shrink-0 h-screen sticky top-0 overflow-y-auto">
-            <div>
-                <div class="flex items-center space-x-3 mb-4 pb-3 border-b border-gray-800">
-                    <img src="ZIONCITY_logo.png" alt="ZION.CITY Logo" class="w-7 h-7 object-contain drop-shadow-[0_0_8px_rgba(139,92,246,0.8)]">
+        <!-- ДЛЯ ПК (Двухпанельный макет) -->
+        <div class="hidden lg:flex flex-1 w-full h-screen overflow-hidden">
+            <aside class="w-[420px] bg-[#070c1e] border-r border-cyan-500/20 p-4 flex flex-col justify-between shrink-0 h-screen sticky top-0 overflow-y-auto">
+                <div>
+                    <div class="flex items-center space-x-3 mb-4 pb-3 border-b border-gray-800">
+                        <img src="ZIONCITY_logo.png" alt="ZION.CITY Logo" class="w-7 h-7 object-contain drop-shadow-[0_0_8px_rgba(139,92,246,0.8)]">
+                        <div>
+                            <h2 class="font-orbitron font-bold text-xs text-white">ZION.CITY MENU</h2>
+                            <span class="text-[9px] text-cyan-400 font-mono">ПОЛНЫЙ ОТЧЕТ: 26 ГЛАВ</span>
+                        </div>
+                    </div>
+                    <nav class="space-y-1.5 text-xs" id="desktop-chapters-nav"></nav>
+                </div>
+                <div class="mt-6 pt-3 border-t border-gray-800 text-[11px] text-gray-500 font-mono flex justify-between items-center bg-[#070c1e] sticky bottom-0 py-2">
+                    <span>Alexandr Kharchenko</span>
+                    <button onclick="returnToHero()" class="text-cyan-400 hover:underline">▲ Главная</button>
+                </div>
+            </aside>
+
+            <main id="desktop-main-area" class="flex-1 p-8 lg:p-12 overflow-y-auto h-screen">
+                <div class="hud-card p-8 lg:p-12 w-full max-w-none mx-auto shadow-2xl">
+                    <div id="desktop-chapter-content" class="space-y-6 text-gray-300 leading-relaxed text-base sm:text-lg"></div>
+                </div>
+            </main>
+        </div>
+
+        <!-- ДЛЯ СМАРТФОНОВ (Мобильный аккордеон-гармошка) -->
+        <div class="flex lg:hidden flex-1 flex-col w-full max-w-4xl mx-auto p-4 sm:p-6">
+            <div class="flex justify-between items-center mb-6 pb-4 border-b border-cyan-500/20">
+                <div class="flex items-center space-x-3">
+                    <img src="ZIONCITY_logo.png" alt="ZION.CITY Logo" class="w-8 h-8 object-contain drop-shadow-[0_0_8px_rgba(139,92,246,0.8)]">
                     <div>
                         <h2 class="font-orbitron font-bold text-xs text-white">ZION.CITY MENU</h2>
                         <span class="text-[9px] text-cyan-400 font-mono">ПОЛНЫЙ ОТЧЕТ: 26 ГЛАВ</span>
                     </div>
                 </div>
-
-                <!-- Список глав 1 - 26 -->
-                <nav class="space-y-1.5 text-xs" id="chapters-nav">
-                </nav>
+                <button onclick="returnToHero()" class="px-3.5 py-2 rounded-lg bg-cyan-950/60 border border-cyan-500/40 text-cyan-400 text-xs font-mono uppercase">
+                    ▲ На главную
+                </button>
             </div>
 
-            <div class="mt-6 pt-3 border-t border-gray-800 text-[11px] text-gray-500 font-mono flex justify-between items-center bg-[#070c1e] sticky bottom-0 py-2">
+            <div id="mobile-chapters-accordion" class="space-y-3 pb-12"></div>
+
+            <div class="mt-auto pt-6 pb-4 border-t border-gray-800 text-[11px] text-gray-500 font-mono flex justify-between items-center">
                 <span>Alexandr Kharchenko</span>
-                <button onclick="returnToHero()" class="text-cyan-400 hover:underline">▲ Главная</button>
+                <button onclick="returnToHero()" class="text-cyan-400 hover:underline">▲ На главную</button>
             </div>
-        </aside>
+        </div>
 
-        <!-- Основная область с адаптированной шириной и отступами -->
-        <main id="main-content-area" class="flex-1 p-4 sm:p-8 lg:p-12 overflow-y-auto w-full h-screen">
-            <div class="hud-card p-6 sm:p-12 w-full max-w-none mx-auto shadow-2xl">
-                <div id="chapter-content" class="space-y-6 text-gray-300 leading-relaxed text-base sm:text-lg">
-                </div>
-            </div>
-        </main>
     </div>
 
     <script>
@@ -162,88 +219,134 @@
                 title: "ГЛАВА 1: EXECUTIVE SUMMARY (ИСПОЛНИТЕЛЬНОЕ РЕЗЮМЕ)",
                 text: `
                     <span class="text-[11px] font-mono text-cyan-400 bg-cyan-950/80 px-3 py-1 rounded border border-cyan-800 uppercase">Глава 1</span>
-                    <h2 class="text-2xl sm:text-3xl font-orbitron font-bold text-white mt-3 mb-4">Executive Summary (Исполнительное резюме)</h2>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">1.1. Ключевой тезис и миссия проекта</h3>
+                    <h2 class="text-xl sm:text-3xl font-orbitron font-bold text-white mt-3 mb-4">Executive Summary (Исполнительное резюме)</h2>
+                    <h3 class="text-lg sm:text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">1.1. Ключевой тезис и миссия проекта</h3>
                     <p>Современный цифровой мир, построенный на парадигме Web 2.0, исчерпал себя. Транснациональные монополии превратили персональные данные людей в сырье для таргетированной рекламы и манипуляций, а мировая финансовая система стала инструментом санкционного давления и тотального контроля.</p>
-                    <p>В нашем проекте ZION.CITY мы доказываем обратное: технологии могут и должны служить человеку. Мы создали архитектуру, где пользователь является единственным суверенным владельцем своих данных, а искусственный интеллект выступает не инструментом слежки, а персональным защитником и помощником, работающим локально на собственном оборудовании владельца.</p>
-                    <p>Наша цель — избавить человека от информационного шума сотен разрозненных приложений, вернуть ему абсолютное право владения временем и построить справедливую народную экономику для стран БРИКС+, ЕАЭС и ШОС.</p>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">1.2. Текущий статус реализации (По состоянию на октябрь 2026 год)</h3>
-                    <ul class="list-disc pl-5 space-y-2">
-                        <li><strong>Production/Staging:</strong> Развернута базовая веб-платформа (zioncity.app), объединяющая восемь функциональных модулей на базе когнитивной архитектуры (Теория глобального рабочего пространства). Запущен локальный ИИ-агент ЭРИК, отлажена работа клиентских узлов.</li>
-                        <li><strong>Институциональный фундамент:</strong> Заключено официальное пятилетнее Соглашение (май 2026 г.) между Правительством Херсонской области (Губернатор В.В. Сальдо), АО «Корпорация инновационной экономики Херсонской области» (КРЭХО) и Консорциумом «ZION.CITY» на создание Цифрового финансового центра (ЦФЦ) в рамках Свободной Экономической Зоны (СЭЗ).</li>
-                        <li><strong>Следующий этап:</strong> Запуск полноценного обращения двухуровневой финансовой системы ALTYN TOKEN + ALTYN COIN и активация DFA Маркетплейса на базе Суверенного Реестра ALTYN (CPA).</li>
-                    </ul>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">1.3. Архитектурное резюме (Пять суверенных уровней)</h3>
-                    <p>Инфраструктура платформы спроектирована по принципу независимости слоев, исключающему единые точки отказа (SPOF):</p>
-                    <ol class="list-decimal pl-5 space-y-2">
-                        <li><strong>Уровень 0 (Оборудование):</strong> Пользовательские узлы D.I.O.S. (ПК, Apple Mac Mini / Mac Studio с чипами М4/М5), смартфоны и автономные LoRa-ретрансляторы на солнечных батареях.</li>
-                        <li><strong>Уровень 1 (Транспорт):</strong> Транспортно-агностичная сеть Zion.Mesh на базе протокола Reticulum и радиомодулей LoRa, обеспечивающая устойчивую связь со скоростью от 500 бит/с даже при полном отключении глобального интернета.</li>
-                        <li><strong>Уровень 2 (Финансы):</strong> Суверенный Реестр ALTYN с двойной системой активов, консенсусом DPOS+A и криптографической верификацией транзакций за 2-5 секунд.</li>
-                        <li><strong>Уровень 3 (Приложения):</strong> Платформа ZION.CITY с восемью когнитивными модулями и персональным ИИ-агентом ERIC.</li>
-                        <li><strong>Уровень 4-5 (Институциональный и правовой мандат):</strong> Контур государственного мандата, лицензированный оператор АО «КРЭХО» и интеграция с ведущими финансовыми институтами.</li>
-                    </ol>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">1.4. Сильные стороны и критические вызовы (Red-Flag Limitations)</h3>
-                    <p><strong>Сильные стороны:</strong> Абсолютная устойчивость к санкциям и отключению SWIFT за счет Mesh-архитектуры; оцифрованная порядочность («цифровое сарафанное радио» вместо платной спам-рекламы); беспроцентное финансирование реального сектора за счет транзакционных потоков; товарное обеспечение Алтына критическими ресурсами БРИКС+.</p>
-                    <p><strong>Критические вызовы:</strong> Масштабирование физической радиочастотной инфраструктуры Zion.Mesh в условиях плотной городской застройки; юридическая гармонизация суверенных реестров с меняющимся национальным законодательством стран-участниц ЕАЭС и БРИКС+.</p>
+                    <p class="mt-3">В нашем проекте ZION.CITY мы доказываем обратное: технологии могут и должны служить человеку. Мы создали архитектуру, где пользователь является единственным суверенным владельцем своих данных, а искусственный интеллект выступает не инструментом слежки, а персональным защитником и помощником, работающим локально на собственном оборудовании владельца.</p>
                 `
             },
             2: {
                 title: "ГЛАВА 2: ORIGIN & PHILOSOPHY OF ZION.CITY (ПРОИСХОЖДЕНИЕ И ФИЛОСОФИЯ)",
                 text: `
                     <span class="text-[11px] font-mono text-cyan-400 bg-cyan-950/80 px-3 py-1 rounded border border-cyan-800 uppercase">Глава 2</span>
-                    <h2 class="text-2xl sm:text-3xl font-orbitron font-bold text-white mt-3 mb-4">Происхождение и Философия ZION.CITY</h2>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">2.1. Цивилизационный тупик Web 2.0 и распад институтов доверия</h3>
+                    <h2 class="text-xl sm:text-3xl font-orbitron font-bold text-white mt-3 mb-4">Происхождение и Философия ZION.CITY</h2>
+                    <h3 class="text-lg sm:text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">2.1. Цивилизационный тупик Web 2.0 и распад институтов доверия</h3>
                     <p>Современный цифровой мир, построенный на парадигме Web 2.0, зашел в глубокий цивилизационный тупик. Технологическая инфраструктура, которая изначально создавалась как инструмент человеческого освобождения, свободного обмена знаниями и децентрализации, под давлением корпоративного капитала трансформировалась в глобальную систему цифрового феодализма.</p>
-                    <p>В основе этой трансформации лежит капитализм тотального слежения (Surveillance Capitalism). Транснациональные ИТ-монополии (Google, Meta, Amazon и др.) превратили внимание, привычки, эмпатию и личные связи человека в сырье для работы алгоритмов.</p>
-                    <p>Фундаментальные пороки существующей цифровой среды проявляются на всех уровнях:</p>
-                    <ol class="list-decimal pl-5 space-y-2">
-                        <li><strong>Когнитивное истощение и разрушение психики:</strong> Архитектура социальных сетей Web 2.0 намеренно спроектирована вокруг механизмов дофаминового подкрепления и алгоритмических лент, максимизирующих вовлеченность через гнев, тревожность и социальное сравнение. Человек превращен из субъекта творчества (Homo Sapiens Creator) в манипулируемый объект потребления (Homo Servilis).</li>
-                        <li><strong>Узурпация персональных данных:</strong> В Web 2.0 пользователь не является владельцем своего цифрового следа. Его документы, семейные фотографии, финансовые транзакции и переписка хранятся на чужих серверах, где подвергаются непрерывному майнингу и могут быть заблокированы, удалены или переданы третьим лицам без согласия владельца.</li>
-                        <li><strong>Паразитическая экономика издержек:</strong> Модели традиционного интернет-бизнеса высасывают из реального сектора до 20-30% выручки в виде рекламных аукционов и эквайринговых комиссий. Предприниматель вынужден платить корпорациям за право показать свой продукт собственным клиентам, а расходы в конечном счете перекладываются на плечи потребителя.</li>
-                        <li><strong>Уязвимость перед геополитическим шантажом:</strong> Банковская система «золотого миллиарда», основанная на монополии долларов США и подконтрольная сети SWIFT, превратилась в оружие санкционного давления и блокировки суверенных активов. Трансграничные расчеты для малого и среднего бизнеса стали непредсказуемыми, дорогими и бюрократически перегруженными.</li>
-                    </ol>
-                    <p>В ZION.CITY мы отказались от косметического ремонта этой сломанной системы. Мы создали принципиально новую операционную систему цифрового общества, возвращающую человечеству его утраченный суверенитет.</p>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">2.2. Философский базис: Человек как центр, а не продукт</h3>
-                    <p>В основе философии ZION.CITY лежит этический выбор: технология — это не судьба, а осознанное решение. В каждую строчку кода нашей платформы мы заложили фундаментальный гуманистический принцип: «Успех — это быть счастливым, а успех в деле — создавать вещи, которые делают других людей счастливыми».</p>
-                    <p>Мы утверждаем, что главной и единственной невосполнимой ценностью во Вселенной является время и душевное спокойствие человека. Человек рожден для творчества, любви, построения сильной семьи и созидательного труда, а не для того, чтобы тратить жизнь на пролистывание спам-рекламы, преодоление бюрократии и кормление банковских посредников.</p>
-                    <p>В отличие от западной триады «Свобода, Равенство, Братство», которая в цифровую эпоху превратилась в иллюзию и либертарианские «законы джунглей», ZION.CITY опирается на математически верифицируемые столпы Научно-Интеллектуальных Информационных Моделей Безопасности (НИИМБ):</p>
-                    <ul class="list-disc pl-5 space-y-2">
-                        <li><strong>Творчество (Creativity):</strong> Искусственный интеллект должен забрать на себя 100% рутины, высвобождая интеллект человека для науки, искусства и стратегического мышления.</li>
-                        <li><strong>Гармония (Harmony):</strong> Взаимодействия внутри системы проектируются по принципу минимального когнитивного трения (Zero Cognitive Load), обеспечивая баланс между личными интересами человека и благополучием общества.</li>
-                        <li><strong>Любовь (Love):</strong> Цифровые инструменты служат укреплению реальных связей в семье, среди друзей и соседей, а не заменяют их виртуальными эрзацами.</li>
-                    </ul>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">2.3. Принцип Стива Джобса: От пользовательского опыта к технологии</h3>
-                    <p>Мы всегда требовали от нашей инженерной команды неукоснительного следования принципу Стива Джобса: «Нужно начинать с пользовательского опыта и идти от него к технологиям, а не наоборот». Сложные распределенные реестры, криптографические алгоритмы Ed25519, ячеистые радиосети LoRa и локальные языковые модели — всё это должно быть абсолютно незаметно для человека.</p>
-                    <p>Пользователь не должен знать, что такое «сид-фраза», «газ» или «хэш блока». Он открывает ZION.CITY и получает один интуитивно понятный, эстетически совершенный интерфейс. Мы отказались от концепции «криптокошельков» и создали супер-приложение новой парадигмы, где управление капиталом, коммуникация с близкими, работа с документами и покупка товаров происходят в один клик в рамках единой когнитивной концепции.</p>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">2.4. «Оцифрованная порядочность» и «Плановая экономика 2.0 (Just-in-Time)»</h3>
-                    <p>Центральным элементом нашей деловой философии является концепция «Оцифрованной порядочности» (Agentic AI / Digital Integrity). В системе Web 2.0 побеждает тот, кто больше заплатил Google или Meta за рекламные клики. В ZION.CITY традиционная платная реклама отсутствует как класс. Вместо нее работает персональный ИИ-агент ЭРИК, который реализует алгоритм «цифрового сарафанного радио»:</p>
-                    <ol class="list-decimal pl-5 space-y-2">
-                        <li><strong>Анализ повторяющихся транзакций (Repeat Business):</strong> Блокчейн фиксирует графики реальных покупок. Если 65% клиентов возвращаются к автослесарю или пекарю снова, система автоматически поднимает рейтинг этого бизнеса.</li>
-                        <li><strong>Социальный опрос ботов:</strong> Когда вы ищете специалиста, ваш агент ЭРИК напрямую опрашивает локальных агентов ваших друзей и соседей. Трафик и клиенты идут к порядочному предпринимателю совершенно бесплатно.</li>
-                        <li><strong>Исключение недобросовестности:</strong> Быть нечестным становится экономически невыгодно — один обман моментально понижает цифровой рейтинг в локальном сообществе.</li>
-                    </ol>
-                    <p>Параллельно с этим мы разворачиваем модель «Плановой экономики 2.0 (Just-in-Time)». В отличие от советской системы, плавной производство на годы вперед (Ahead-of-Time) и порождавшей дефицит, наша модель работает в режиме реального времени на базе Big Data и ИИ. Она точно рассчитывает потребности каждого района, направляет беспроцентные кредиты на создание нужных объектов (пекарен, агрокомплексов, мастерских) и обеспечивает автоматический эмиссионный баланс без инфляции.</p>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">2.5. Цивилизационный выбор и Народная экономика</h3>
-                    <p>ZION.CITY — это наш ответ на вызовы времени и акт цивилизационного самоопределения стран БРИКС+, ЕАЭС и ШОС. Мы создаем суверенную технологическую и финансовую экосистему, которая выводит граждан и бизнес из-под диктата транснациональных корпораций и возвращает людям фундаментальные права: право на собственную память, право на приватность и право на результаты своего труда.</p>
+                    <p class="mt-3">В основе этой трансформации лежит капитализм тотального слежения (Surveillance Capitalism). Транснациональные ИТ-монополии (Google, Meta, Amazon и др.) превратили внимание, привычки, эмпатию и личные связи человека в сырье для работы алгоритмов.</p>
+
+                    <!-- СХЕМА 1: МОДЕЛЬ ЭКСПЛУАТАЦИИ WEB 2.0 -->
+                    <div class="doc-schema font-mono-tech text-xs sm:text-sm">
+                        <div class="text-center text-cyan-400 font-bold tracking-widest pb-3 mb-3 border-b border-cyan-500/20 uppercase">МОДЕЛЬ ЭКСПЛУАТАЦИИ WEB 2.0</div>
+                        <div class="flex flex-col md:flex-row justify-between items-center text-center gap-2 py-2">
+                            <div class="bg-cyan-950/40 p-2 rounded border border-cyan-500/20 w-full md:w-1/5">Человек<br>(Продукт)</div>
+                            <div class="text-cyan-400">⟶</div>
+                            <div class="bg-cyan-950/40 p-2 rounded border border-cyan-500/20 w-full md:w-1/4">Продажа внимания и метаданных<br>(90% дохода)</div>
+                            <div class="text-cyan-400">⟶</div>
+                            <div class="bg-cyan-950/40 p-2 rounded border border-cyan-500/20 w-full md:w-1/4">Централизованные облачные сервера<br>(AWS / Azure)</div>
+                            <div class="text-cyan-400">⟶</div>
+                            <div class="bg-cyan-950/40 p-2 rounded border border-cyan-500/20 w-full md:w-1/5">Алгоритмы гнева<br>+ Спам</div>
+                        </div>
+                        <div class="text-center text-pink-400 my-3 font-bold">▼ ПЕРЕХОД К НОВОЙ ПАРАДИГМЕ ▼</div>
+                        <div class="text-center text-emerald-400 font-bold tracking-widest pb-3 mb-3 border-b border-emerald-500/20 uppercase">ГАРМОНИЧНЫЙ ВЕБ // WEB 4.0</div>
+                        <div class="flex flex-col md:flex-row justify-between items-center text-center gap-2 py-2">
+                            <div class="bg-emerald-950/40 p-2 rounded border border-emerald-500/20 w-full md:w-1/5">Человек<br>(Совладелец)</div>
+                            <div class="text-emerald-400">⟶</div>
+                            <div class="bg-emerald-950/40 p-2 rounded border border-emerald-500/20 w-full md:w-1/4">Локальные узлы (M4/M5 Edge)<br>(Zero Cloud)</div>
+                            <div class="text-emerald-400">⟶</div>
+                            <div class="bg-emerald-950/90 p-2 rounded border border-emerald-500/40 w-full md:w-1/4 text-white font-bold">Суверенный ИИ<br>ERIC / ADAM</div>
+                            <div class="text-emerald-400">⟶</div>
+                            <div class="bg-emerald-950/40 p-2 rounded border border-emerald-500/20 w-full md:w-1/5">Оцифрованная порядочность</div>
+                        </div>
+                    </div>
+
+                    <h3 class="text-lg sm:text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">2.2. Философский базис: Человек как центр, а не продукт</h3>
+                    <p>В основе философии ZION.CITY лежит этический выбор: технология — это не судьба, а осознанное решение. В каждую строчку кода нашей платформы мы заложили фундаментальный гуманистический принцип: <em>«Успех — это быть счастливым, а успех в деле — создавать вещи, которые делают других людей счастливыми»</em>.</p>
+
+                    <!-- СХЕМА 2: ТРИАДА СУВЕРЕННОГО ОБЩЕСТВА -->
+                    <div class="doc-schema font-mono-tech text-xs sm:text-sm">
+                        <div class="text-center text-cyan-400 font-bold tracking-widest pb-2 mb-4 border-b border-cyan-500/20 uppercase">ТРИАДА СУВЕРЕННОГО ЦИФРОВОГО ОБЩЕСТВА</div>
+                        <div class="flex flex-col items-center py-4 space-y-4">
+                            <div class="bg-cyan-950/60 px-6 py-3 rounded-lg border border-cyan-500/40 text-center font-bold text-cyan-200">
+                                ТВОРЧЕСТВО<br><span class="text-xs text-gray-400 font-normal">(Self-Expression)</span>
+                            </div>
+                            <div class="text-pink-400 text-lg font-bold">▲</div>
+                            <div class="flex justify-between w-full max-w-md gap-4">
+                                <div class="bg-cyan-950/40 px-4 py-2 rounded border border-cyan-500/20 text-center flex-1">
+                                    ГАРМОНИЯ<br><span class="text-[10px] text-gray-400">(System Balance)</span>
+                                </div>
+                                <div class="bg-cyan-950/40 px-4 py-2 rounded border border-cyan-500/20 text-center flex-1">
+                                    ЛЮБОВЬ<br><span class="text-[10px] text-gray-400">(Family & Trust)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 class="text-lg sm:text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">2.3. Принцип Стива Джобса: От пользовательского опыта к технологии</h3>
+                    <p>Мы всегда требовали от нашей инженерной команды неукоснительного следования принципу Стива Джобса: <em>«Нужно начинать с пользовательского опыта и идти от него к технологиям, а не наоборот»</em>.</p>
+
+                    <!-- СХЕМА 3: ПРИНЦИП СТИВА ДЖОБСА -->
+                    <div class="doc-schema font-mono-tech text-xs sm:text-sm">
+                        <div class="text-center text-cyan-400 font-bold tracking-widest pb-3 mb-3 border-b border-cyan-500/20 uppercase">ПРИНЦИП СТИВА ДЖОБСА</div>
+                        <div class="space-y-3">
+                            <div class="bg-cyan-950/50 p-3 rounded border border-cyan-500/30">
+                                <div class="text-cyan-300 font-bold mb-1">ПОЛЬЗОВАТЕЛЬСКИЙ ОПЫТ (USER EXPERIENCE)</div>
+                                <ul class="list-disc pl-5 text-gray-300 space-y-1 text-xs">
+                                    <li>Один логин и сквозной суверенный профиль</li>
+                                    <li>Единое 3D/Unity рабочее пространство (8 модулей)</li>
+                                    <li>Отсутствие рекламы, капч, спама и всплывающих окон</li>
+                                </ul>
+                            </div>
+                            <div class="text-center text-cyan-400 font-bold">▼ С К Р Ы Т А Я &nbsp; И Н Ж Е Н Е Р Н А Я &nbsp; И Н Ф Р А С Т Р У К Т У Р А ▼</div>
+                            <div class="bg-slate-900/80 p-3 rounded border border-purple-500/30">
+                                <div class="text-purple-300 font-bold mb-1">ИНФРАСТРУКТУРА (UNDER THE HOOD)</div>
+                                <ul class="list-disc pl-5 text-gray-300 space-y-1 text-xs">
+                                    <li>Локальные вычисления на Apple Silicon (M4/M5 Edge AI)</li>
+                                    <li>Транспортная сеть Zion.Mesh (LoRa + Reticulum P2P)</li>
+                                    <li>Суверенный Реестр ALTYN и двухуровневая токеномика</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 class="text-lg sm:text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">2.4. «Оцифрованная порядочность» и «Плановая экономика 2.0 (Just-in-Time)»</h3>
+                    <p>Центральным элементом нашей деловой философии является концепция «Оцифрованной порядочности» (Agentic AI / Digital Integrity).</p>
+
+                    <!-- СХЕМА 4: СХЕМА ОЦИФРОВАННОЙ ПОРЯДОЧНОСТИ -->
+                    <div class="doc-schema font-mono-tech text-xs sm:text-sm">
+                        <div class="text-center text-cyan-400 font-bold tracking-widest pb-3 mb-3 border-b border-cyan-500/20 uppercase">СХЕМА «ОЦИФРОВАННОЙ ПОРЯДОЧНОСТИ»</div>
+                        <div class="flex flex-col md:flex-row justify-between items-center text-center gap-3 py-3">
+                            <div class="bg-cyan-950/40 p-3 rounded border border-cyan-500/20 w-full md:w-1/3">
+                                Пользователь<br><span class="text-xs text-gray-400">(Ищет сервис)</span>
+                            </div>
+                            <div class="text-cyan-400">⟶</div>
+                            <div class="bg-cyan-950/40 p-3 rounded border border-cyan-500/20 w-full md:w-1/3">
+                                ИИ ЭРИК<br><span class="text-xs text-gray-400">(Agent)</span>
+                            </div>
+                            <div class="text-cyan-400">⟶</div>
+                            <div class="bg-cyan-950/40 p-3 rounded border border-cyan-500/20 w-full md:w-1/3">
+                                Анализ друзей и соседей<br><span class="text-xs text-gray-400">(Repeat rate > 65%)</span>
+                            </div>
+                        </div>
+                        <div class="text-center text-cyan-400 my-2 font-bold">▼</div>
+                        <div class="bg-emerald-950/50 p-3 rounded border border-emerald-500/40 text-center text-emerald-300 font-bold">
+                            ЛОКАЛЬНЫЙ ПОРЯДОЧНЫЙ БИЗНЕС<br><span class="text-xs text-gray-300 font-normal">(0% затрат на маркетинг)</span>
+                        </div>
+                    </div>
                 `
             },
             3: {
                 title: "ГЛАВА 3: THE WEB 4.0 PARADIGM (ПАРАДИГМА WEB 4.0)",
                 text: `
                     <span class="text-[11px] font-mono text-cyan-400 bg-cyan-950/80 px-3 py-1 rounded border border-cyan-800 uppercase">Глава 3</span>
-                    <h2 class="text-2xl sm:text-3xl font-orbitron font-bold text-white mt-3 mb-4">Парадигма Web 4.0</h2>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">3.1. Формальное определение Web 4.0 в концепции ZION.CITY</h3>
-                    <p>Web 4.0 — это не абстрактный маркетинговый термин и не просто очередное обновление протоколов блокчейна. В нашей архитектуре Web 4.0 определяется как эпоха симбиоза человека и суверенного искусственного интеллекта, опирающаяся на аппаратные Edge-вычисления и децентрализованные сети.</p>
-                    <p>Если проследить эволюцию всемирной паутины, каждый этап определялся характером отношения пользователя к данным и цифровой агентности:</p>
-                    
+                    <h2 class="text-xl sm:text-3xl font-orbitron font-bold text-white mt-3 mb-4">Парадигма Web 4.0</h2>
+                    <h3 class="text-lg sm:text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">3.1. Формальное определение Web 4.0 в концепции ZION.CITY</h3>
+                    <p>Web 4.0 — это эпоха симбиоза человека и суверенного искусственного интеллекта, опирающаяся на аппаратные Edge-вычисления и децентрализованные сети.</p>
                     <table class="content-table">
                         <thead>
                             <tr>
                                 <th>Поколение</th>
                                 <th>Период</th>
                                 <th>Роль пользователя</th>
-                                <th>Определяющее свойство</th>
-                                <th>Технологический базис</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -251,723 +354,419 @@
                                 <td><strong>Web 1.0</strong></td>
                                 <td>1991–2004</td>
                                 <td>Пассивный потребитель</td>
-                                <td>Публикация статического контента в масштабе</td>
-                                <td>Статический HTML, Mosaic</td>
                             </tr>
                             <tr>
                                 <td><strong>Web 2.0</strong></td>
                                 <td>2004–2014</td>
-                                <td>Активный создатель, отдававший данные платформам</td>
-                                <td>Пользовательский контент, сетевые эффекты</td>
-                                <td>Facebook, YouTube, Wikipedia, облака AWS/Azure</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Web 3.0</strong></td>
-                                <td>2014–2024</td>
-                                <td>Владелец, суверенная идентичность</td>
-                                <td>Криптографическое владение, безразрешительный переток ценности</td>
-                                <td>Ethereum, DeFi, NFT, суверенный ID</td>
+                                <td>Активный создатель</td>
                             </tr>
                             <tr>
                                 <td><strong>Web 4.0</strong></td>
                                 <td>2024 — н.в.</td>
-                                <td>Принципал (Делегированная агентность)</td>
-                                <td>ИИ-опосредованное исполнение: агент действует от имени человека</td>
-                                <td>ZION.CITY / ЭРИК (референтная реализация)</td>
+                                <td>Принципал (ИИ-опосредованное исполнение)</td>
                             </tr>
                         </tbody>
                     </table>
-
-                    <p>В Web 4.0 происходит фундаментальный сдвиг: первичным интерфейсом для взаимодействия с цифровыми сервисами становится не человек, кликающий по вкладкам, а его персональный ИИ-агент (ЭРИК), действующий на основе четко заданных интенций, постоянной памяти и жестких криптографических гарантий.</p>
-                    
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">3.2. Архитектурный переход: От пользователя-оператора к пользователю-принципалу</h3>
-                    <p>В поколениях с Web 1.0 по Web 3.0 человек был оператором. Он сам искал нужный сайт, открывал вкладки, заполнял формы, переводил средства и вручную сопоставлял разрозненную информацию. Это порождало колоссальную когнитивную перегрузку и делало человека уязвимым перед манипуляциями интерфейсов (Dark Patterns).</p>
-                    <p>В ZION.CITY мы спроектировали платформу с первого принципа для парадигмы Web 4.0:</p>
-                    <ul class="list-disc pl-5 space-y-2">
-                        <li><strong>Агентное исполнение (Agent-Mediated Execution):</strong> Пользователь формулирует цель или потребность (например, найти надежного подрядчика, заказать сырье или реструктурировать финансовый актив), а персональный агент ЭРИК самостоятельно выполняет задачу в фоновом режиме через машиночитаемые интерфейсы.</li>
-                        <li><strong>Единое Global Workspace:</strong> Восемь модулей нашей системы не являются отдельными приложениями для ручного кликания — это структурированная среда обитания для ИИ, где данные связаны единой схемой (Unified Schema), исключая избыточные переключения контекста.</li>
-                        <li><strong>Протокол делегирования доверия (Confirmation Gates):</strong> Агент действует автономно, но критические точки (финансовые транзакции, передача юридических прав) защищены неизменяемыми confirmation gates, где человек подтверждает результат одним касанием.</li>
-                    </ul>
-
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">3.3. Синтез Proto-AGI и Web 4.0 в единой платформе</h3>
-                    <p>Наша архитектура доказывает, что общая персональная искусственная когниция (Proto-AGI) может быть эффективно реализована уже сегодня — не за счет усложнения отдельной модели, а за счет правильного проектирования среды:</p>
-                    <ol class="list-decimal pl-5 space-y-2">
-                        <li><strong>Единая модель мира (Unified World Model):</strong> Централизованный профиль интегрирует здоровье, финансы, социальные связи, логистику и документы в единую сущность.</li>
-                        <li><strong>Управляемая память (mind-mem MCP):</strong> ИИ сохраняет когерентность и контекст работы по сессиям, не теряя историю взаимодействия.</li>
-                        <li><strong>Агентная координация (ANRC Protocol):</strong> Агенты общаются между собой напрямую (Agent-to-Agent Commerce), оценивая репутацию бизнеса не по рекламным бюджетам, а по реальным поведенческим метрикам (процент повторных транзакций).</li>
-                    </ol>
-                    <p>Таким образом, Web 4.0 в исполнении ZION.CITY превращает технологию из инструмента извлечения прибыли в надежную экосистему человеческого процветания.</p>
                 `
             },
             4: {
                 title: "ГЛАВА 4: ZION.CITY ECOSYSTEM ARCHITECTURE (АРХИТЕКТУРА ЭКОСИСТЕМЫ)",
                 text: `
                     <span class="text-[11px] font-mono text-cyan-400 bg-cyan-950/80 px-3 py-1 rounded border border-cyan-800 uppercase">Глава 4</span>
-                    <h2 class="text-2xl sm:text-3xl font-orbitron font-bold text-white mt-3 mb-4">Архитектура экосистемы ZION.CITY (ЦПКМ)</h2>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">4.1. Концепция ЦПКМ: «Централизованный Профиль, Контекстные Модули»</h3>
-                    <p>Наша платформа спроектирована по принципам когнитивной науки — в частности, опираясь на Теорию глобального рабочего пространства (Global Workspace Theory), разработанную в нейронауках Б. Баарсом.</p>
-                    <p>В устаревшей парадигме Web 2.0 пользователь сталкивается с колоссальной фрагментацией: каждое приложение (мессенджер, банк, госуслуги, соцсеть) требует отдельной регистрации, отдельного логина, хранения разрозненных баз данных и постоянного переключения между вкладками. Это порождает цифровую усталость и когнитивную перегрузку.</p>
-                    <p>Мы в ZION.CITY реализовали принципиально иную архитектурную модель ЦПКМ (Централизованный Профиль, Контекстные Модули):</p>
-                    <ul class="list-disc pl-5 space-y-2">
-                        <li><strong>Единый источник истины (Centralized Profile):</strong> Пользователь проходит верификацию и создает свой суверенный профиль ровно один раз. Этот центральный узел идентичности хранит зашифрованные данные и выступает аналогом «сознания» в глобальном рабочем пространстве.</li>
-                        <li><strong>Контекстные модули:</strong> Восемь функциональных подсистем экосистемы действуют как специализированные зоны мозга. Данные не дублируются — они мгновенно и безопасно подтягиваются в нужный модуль в зависимости от текущей задачи пользователя.</li>
-                    </ul>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">4.2. Карта экосистемы: 8 фундаментальных когнитивных модулей</h3>
-                    <p>Мы намеренно ограничили архитектуру ровно восемью модулями, покрывающими 100% потребностей современного человека и бизнеса, полностью исключив информационный шум и рекламу:</p>
-                    <ol class="list-decimal pl-5 space-y-2">
-                        <li><strong>Семья (Эмоциональное ядро / Лимбическая система):</strong> Закрытое пространство для близких, защищенное от коммерциализации. Включает общий семейный календарь, защищенный чат и средства безопасности детей.</li>
-                        <li><strong>Новости (Информационная ориентация):</strong> Ленточные потоки без манипулятивных алгоритмов гнева и вовлечения. Фокус на достоверности, верификации источников и фильтрации фейков.</li>
-                        <li><strong>Журнал (Память и идентичность):</strong> Зашифрованное блокчейн-хранилище документов (дипломов, медицинских справок, выписок), которые можно мгновенно и безопасно предоставлять ведомствам без бумажной волокиты.</li>
-                        <li><strong>Сервисы (Удовлетворение потребностей):</strong> Поиск бытовых и профессиональных специалистов (мастеров, врачей, юристов), работающий на основе цифрового «сарафанного радио» (ANRC).</li>
-                        <li><strong>Организации (Работа и созидание):</strong> Бизнес-контур для малого и среднего предпринимательства (МСП). Цифровые двойники предприятий со встроенными CRM-инструментами, программами лояльности и прямой приемкой платежей.</li>
-                        <li><strong>Маркетплейс (Обмен ресурсами):</strong> Площадка для торговли товарами, недвижимостью и автомобилями, а также интеграция с инфраструктурой умных устройств (IoT). В версии 2.0 модуль расширен до ZION.CITY DFA Marketplace для работы с цифровыми финансовыми активами.</li>
-                        <li><strong>Финансы (Средство обмена и банкинг):</strong> Управление кошельками ALTYN COIN и ALTYN TOKEN, инвестиционными портфелями ЦФА, пенсионными накоплениями и беспроцентным кредитованием при поддержке ИИ-агента ADAM.</li>
-                        <li><strong>События / Мероприятия (Координация):</strong> Планирование встреч, конференций, общественных инициатив и волонтерских проектов, автоматически синхронизирующееся с семейным календарем и маркетплейсом.</li>
-                    </ol>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">4.3. Межмодульная синергия и динамические потоки данных</h3>
-                    <p>Сила платформы заключается не в отдельных модулях, а в их эмерджентном взаимодействии по четким программным правилам.</p>
-                    <p><strong>Пример интеграции:</strong> Если пользователь в модуле «Семья» создает событие «День рождения сына, 15 марта», система автоматически добавляет его в календарь модуля «События», модуль «Маркетплейс» предлагает варианты подарков, модуль «Сервисы» подбирает проверенных аниматоров по рекомендациям соседей, а модуль «Финансы» рассчитывает праздничный бюджет.</p>
-                    <p><strong>Институциональная прочность:</strong> Взаимодействие всех модулей работает на базе единого криптографического контура, обеспечивая полную прозрачность транзакций без утечек персональных данных.</p>
+                    <h2 class="text-xl sm:text-3xl font-orbitron font-bold text-white mt-3 mb-4">Архитектура экосистемы ZION.CITY (ЦПКМ)</h2>
+                    <h3 class="text-lg sm:text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">4.1. Концепция ЦПКМ: «Централизованный Профиль, Контекстные Модули»</h3>
+                    <p>Наша платформа спроектирована по принципам когнитивной науки — в частности, опираясь на Теорию глобального рабочего пространства (Global Workspace Theory).</p>
+                    
+                    <!-- СХЕМА 5: ЦПКМ И 8 МОДУЛЕЙ -->
+                    <div class="doc-schema font-mono-tech text-xs sm:text-sm">
+                        <div class="text-center text-cyan-400 font-bold tracking-widest pb-3 mb-3 border-b border-cyan-500/20 uppercase">ЦЕНТРАЛИЗОВАННЫЙ ПРОФИЛЬ (GLOBAL WORKSPACE CORE)</div>
+                        <div class="text-center bg-cyan-950/60 p-3 rounded border border-cyan-500/40 text-white font-bold mb-4">
+                            CENTRAL USER PROFILE & COGNITIVE STATE
+                        </div>
+                        <div class="text-center text-cyan-400 font-bold mb-3">▼ РАСПРЕДЕЛЕНИЕ ДАННЫХ ПО КОНТЕКСТНЫМ МОДУЛЯМ ▼</div>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-xs">
+                            <div class="bg-cyan-950/40 p-2 rounded border border-cyan-500/20 text-cyan-200">1. СЕМЬЯ</div>
+                            <div class="bg-cyan-950/40 p-2 rounded border border-cyan-500/20 text-cyan-200">2. НОВОСТИ</div>
+                            <div class="bg-cyan-950/40 p-2 rounded border border-cyan-500/20 text-cyan-200">3. ЖУРНАЛ</div>
+                            <div class="bg-cyan-950/40 p-2 rounded border border-cyan-500/20 text-cyan-200">4. СЕРВИСЫ</div>
+                            <div class="bg-cyan-950/40 p-2 rounded border border-cyan-500/20 text-cyan-200">5. ОРГАНИЗАЦИИ</div>
+                            <div class="bg-cyan-950/40 p-2 rounded border border-cyan-500/20 text-cyan-200">6. МАРКЕТПЛЕЙС</div>
+                            <div class="bg-cyan-950/40 p-2 rounded border border-cyan-500/20 text-cyan-200">7. ФИНАНСЫ</div>
+                            <div class="bg-cyan-950/40 p-2 rounded border border-cyan-500/20 text-cyan-200">8. СОБЫТИЯ</div>
+                        </div>
+                    </div>
                 `
             },
             5: {
                 title: "ГЛАВА 5: ALTYN & ALTYN CPA REGISTRY (СУВЕРЕННЫЙ РЕЕСТР АЛТЫН И КРЭХО)",
                 text: `
                     <span class="text-[11px] font-mono text-cyan-400 bg-cyan-950/80 px-3 py-1 rounded border border-cyan-800 uppercase">Глава 5</span>
-                    <h2 class="text-2xl sm:text-3xl font-orbitron font-bold text-white mt-3 mb-4">Суверенный Реестр ALTYN и правовой контур КРЭХО</h2>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">5.1. Архитектура Суверенного Реестра ALTYN (CPA) и отказ от анонимности</h3>
-                    <p>Классический блокчейн (в его биткоин- или эфириум-подобном исполнении) изначально создавался как инструмент анархии и ухода от любой регуляторики. За полтора десятилетия публичные блокчейны превратились в рассадник спекулятивных пузырей, киберпреступности и инфраструктуру отмывания незаконных доходов, потеряв триллионы долларов пользовательских средств.</p>
-                    <p>Мы в ZION.CITY подошли к вопросу с позиций государственного мышления и инженерного прагматизма. Мы создали Суверенный Реестр Алтын (CPA / ASL — Altyn Sovereign Ledger) — принципиально новую распределенную финансовую инфраструктуру пост-крипто эпохи.</p>
-                    
-                    <table class="content-table">
-                        <thead>
-                            <tr>
-                                <th>Публичный блокчейн</th>
-                                <th>Суверенный Реестр ALTYN (CPA)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Анонимность</td>
-                                <td>Верифицированные узлы (КУС)</td>
-                            </tr>
-                            <tr>
-                                <td>«Код — это закон»</td>
-                                <td>Арбитраж уполномоченного органа</td>
-                            </tr>
-                            <tr>
-                                <td>Уязвимость CPA</td>
-                                <td>Соответствие ФЗ-259 (ЦФА)</td>
-                            </tr>
-                            <tr>
-                                <td>Энергоемкий Proof</td>
-                                <td>Консенсус DPoS+A (3 из 5)</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <h2 class="text-xl sm:text-3xl font-orbitron font-bold text-white mt-3 mb-4">Суверенный Реестр ALTYN и правовой контур КРЭХО</h2>
+                    <h3 class="text-lg sm:text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">5.1. Архитектура Суверенного Реестра ALTYN (CPA) и отказ от анонимности</h3>
+                    <p>Классический блокчейн изначально создавался как инструмент анархии. Мы создали Суверенный Реестр Алтын (CPA / ASL) — принципиально новую распределенную финансовую инфраструктуру.</p>
 
-                    <p>СРА сохраняет фундаментальные и ценные элементы распределенных реестров, но полностью отсекает их системные пороки:</p>
-                    <ol class="list-decimal pl-5 space-y-2">
-                        <li><strong>Криптографические подписи (Сохранено):</strong> Каждая транзакция подписывается персональным закрытым ключом отправителя по стандарту Ed25519, обеспечивая математически доказуемую аутентичность без посредников.</li>
-                        <li><strong>Распределенный реестр (Сохранено):</strong> Полные реплики финансового реестра хранятся на независимых валидирующих узлах, исключая единые точки отказа (SPOF).</li>
-                        <li><strong>Механизм консенсуса (Реформирован — DPoS+A):</strong> Вместо уязвимого публичного майнинга или бездумного Proof of Stake мы внедрили Делегированное Доказательство Доли с Авторитетным Надзором (Delegated Proof-of-Stake with Authoritative Oversight). Валидация транзакций требует согласия минимум трех из пяти выбранных узлов. Лицензированный оператор информационной системы сохраняет за собой право авторитетного надзора для пресечения фрода и исполнения судебных предписаний.</li>
-                        <li><strong>Анонимность (Осознанно отвергнута):</strong> В СРА не существует анонимных участников. Каждый оператор узла проходит жесткую процедуру KYC, размещает залоговый депозит в токенах ALTYN и несет прямую юридическую и административную ответственность за обрабатываемый трафик.</li>
-                    </ol>
+                    <!-- СХЕМА 6: ЭВОЛЮЦИЯ РАСПРЕДЕЛЕННЫХ РЕЕСТРОВ -->
+                    <div class="doc-schema font-mono-tech text-xs sm:text-sm">
+                        <div class="text-center text-cyan-400 font-bold tracking-widest pb-3 mb-3 border-b border-cyan-500/20 uppercase">ЭВОЛЮЦИЯ РАСПРЕДЕЛЕННЫХ РЕЕСТРОВ</div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-slate-900/80 p-3 rounded border border-red-500/30">
+                                <div class="text-red-400 font-bold mb-2">ПУБЛИЧНЫЙ БЛОКЧЕЙН</div>
+                                <ul class="list-disc pl-5 text-gray-300 space-y-1 text-xs">
+                                    <li>Анонимность пользователей</li>
+                                    <li>«Код — это закон» (нет арбитража)</li>
+                                    <li>Высокая уязвимость (мошенничество)</li>
+                                    <li>Энергоемкий Proof of Work/Stake</li>
+                                </ul>
+                            </div>
+                            <div class="bg-cyan-950/60 p-3 rounded border border-cyan-500/40">
+                                <div class="text-cyan-300 font-bold mb-2">СУВЕРЕННЫЙ РЕЕСТР ALTYN (CPA)</div>
+                                <ul class="list-disc pl-5 text-gray-300 space-y-1 text-xs">
+                                    <li>Верифицированные узлы (KYC)</li>
+                                    <li>Арбитраж уполномоченного органа</li>
+                                    <li>Соответствие ФЗ-259 (ЦФА)</li>
+                                    <li>Консенсус DPoS+A (3 из 5)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
 
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">5.2. Товарное обеспечение Just-in-Time и сырьевая биржа БРИКС+</h3>
-                    <p>В отличие от классического «золотого стандарта», предполагающего мертвенное хранение слитков в чужих сейфах, или спекулятивных криптоактивов, ничем не подкрепленных, обеспечение Алтына строится на реальных товарных потоках и экспортном потенциале стран БРИКС+:</p>
-                    <ul class="list-disc pl-5 space-y-2">
-                        <li><strong>Живое товарное покрытие:</strong> Расчетная единица экосистемы привязана к физическому обороту критически важных ресурсов — пшеницы, нефти, газа и металлов, поставляемых из России и стран-партнеров. Поскольку государства глобального Юга и БРИКС+ нуждаются в этих ресурсах, возможность приобретать их за Алтын формирует мощнейший органический спрос.</li>
-                        <li><strong>Интеграция с сырьевой биржей:</strong> Внутри модуля «Маркетплейс» нашей платформы функционирует встроенная сырьевая биржа. Цифровые знаки Алтын конвертируются непосредственно в реальные контракты на поставку зерна, сырья и других ресурсов.</li>
-                        <li><strong>Цифровой контроль логистики:</strong> Сделки на бирже жестко синхронизированы с модулями автоматизированного учета и контроля логистики (включая данные с датчиков автоматического взвешивания продукции на элеваторах и в портах). Каждая транзакция в системе гарантированно обеспечивается перемещением физического груза.</li>
-                    </ul>
+                    <h3 class="text-lg sm:text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">5.4. Кредитные кооперативы и институциональные шлюзы (Сбербанк и ВТБ)</h3>
+                    <p>Для интеграции цифровой платформы в традиционное правовое поле и обеспечения доверия инвесторов мы реализуем гибридную юридическую модель.</p>
 
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">5.3. Пилотный плацдарм: Херсонская СЭЗ и правовой контур КРЭХО</h3>
-                    <p>Практическим фундаментом для развертывания нашей финансовой архитектуры выступает официальный институциональный контур, оформленный в мае 2026 года:</p>
-                    <ul class="list-disc pl-5 space-y-2">
-                        <li><strong>Консорциум развития:</strong> Подписано пятилетнее Соглашение между Правительством Херсонской области (Губернатор В.В. Сальдо), АО «Корпорация инновационной экономики Херсонской области» (КРЭХО) и Консорциумом «ZION.CITY».</li>
-                        <li><strong>Цифровой финансовый центр (ЦФЦ):</strong> Создание ЦФЦ в рамках Свободной Экономической Зоны (СЭЗ) обеспечивает льготные налоговые режимы и упрощенные административные процедуры.</li>
-                        <li><strong>Роль АО «КРЭХО»:</strong> Будучи государственной структурой и официальным оператором информационной системы, КРЭХО выступает держателем лицензий на выпуск Цифровых Финансовых Активов (ЦФА) в соответствии с Федеральным законом № 259-ФЗ.</li>
-                    </ul>
-
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">5.4. Кредитные кооперативы и институциональные шлюзы (Сбербанк и ВТБ)</h3>
-                    <p>Для интеграции цифровой платформы в традиционное правовое поле и обеспечения доверия инвесторов мы реализуем гибридную юридическую модель:</p>
-                    <ol class="list-decimal pl-5 space-y-2">
-                        <li><strong>Кредитная кооперация как шлюз верификации:</strong> Платформа опирается на национальное законодательство о потребительской и кредитной кооперации. Кооператив выполняет функции внутреннего регулятора, центра KYC-идентификации участников и юридического арбитра деловых отношений.</li>
-                        <li><strong>Партнерство со Сбербанком и ВТБ:</strong> Эмиссия ЦФА экосистемы согласована через регламенты и инфраструктуру ПАО Сбербанк как лицензированного оператора ЦФА, а интеграция с ВТБ обеспечит бесшовное конвертирование фиатных средств и корпоративное кастодиальное обслуживание транзакций.</li>
-                        <li><strong>Международный экспорт через API:</strong> Специально разработанные API-интерфейсы позволяют тысячам зарубежных компаний (включая китайских партнеров) подключать свои учетные системы к нашему расчетному банку, автоматизируя трансграничную торговлю.</li>
-                    </ol>
+                    <!-- СХЕМА 7: ИНСТИТУЦИОНАЛЬНЫЙ ШЛЮЗ -->
+                    <div class="doc-schema font-mono-tech text-xs sm:text-sm">
+                        <div class="text-center text-cyan-400 font-bold tracking-widest pb-3 mb-3 border-b border-cyan-500/20 uppercase">ИНСТИТУЦИОНАЛЬНЫЙ ШЛЮЗ И ПРАВОВОЙ МОСТ</div>
+                        <div class="flex flex-col items-center space-y-3 py-2">
+                            <div class="bg-cyan-950/40 p-3 rounded border border-cyan-500/20 w-full max-w-lg text-center">
+                                Физические лица / МСП ⟶ Кредитный кооператив <span class="text-xs text-cyan-300">(Верификация KYC)</span>
+                            </div>
+                            <div class="text-cyan-400 font-bold">▼</div>
+                            <div class="bg-cyan-950/40 p-3 rounded border border-cyan-500/20 w-full max-w-lg text-center">
+                                Корпоративные клиенты ⟶ ПАО Сбербанк / ВТБ <span class="text-xs text-cyan-300">(Лицензия ЦФА / Custody)</span>
+                            </div>
+                            <div class="text-cyan-400 font-bold">▼</div>
+                            <div class="bg-emerald-950/60 p-3 rounded border border-emerald-500/40 w-full max-w-lg text-center font-bold text-white">
+                                Суверенный Реестр ALTYN (CPA)
+                            </div>
+                        </div>
+                    </div>
                 `
             },
             6: {
                 title: "ГЛАВА 6: TECHNICAL CORE ARCHITECTURE (ТЕХНИЧЕСКОЕ ЯДРО)",
                 text: `
                     <span class="text-[11px] font-mono text-cyan-400 bg-cyan-950/80 px-3 py-1 rounded border border-cyan-800 uppercase">Глава 6</span>
-                    <h2 class="text-2xl sm:text-3xl font-orbitron font-bold text-white mt-3 mb-4">Техническое ядро и системная архитектура</h2>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">6.1. Архитектурный синтез пяти суверенных слоёв</h3>
-                    <p>Платформа ZION.CITY спроектирована не как очередной уязвимый стартап, а как полностью суверенная инфраструктура цифровых расчетов. В основе нашего технического ядра лежит независимая пятиуровневая модель, исключающая единые точки отказа и внешние геополитические риски:</p>
-                    <ol class="list-decimal pl-5 space-y-2">
-                        <li><strong>Слой 0 — Оборудование (Hardware Base):</strong> Пользовательские узлы D.I.O.S., персональные компьютеры на базе процессоров Apple Silicon (M4/M5) и Windows/Linux, мобильные устройства, а также автономные LoRa-ретрансляторы на солнечных батареях.</li>
-                        <li><strong>Слой 1 — Транспортный уровень (Transport Layer):</strong> Транспортно-независимая меш-сеть на базе протокола Reticulum и радиомодулей LoRa, обеспечивающая устойчивую передачу данных со скоростью от 500 бит/с даже в условиях полного блэкаута и отсутствия магистрального интернета.</li>
-                        <li><strong>Слой 2 — Операционный консорциум (ZION.CITY Core):</strong> Платформа, объединяющая восемь когнитивных модулей на базе децентрализованной архитектуры и локального ИИ-агента ERIC.</li>
-                        <li><strong>Слой 3 — Лицензированный оператор (АО «КРЭХО»):</strong> Государственный контур управления, обеспечивающий юридическую чистоту, соответствие законодательству и выпуск Цифровых Финансовых Активов (ЦФА).</li>
-                        <li><strong>Слой 4 — Финансовая и расчетная инфраструктура (ALTYN & ASL):</strong> Суверенный Реестр Алтын (СРА), двухуровневая система активов (ALTYN TOKEN и ALTYN COIN), консенсус Delegated Proof-of-Stake с авторитетным надзором (DPoS+A) и финализацией транзакций за 2-5 секунд.</li>
-                    </ol>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">6.2. Индустриальный стек реализации</h3>
-                    <p>Наша инженерная команда сознательно отказалась от проприетарных и зависимых от внешних санкций облачных платформ. Технологический стек системы базируется на проверенных, открытых и независимых компонентах:</p>
-                    <ul class="list-disc pl-5 space-y-2">
-                        <li><strong>Frontend:</strong> Разработан с использованием React (Meta Open Source, MIT License) для создания высокопроизводительных веб-интерфейсов, Tailwind CSS, библиотеки иконок Lucide React и фреймворка Electron для сборки нативных десктопных приложений D.I.O.S.</li>
-                        <li><strong>Backend:</strong> Построен на базе FastAPI (Python) для высокопроизводительных REST API, распределенной базы данных MongoDB для гибких схем документов, Redis для управления очередями и кэшированием, а также SQLite для обеспечения автономного офлайн-режима работы узлов D.I.O.S.</li>
-                        <li><strong>Поисковая и аналитическая инфраструктура:</strong> Интеграция с ElasticSearch для молниеносного поиска ЦФА и активов на DFA Marketplace.</li>
-                    </ul>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">6.3. Интеграционный потенциал и независимость от внешних шоков</h3>
-                    <p>Благодаря независимости слоев, архитектура ZION.CITY гарантирует беспрецедентную отказоустойчивость:</p>
-                    <ul class="list-disc pl-5 space-y-2">
-                        <li><strong>Разделение контуров:</strong> Обновление финансового слоя или переключение каналов связи (с глобального интернета на радиомодули LoRa) происходит бесшовно и не нарушает работоспособность пользовательских приложений.</li>
-                        <li><strong>Защита от санкций:</strong> Собственный блокчейн-движок и суверенный реестр делают платформу неуязвимой для отключения от систем SWIFT или отзыва корпоративных лицензий на программное обеспечение.</li>
-                    </ul>
+                    <h2 class="text-xl sm:text-3xl font-orbitron font-bold text-white mt-3 mb-4">Техническое ядро и системная архитектура</h2>
+                    <h3 class="text-lg sm:text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">6.1. Архитектурный синтез пяти суверенных слоёв</h3>
+                    <p>Платформа ZION.CITY спроектирована как полностью суверенная инфраструктура цифровых расчетов на базе пяти независимых уровней.</p>
                 `
             },
             7: {
                 title: "ГЛАВА 7: NETWORK & MESH INFRASTRUCTURE (СЕТЕВАЯ И МЕШ-ИНФРАСТРУКТУРА)",
                 text: `
                     <span class="text-[11px] font-mono text-cyan-400 bg-cyan-950/80 px-3 py-1 rounded border border-cyan-800 uppercase">Глава 7</span>
-                    <h2 class="text-2xl sm:text-3xl font-orbitron font-bold text-white mt-3 mb-4">Сетевая и Меш-инфраструктура</h2>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">7.1. Философия транспортной независимости и протокол Offline-First</h3>
-                    <p>Мы заложили в сетевую инфраструктуру базовый инженерный постулат: свобода и права граждан не должны завязываться на уязвимые интернет-магистрали или централизованные облака AWS, Google и Microsoft. В существующей модели Web 2.0 случайный обрыв подводного кабеля, кибератака на дата-центр или геополитическое отключение от провайдеров моментально парализуют работу банков, гос. сервисов и бизнеса.</p>
-                    <p>В нашем проекте мы первыми в мире реализовали принципиально иную концепцию Offline-First Network Architecture. Система не рассматривает глобальный интернет как обязательное условие существования. Когда интернет доступен, ZION.CITY летает на гигабитных скоростях по стандартным TCP/IP каналам. Однако при любом внешнем сбое или жестком блэкауте сеть непрерывно продолжает функционировать, мгновенно переключаясь на транспортно-независимую ячеистую среду ZION.MESH.</p>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">7.2. Архитектура ZION.MESH: Радиомодули LoRa, Wi-Fi HaLow и протокол Reticulum</h3>
-                    <p>Транспортным ядром нашей сетевой независимости выступает зашифрованная криптографическая сеть Reticulum Network в сочетании с протоколом обмена сообщениями LXMF. Ключевые инженерные принципы ZION.MESH:</p>
-                    <ol class="list-decimal pl-5 space-y-2">
-                        <li><strong>Транспортная агностичность:</strong> Протокол Reticulum абсолютно абстрагирован от физической среды передачи сигнала. Ему не важен IP-адрес — пакеты данных одинаково бесшовно проходят через оптоволокно, Wi-Fi HaLow (IEEE 802.11ah), космическую связь или радиочастотные чипы LoRa SX1262.</li>
-                        <li><strong>Низкоскоростной суверенитет (от 500 бит/с):</strong> Мы оптимизировали бинарный код системы так, что критически важный трафик — математические подписи сделок в ALTYN COIN, команды ИИ-агентов ERIC/ADAM и IoT-телеметрия — компактно упаковывается и передается на сверхнизкой скорости от 500 бит/с.</li>
-                        <li><strong>Р2Р «Прыжки» и самовосстановление (Mesh Topology):</strong> Каждый узел сети D.I.O.S., персональный компьютер, смартфон или радиомодуль RNode выступает ретранслятором. Данные продвигаются цепочкой по принципу «прыжков» (hops) от устройства к устройству на расстояния до 10-15 км между узлами. Если один из узлов уничтожен или отключен, сеть динамически перестраивает маршрут за доли секунды.</li>
-                        <li><strong>Сквозное шифрование по умолчанию:</strong> В ZION.MESH отсутствует понятие открытого трафика. Все пакеты асимметрично зашифрованы на самом устройстве отправителя (шифрование на уровне Ed25519/X25519). Маршрутизация происходит по криптографическим хэшам адресатов, исключая перехват, фильтрацию или цензурирование со стороны магистральных провайдеров.</li>
-                    </ol>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">7.3. Полевая апробация: От фермерских хозяйств до МФЦ «Огни Москвы»</h3>
-                    <p>Мы не создаем теоретических абстракций — наша сетевая архитектура масштабируется и испытывается в реальных условиях:</p>
-                    <ul class="list-disc pl-5 space-y-2">
-                        <li><strong>Инфраструктурный контур МФЦ «Огни Москвы» (Строгино):</strong> На территории международного центра площадью 1,4 млн м² развернется 80-110 узлов ZION.MESH (комбинация LoRa SX1262 и Wi-Fi HaLow). Это первая в мире полномасштабная коммерческая реализация автономной радио-меш сети, связывающей инженерные системы зданий, спортивные объекты и закрытые коммуникации резидентов.</li>
-                        <li><strong>Единый технологический поток в АПК:</strong> В Херсонской области ZION.MESH выступает «цифровой нервной системой» сельхозпредприятий. По одному радиоканалу LoRa на поля, элеваторы и датчики одновременно транслируются три потока: телеметрия почвенных метеостанций, команды ИИ-управления и финансовые расчеты при отгрузке зерна.</li>
-                    </ul>
+                    <h2 class="text-xl sm:text-3xl font-orbitron font-bold text-white mt-3 mb-4">Сетевая и Меш-инфраструктура</h2>
+                    <h3 class="text-lg sm:text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">7.1. Философия транспортной независимости и протокол Offline-First</h3>
+                    <p>Система не зависит от глобального интернета. При любых сбоях сеть автоматически переключается на зашифрованную ячеистую среду ZION.MESH.</p>
+
+                    <!-- СХЕМА 8: ТРАНСПОРТНЫЙ СТЕК ZION.MESH -->
+                    <div class="doc-schema font-mono-tech text-xs sm:text-sm">
+                        <div class="text-center text-cyan-400 font-bold tracking-widest pb-3 mb-3 border-b border-cyan-500/20 uppercase">УРОВЕНЬ 1: ТРАНСПОРТНЫЙ СТЕК ZION.MESH</div>
+                        <div class="text-center bg-cyan-950/60 p-3 rounded border border-cyan-500/40 text-white font-bold mb-3">
+                            ЕДИНЫЙ ПРОТОКОЛ RETICULUM (LXMF)
+                        </div>
+                        <div class="text-center text-cyan-400 font-bold mb-3">▼ МУЛЬТИКАНАЛЬНАЯ МАРШРУТИЗАЦИЯ ▼</div>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-xs">
+                            <div class="bg-cyan-950/40 p-3 rounded border border-cyan-500/20">Ethernet / IP Inter.</div>
+                            <div class="bg-cyan-950/40 p-3 rounded border border-cyan-500/20">Wi-Fi HaLow (IEEE 802.11)</div>
+                            <div class="bg-cyan-950/40 p-3 rounded border border-cyan-500/20">Radio SX1262 (LoRa Mesh)</div>
+                            <div class="bg-cyan-950/40 p-3 rounded border border-cyan-500/20">SATELLITE CHANNELS</div>
+                        </div>
+                    </div>
+
+                    <h3 class="text-lg sm:text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">7.3. Полевая апробация: От фермерских хозяйств до МФЦ «Огни Москвы»</h3>
+                    <p>В Херсонской области ZION.MESH выступает «цифровой нервной системой» сельхозпредприятий.</p>
+
+                    <!-- СХЕМА 9: ЕДИНЫЙ ТРАНСПОРТНЫЙ ПОТОК -->
+                    <div class="doc-schema font-mono-tech text-xs sm:text-sm">
+                        <div class="text-center text-cyan-400 font-bold tracking-widest pb-3 mb-3 border-b border-cyan-500/20 uppercase">ЕДИНЫЙ ТРАНСПОРТНЫЙ ПОТОК</div>
+                        <div class="space-y-2 text-xs">
+                            <div class="bg-cyan-950/40 p-2 rounded border border-cyan-500/20 flex justify-between">
+                                <span>1. Телеметрия IoT (Датчики, Весы, Логистика)</span>
+                                <span class="text-cyan-400 font-bold">⟶ ZION.MESH (от 500 бит/с)</span>
+                            </div>
+                            <div class="bg-cyan-950/40 p-2 rounded border border-cyan-500/20 flex justify-between">
+                                <span>2. Команды ИИ (Агенты ERIC & ADAM)</span>
+                                <span class="text-cyan-400 font-bold">⟶ ZION.MESH (от 500 бит/с)</span>
+                            </div>
+                            <div class="bg-cyan-950/40 p-2 rounded border border-cyan-500/20 flex justify-between">
+                                <span>3. Транзакции (Суверенный Реестр ALTYN)</span>
+                                <span class="text-cyan-400 font-bold">⟶ ZION.MESH (от 500 бит/с)</span>
+                            </div>
+                        </div>
+                    </div>
                 `
             },
             8: {
                 title: "ГЛАВА 8: NODE & SUPER-NODE TOPOLOGY (ТОПОЛОГИЯ УЗЛОВ И СУПЕРНОД)",
                 text: `
                     <span class="text-[11px] font-mono text-cyan-400 bg-cyan-950/80 px-3 py-1 rounded border border-cyan-800 uppercase">Глава 8</span>
-                    <h2 class="text-2xl sm:text-3xl font-orbitron font-bold text-white mt-3 mb-4">Топология узлов и супернод</h2>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">8.1. Концепция Edge-вычислений и аппаратного суверенитета (D.I.O.S.)</h3>
-                    <p>В старой архитектуре Web 2.0 пользователи превратились в пассивных клиентов, арендующих место на чужих серверах транснациональных монополий (AWS, Azure, Google Cloud) в обмен на свои личные данные и приватность. Мы в ZION.CITY кардинально перевернули эту парадигму, внедрив архитектуру локальных узлов D.I.O.S. (Decentralized Intelligent Operating System).</p>
-                    <ul class="list-disc pl-5 space-y-2">
-                        <li><strong>Отказ от облачного рабства:</strong> Вместо того чтобы перекладывать вычисления на уязвимые и централизованные дата-центры корпораций, мы переносим всю нагрузку непосредственно на аппаратное обеспечение самого пользователя.</li>
-                        <li><strong>Ставка на Apple Silicon (M4/M5):</strong> Наша экосистема оптимизирована под работу на передовых чипах Apple Silicon. Колоссальная производительность Neural Engine в процессорах М5 позволяет запускать мощные локальные языковые модели (LLM) и персонального ИИ-агента ЭРИК прямо на домашнем устройстве, обеспечивая абсолютную конфиденциальность данных без необходимости платить за облачные подписки.</li>
-                        <li><strong>Кластерные вычисления (XDRM):</strong> Специальная технология кластеризации позволяет объединять несколько устройств пользователя (например, домашний Mac Mini, рабочий MacBook и другие гаджеты) в единый распределенный суперкомпьютер для обслуживания сети и бесперебойной работы ИИ даже в фоновом режиме.</li>
-                    </ul>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">8.2. Иерархия и классификация узлов в сети ZION.CITY</h3>
-                    <p>Для обеспечения высочайшей отказоустойчивости, молниеносной скорости транзакций и безопасности всей экосистемы мы разработали чёткую и многоуровневую иерархию узлов (нод), выполняющих различные роли:</p>
-                    <ol class="list-decimal pl-5 space-y-2">
-                        <li><strong>Мобильные узлы (Smartphones):</strong> Работают на смартфонах с достаточным объемом оперативной памяти (от 12 ГБ). Обеспечивают автономные точки доступа и мгновенные P2P-платежи на ходу.</li>
-                        <li><strong>Стандартные ноды (D.I.O.S. Desktop/Home Servers):</strong> Развертываются на персональных компьютерах (преимущественно на базе Mac Mini с чипами М4/М5, а также на производительных ПК под управлением Windows или Linux с процессорами уровня Intel Core i9 и от 16 ГБ RAM). Запускают локальные ИИ-модели пользователя и поддерживают связность ячеистой Mesh-сети.</li>
-                        <li><strong>Региональные суперноды (Super-Nodes):</strong> Развертываются на мощных аппаратных комплексах (например, серверных станциях уровня Mac Studio с чипом M5 Ultra и 1 ТБ оперативной памяти, заменяющих дорогие серверные кластеры NVIDIA стоимостью от $100k). Требуют подтвержденного стейкинга (bonding) от 5 000 до 10 000+ токенов ALTYN TOKEN и гарантируют бесперебойную работу в режиме 24/7. Одна мощная супернода способна обслуживать финансовую инфраструктуру и обрабатывать до 5 000 транзакций в секунду, обеспечивая мгновенную финальность расчетов для целого города.</li>
-                    </ol>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">8.3. Кластерная структура и обеспечение 100% аптайма</h3>
-                    <p>Чтобы обычные пользователи могли участвовать в защите сети без рисков штрафов за кратковременные отключения интернета или электричества, мы внедрили уникальную кластерную архитектуру нод:</p>
-                    <ul class="list-disc pl-5 space-y-2">
-                        <li><strong>Объединение в подсети (Кластеры):</strong> Нода в ZION.CITY — это не обязательно одиночный компьютер. Администратор может объединить в единый узел от 2 до 32+ устройств (свои домашние ПК, гаджеты родственников или друзей).</li>
-                        <li><strong>Принцип «Хотя бы один в сети»:</strong> Для того чтобы нода считалась активной и приносила владельцам максимальные дивиденды, достаточно, чтобы хотя бы одно устройство из всей группы находилось онлайн. Если один компьютер выключается, остальные участники кластера автоматически подстраховывают его.</li>
-                        <li><strong>Резервирование через VDS:</strong> Для гарантии абсолютного 100% аптайма администраторы супернод могут дополнять физическое «железо» арендой виртуальных выделенных серверов (VDS), защищая узел от локальных блэкаутов.</li>
-                        <li><strong>Максимальная автоматизация:</strong> Управление нодой встроено прямо в десктопное приложение ZION.CITY. Пользователю не нужно вручную прописывать сложные конфигурации — достаточно выбрать нужную ноду в интуитивной панели управления и нажать кнопку подтверждения.</li>
-                    </ul>
+                    <h2 class="text-xl sm:text-3xl font-orbitron font-bold text-white mt-3 mb-4">Топология узлов и супернод</h2>
+                    <h3 class="text-lg sm:text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">8.2. Иерархия и классификация узлов в сети ZION.CITY</h3>
+                    <p>Для обеспечения высочайшей отказоустойчивости и безопасности мы разработали четкую многоуровневую иерархию узлов (нод).</p>
+
+                    <!-- СХЕМА 10: ИЕРАРХИЯ УЗЛОВ И ТОПОЛОГИЯ -->
+                    <div class="doc-schema font-mono-tech text-xs sm:text-sm">
+                        <div class="text-center text-cyan-400 font-bold tracking-widest pb-3 mb-3 border-b border-cyan-500/20 uppercase">ИЕРАРХИЯ УЗЛОВ И ТОПОЛОГИЯ СЕТИ ZION</div>
+                        <div class="space-y-3">
+                            <div class="bg-cyan-950/60 p-3 rounded border border-cyan-500/40">
+                                <div class="text-cyan-300 font-bold mb-1">ПОЛНОЦЕННАЯ НОДА (РЕГИОНАЛЬНЫЙ ХАБ)</div>
+                                <ul class="list-disc pl-5 text-gray-300 space-y-1 text-xs">
+                                    <li>Оборудование: Mac Studio M5 Ultra (1 TB RAM)</li>
+                                    <li>Назначение: Обслуживание финансовых потоков, LLM 70B+</li>
+                                    <li>Стейкинг: от 5 000+ ALTYN TOKEN</li>
+                                </ul>
+                            </div>
+                            <div class="text-center text-cyan-400 font-bold">▼</div>
+                            <div class="bg-cyan-950/40 p-3 rounded border border-cyan-500/30">
+                                <div class="text-cyan-200 font-bold mb-1">СТАНДАРТНАЯ НОДА (D.I.O.S.)</div>
+                                <ul class="list-disc pl-5 text-gray-300 space-y-1 text-xs">
+                                    <li>Оборудование: Чипы M4 / M5 (от 16 GB RAM) / ПК</li>
+                                    <li>Назначение: Локальная обработка ИИ, поддержка Mesh</li>
+                                </ul>
+                            </div>
+                            <div class="text-center text-cyan-400 font-bold">▼</div>
+                            <div class="bg-slate-900/80 p-3 rounded border border-slate-700">
+                                <div class="text-gray-300 font-bold mb-1">МОБИЛЬНЫЙ УЗЕЛ</div>
+                                <ul class="list-disc pl-5 text-gray-400 space-y-1 text-xs">
+                                    <li>Оборудование: Смартфоны (от 12 GB RAM)</li>
+                                    <li>Назначение: Точки доступа, мгновенные P2P-платежи</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                 `
             },
             9: {
                 title: "ГЛАВА 9: AI ORCHESTRATION — ЭРИК И АДАМ (ИИ-ОРКЕСТРАЦИЯ)",
                 text: `
                     <span class="text-[11px] font-mono text-cyan-400 bg-cyan-950/80 px-3 py-1 rounded border border-cyan-800 uppercase">Глава 9</span>
-                    <h2 class="text-2xl sm:text-3xl font-orbitron font-bold text-white mt-3 mb-4">ИИ-оркестрация: Агенты «ЭРИК» и «АДАМ»</h2>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">9.1. Философия симбиотического ИИ и отказ от «облачного рабства»</h3>
-                    <p>В старой парадигме Web 2.0 искусственный интеллект служит не человеку, а корпорациям, превращая персональные данные в товар на серверах OpenAI, Google или Anthropic. Мы перевернули эту логику, внедрив концепцию симбиотического ИИ (Agentic AI). В нашей экосистеме искусственный интеллект не является внешним облачным сервисом — он принадлежит лично пользователю, работает непосредственно на его собственном «железе» (на аппаратных чипах Apple Silicon M4/M5) и функционирует как неотъемлемое цифровое отражение человека. Это гарантирует 100% конфиденциальность, защиту от несанкционированного доступа и полную независимость от зарубежных облачных подписок.</p>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">9.2. Персональный ИИ-агент ЭРИК (Enhanced Reasoning Intelligence Core)</h3>
-                    <p>ЭРИК — это личный защитник, помощник и цифровой компаньон пользователя на всю жизнь:</p>
-                    <ul class="list-disc pl-5 space-y-2">
-                        <li><strong>Локальное исполнение и аппаратная синергия:</strong> ЭРИК запускается локально на стационарных узлах D.I.O.S. (или распределенном кластере XDRM на базе процессоров М5), используя локальные языковые модели класса Qwen3 (14B) и Gemma 3, что обеспечивает молниеносное исполнение задач без утечки метаданных во внешнюю среду.</li>
-                        <li><strong>Интеграция в модуль «Семья» и контекстная память:</strong> ЭРИК выступает полноценным участником семейного контура, знает контекст жизни домочадцев, берет на себя рутину ведения «Цифрового журнала» (распознавание медицинских рецептов, формирование графиков приема лекарств, архивацию документов).</li>
-                        <li><strong>Протокол прозрачности и три уровня подтверждения (Confirmation Gates):</strong> В отличие от «черных ящиков» коммерческих нейросетей, ЭРИК действует по принципу explainability — он всегда объясняет логику своих рекомендаций. Все действия агента разделены на три уровня: Autonomous (автоматическая рутина и сортировка ленты), Notify (уведомления с возможностью отмены) и критические подтверждения для транзакций.</li>
-                        <li><strong>Агентная коммерция (A2A и ANRC):</strong> Взаимодействуя с внешним миром, ЭРИК использует протокол Agent-to-Agent (A2A) и алгоритмы ANRC (AI-Native Referral Commerce). Он находит нужные товары и услуги не по рекламным бюджетам, а по оцифрованной порядочности контрагентов и реальным показателям повторных транзакций (repeat rate).</li>
-                    </ul>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">9.3. Институциональный финансовый ИИ-агент АДАМ (ALTYN Digital Asset Manager)</h3>
-                    <p>Если ЭРИК отвечает за пользовательский комфорт и персональную рутину, то АДАМ — это специализированный институциональный агент для управления цифровыми финансовыми активами (ЦФА) и комплаенс-контроля в Суверенном Реестре ALTYN (CPA).</p>
-                    <p><strong>Архитектурные принципы Адама:</strong> В отличие от традиционных систем управления рисками (например, корпоративного инструмента Aladdin от BlackRock, работающего с открытыми и зашумленными рынками), АДАМ оперирует исключительно в замкнутой верифицированной среде Цепи Криптографической Верификации (ЦКВ).</p>
-                    <p><strong>Матрица распределения задач (Pre-Trade, Mid-Trade, Post-Trade):</strong></p>
-                    <ul class="list-disc pl-5 space-y-2">
-                        <li><strong>Pre-Trade (KYC/AML):</strong> Автоматический пре-скоринг контрагентов, парсинг юридической документации зарубежных компаний, запрос в защищенные реестры и расчет уровня доверия.</li>
-                        <li><strong>Mid-Trade (Milestones):</strong> Неукоснительный контроль исполнения смарт-контрактов, мониторинг IoT-датчиков на физических объектах (например, при отгрузке зерна) и удержание средств в защищенном escrow.</li>
-                        <li><strong>Post-Trade (Reconciliation):</strong> Автоматическая сверка цифровых остатков с логистическими трек-кодами и запуск алгоритмов эмиссии или сжигания расчетной монеты ALTYN.</li>
-                    </ul>
+                    <h2 class="text-xl sm:text-3xl font-orbitron font-bold text-white mt-3 mb-4">ИИ-оркестрация: Агенты «ЭРИК» и «АДАМ»</h2>
+                    <p>Персональный помощник пользователя (ЭРИК) и институциональный комплаенс-агент (АДАМ) обеспечивают автоматизацию всех процессов в суверенном контуре.</p>
                 `
             },
             10: {
                 title: "ГЛАВА 10: IDENTITY, CRYPTOGRAPHY & SECURITY (ИДЕНТИЧНОСТЬ И БЕЗОПАСНОСТЬ)",
                 text: `
                     <span class="text-[11px] font-mono text-cyan-400 bg-cyan-950/80 px-3 py-1 rounded border border-cyan-800 uppercase">Глава 10</span>
-                    <h2 class="text-2xl sm:text-3xl font-orbitron font-bold text-white mt-3 mb-4">Идентификация, криптография и безопасность</h2>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">10.1. Сквозная авторизация и единый суверенный профиль</h3>
-                    <p>В экосистеме ZION.CITY ликвидирована необходимость запоминать десятки логинов и паролей. Платформа реализует концепцию единой суверенной идентичности:</p>
-                    <ul class="list-disc pl-5 space-y-2">
-                        <li>Пользователь проходит первичную верификацию один раз через встроенный Кредитный кооператив или государственные шлюзы, после чего получает уникальный защищенный криптографический профиль.</li>
-                        <li>Этот профиль обеспечивает бесшовный и безопасный доступ ко всем восьми когнитивным модулям, блокчейн-кошелькам и цифровому хранилищу документов.</li>
-                    </ul>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">10.2. Криптографический стек и защита каналов связи</h3>
-                    <p>Безопасность передачи данных и неизменяемость записей в Суверенном Реестре ALTYN обеспечиваются передовыми криптографическими стандартами:</p>
-                    <ul class="list-disc pl-5 space-y-2">
-                        <li><strong>Асимметричная криптография и подписи:</strong> Для подписания транзакций и операций в расчетных контурах используется алгоритм EdDSA на кривой Ed25519, гарантирующий высочайшую стойкость и скорость верификации.</li>
-                        <li><strong>Хеширование данных:</strong> Целостность блоков и документов защищена сверхбыстрым и защищенным алгоритмом хеширования BLAKE3.</li>
-                        <li><strong>Сквозное шифрование (E2EE):</strong> Все сетевые коммуникации, включая межмодульный трафик и команды меш-сети ZION.MESH, зашифрованы с использованием протоколов Curve25519 (X25519) + AES-256-CCM / TLS 1.3.</li>
-                        <li><strong>Защита учетных данных:</strong> Хранение пользовательских паролей реализуется с помощью функции формирования ключей, устойчивой к атакам по сторонним каналам — Argon2id.</li>
-                    </ul>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">10.3. Защита от угроз и устойчивость к внешним атакам</h3>
-                    <ul class="list-disc pl-5 space-y-2">
-                        <li><strong>Устойчивость к атакам Сивиллы (Sybil Resistance):</strong> Поскольку в архитектуре СРА полностью отсутствует анонимность, а каждый узел валидации требует прохождения KYC и размещения обеспечительного стейкинга в токенах ALTYN, создание фантомных или злонамеренных аккаунтов экономически и технически заблокировано.</li>
-                        <li><strong>Защита от сбоев инфраструктуры:</strong> Децентрализованное распределение нод на персональном оборудовании пользователей и автономные радиоканалы LoRa исключают уязвимость перед DDoS-атаками или физическим уничтожением дата-центров.</li>
-                    </ul>
+                    <h2 class="text-xl sm:text-3xl font-orbitron font-bold text-white mt-3 mb-4">Идентификация, криптография и безопасность</h2>
+                    <p>Сквозное шифрование, криптография Ed25519, BLAKE3 и защита от атак Сивиллы.</p>
                 `
             },
             11: {
                 title: "ГЛАВА 11: FINANCIAL & SETTLEMENT ARCHITECTURE (ФИНАНСОВЫЙ КЛИРИНГ)",
                 text: `
                     <span class="text-[11px] font-mono text-cyan-400 bg-cyan-950/80 px-3 py-1 rounded border border-cyan-800 uppercase">Глава 11</span>
-                    <h2 class="text-2xl sm:text-3xl font-orbitron font-bold text-white mt-3 mb-4">Финансовая и клиринговая архитектура</h2>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">11.1. Клиринговая инфраструктура и трансграничные расчеты БРИКС+</h3>
-                    <p>Традиционный международный клиринг, построенный на монополии SWIFT и корреспондентских счетах в банках Запада, превратился в инструмент финансового шантажа и геополитического давления. В ZION.CITY мы спроектировали и реализовали Суверенный Реестр Алтын (СРА/ASL — Altyn Sovereign Ledger) — независимую клиринговую платформу для стран БРИКС+, ЕАЭС и ШОС.</p>
-                    <ul class="list-disc pl-5 space-y-2">
-                        <li><strong>Универсальная цифровая расчетная единица (УЦРЕ):</strong> В качестве нейтрального моста между национальными экономиками выступает ALTYN COIN. Она не контролируется регулятором ни одной отдельной страны, что исключает валютный диктат.</li>
-                        <li><strong>Механизм мгновенного трансграничного клиринга:</strong> Когда экспортер из России совершает сделку с импортером из Китая, Индии или Ирана, платеж не проходит через доллар или евро. Система трансформирует фиатную сумму в ALTYN COIN, проводит транзакцию через верифицированные узлы СРА за 2-5 секунд и погашает обязательство перед получателем в его национальной валюте через институциональные шлюзы (такие как ВТБ, Сбербанк или CIPS / e-CNY).</li>
-                        <li><strong>Ликвидация риска открытых валютных позиций:</strong> Предприятиям больше не требуется хранить токсичные резервы в западноевропейских или американских банках, рискуя блокировкой счетов.</li>
-                    </ul>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">11.2. Торговля реальными ресурсами (Resource-Backed Clearing)</h3>
-                    <p>Мы категорически отвергаем логику спекулятивных криптовалют (вроде Bitcoin) и ничем не обеспеченного фиатного доллара. ALTYN COIN — это валюта, фундаментально привязанная к реальному сектору экономики.</p>
-                    <ul class="list-disc pl-5 space-y-2">
-                        <li><strong>Товарная корзина БРИКС+ (Commodity-Backed):</strong> Обеспечение расчетов опирается на экспортный потенциал государств-участников — пшеницу, нефть, природный газ, редкие металлы, энергоносители и пр.</li>
-                        <li><strong>Встроенная сырьевая биржа:</strong> В модуль «Маркетплейс» интегрирована децентрализованная сырьевая биржа. За монеты Алтын участники приобретают не абстрактные маржинальные токены, а реальные исполняемые контракты на отгрузку сырья.</li>
-                        <li><strong>Цифровой учет логистики:</strong> Данные с автоматических весовых комплексов в портах, элеваторах и на трубопроводах фиксируются в реестре СРА через IoT-телеметрию. Каждая финансовая транзакция математически и логистически подтверждена перемещением физического груза.</li>
-                    </ul>
+                    <h2 class="text-xl sm:text-3xl font-orbitron font-bold text-white mt-3 mb-4">Финансовая и клиринговая архитектура</h2>
+                    <p>Независимый клиринг и трансграничные расчеты БРИКС+ в обход SWIFT.</p>
                 `
             },
             12: {
                 title: "ГЛАВА 12: ALTYN TOKENOMICS & MONETARY POLICY (ТОКЕНОМИКА)",
                 text: `
                     <span class="text-[11px] font-mono text-cyan-400 bg-cyan-950/80 px-3 py-1 rounded border border-cyan-800 uppercase">Глава 12</span>
-                    <h2 class="text-2xl sm:text-3xl font-orbitron font-bold text-white mt-3 mb-4">Токеномика и монетарная политика</h2>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">12.1. Разделение функций активов: Двухуровневая модель</h3>
-                    <p>Фундаментальная ошибка Web 3.0 — попытка объединить инвестиционный актив и средство повседневных платежей в одной монете, что ведет к неизбежной волатильности. Мы заложили строгую двухуровневую токеномику:</p>
-                    <ol class="list-decimal pl-5 space-y-2">
-                        <li><strong>ALTYN TOKEN (Инфраструктурный ЦФА / «Цифровая облигация»):</strong> Хард-кап (Hard Cap): Фиксированная эмиссия ровно 35 000 000 токенов. Дополнительный минтинг технически невозможен. Назначение: Выступает долей владения суверенной финансовой инфраструктурой. Замещает функции суверенных бондов и служит залоговым обеспечением для операторов валидирующих супернод. Доходность: Держатели токенов, размещающие их в стейкинг для поддержки сети, получают пассивный доход (дивиденды) со всех платежей экосистемы.</li>
-                        <li><strong>ALTYN COIN (Универсальная Расчетная Единица / УЦРЕ):</strong> Эмиссия: Динамическая (выпускается под обеспечение ALTYN TOKEN или сжигается при выводе средств). Назначение: Оплата товаров, коммерческих сервисов, логистики, налоговых сборов и международных контрактов. Курс: Стартовая операционная привязка $1 USD = 1 COIN с плановым переходом на мульти-валютную корзину БРИКС-10+.</li>
-                    </ol>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">12.2. Механика сжигания и алгоритмический баланс</h3>
-                    <p>Чтобы полностью исключить инфляционное обесценивание, финансовый ИИ-агент АДАМ осуществляет непрерывный мониторинг ликвидности:</p>
-                    <ul class="list-disc pl-5 space-y-2">
-                        <li><strong>Автоматическое сжигание при выходе в фиат:</strong> Когда бизнес конвертирует ALTYN COIN в рубли, юани или тенге через банки-партнеры (Сбербанк, ВТБ, Каспи), эквивалентное количество коинов немедленно сжигается смарт-контрактом. Это гарантирует отсутствие двойной денежной массы.</li>
-                        <li><strong>Минтинг Just-in-Time:</strong> Новая эмиссия расчётных монет происходит строго под обеспечение реальными коммерческими заказами или депозитами в резервном пуле.</li>
-                    </ul>
+                    <h2 class="text-xl sm:text-3xl font-orbitron font-bold text-white mt-3 mb-4">Токеномика и монетарная политика</h2>
+                    <p>Двухуровневая модель: инфраструктурный ALTYN TOKEN (хард-кап 35 млн) и расчетная единица ALTYN COIN.</p>
                 `
             },
             13: {
                 title: "ГЛАВА 13: FEE MODEL & VALUE DISTRIBUTION (МОДЕЛЬ КОМИССИЙ)",
                 text: `
                     <span class="text-[11px] font-mono text-cyan-400 bg-cyan-950/80 px-3 py-1 rounded border border-cyan-800 uppercase">Глава 13</span>
-                    <h2 class="text-2xl sm:text-3xl font-orbitron font-bold text-white mt-3 mb-4">Модель комиссий и распределение доходов</h2>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">13.1. Перераспределение банковской маржи</h3>
-                    <p>Традиционные эквайеры (Visa, Mastercard, PayPal) и корпоративные маркетплейсы (Amazon, Uber, Yandex) забирают от 3% до 30% выручки предпринимателей, обогащая банковских акционеров. В ZION.CITY прибыль возвращается народу — владельцам оборудования и токенов.</p>
-                    <ul class="list-disc pl-5 space-y-2">
-                        <li><strong>Микро-комиссии за сервис:</strong> Комиссионный сбор платформы при обычных платежах за товары и услуги составляет всего 0.1-0.5% (или фиксированные $0.20–$0.50).</li>
-                        <li><strong>Фиатный вывод:</strong> Вывод средств из цифрового контура в национальные валюты через банковские шлюзы облагается комиссией в 3%, стимулируя сохранение ликвидности внутри суверенной системы.</li>
-                        <li><strong>100% Распределение дивидендов:</strong> Все собранные комиссии поступают в единый пул и моментально распределяются между держателями ALTYN TOKEN, удерживающими активы в стейкинге.</li>
-                    </ul>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">13.2. Беспроцентное кредитование реального сектора (Исламский банкинг / 0% Риба)</h3>
-                    <p>Поскольку доход платформы формируется за счет сервисной транзакционной комиссии, а не ссудного процента, мы внедряли механизм бесплатного капитала:</p>
-                    <ul class="list-disc pl-5 space-y-2">
-                        <li><strong>Залоговая модель:</strong> Предприниматель размещает в залог свой пакет ALTYN TOKEN (например, от 5 000 токенов) под инвестиционный проект.</li>
-                        <li><strong>0% Ссудного процента:</strong> Под залог выдается беспроцентный целевой кредит в ALTYN COIN на срок от 10 до 30 лет с льготным периодом. Это делает систему 100% совместимой с правилами исламских финансов.</li>
-                        <li><strong>Автоматическое самопогашение:</strong> Дивиденды, которые продолжают начисляться на заложенные токены во время работы сети, направляются на автоматическое погашение тела долга.</li>
-                    </ul>
+                    <h2 class="text-xl sm:text-3xl font-orbitron font-bold text-white mt-3 mb-4">Модель комиссий и распределение доходов</h2>
+                    <p>Микро-комиссии сети, 100% дивиденды стейкерам и беспроцентное кредитование (0% риба).</p>
                 `
             },
             14: {
                 title: "ГЛАВА 14: MARKETPLACE & DIGITAL SERVICES INFRASTRUCTURE",
                 text: `
                     <span class="text-[11px] font-mono text-cyan-400 bg-cyan-950/80 px-3 py-1 rounded border border-cyan-800 uppercase">Глава 14</span>
-                    <h2 class="text-2xl sm:text-3xl font-orbitron font-bold text-white mt-3 mb-4">Маркетплейс и цифровые сервисы</h2>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">14.1. Модули «Сервисы», «Организации» и «Вещи (IoT)»</h3>
-                    <p>Наш маркетплейс — это единая цифровая среда, связывающая человека, предпринимателя и умную технику:</p>
-                    <ol class="list-decimal pl-5 space-y-2">
-                        <li><strong>Модуль «Сервисы» (B2C/C2C):</strong> Поиск мастеров, репетиторов и врачей. Алгоритм ANRC продвигает исполнителей не за рекламные деньги, а на основе реального индекса возврата клиентов (repeat rate).</li>
-                        <li><strong>Модуль «Организации» (МСП):</strong> Бесплатный CRM-кабинет для бизнеса с автоматической налоговой отчетностью, отсутствием кассовых эквайринговых терминалов и мгновенным приемом ALTYN COIN.</li>
-                        <li><strong>Модуль «Вещи» (IoT):</strong> Безопасное прямое подключение до 25 млрд умных устройств (счетчиков, электромобилей, станочного парка). Устройства способны самостоятельно запрашивать обслуживание и расплачиваться микро-транзакциями через ИИ-агентов.</li>
-                    </ol>
+                    <h2 class="text-xl sm:text-3xl font-orbitron font-bold text-white mt-3 mb-4">Маркетплейс и цифровые сервисы</h2>
+                    <p>Интеграция модулей «Сервисы», «Организации» и умных устройств (IoT).</p>
                 `
             },
             15: {
                 title: "ГЛАВА 15: \"FINANCIAL CENTER IN YOUR POCKET\" STRATEGY",
                 text: `
                     <span class="text-[11px] font-mono text-cyan-400 bg-cyan-950/80 px-3 py-1 rounded border border-cyan-800 uppercase">Глава 15</span>
-                    <h2 class="text-2xl sm:text-3xl font-orbitron font-bold text-white mt-3 mb-4">Стратегия «Финансовый центр в кармане»</h2>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">15.1. Полнофункциональный супер-app без посредников</h3>
-                    <p>Мы реализовали концепцию, где международный банк, биржа ЦФА, налоговый помощник и личный брокер интегрированы в единое мобильное и десктопное приложение ZION.CITY:</p>
-                    <ul class="list-disc pl-5 space-y-2">
-                        <li><strong>Единая суверенная идентификация:</strong> Доступ ко всем финансовым инструментам не требует повторных процедур проверки документов — идентичность подтверждена при входе через Кредитный кооператив или Госуслуги.</li>
-                        <li><strong>Пенсионное накопление на базе сложных процентов:</strong> Пользователь может направить 0.1% от повседневных покупок в регулярную авто-покупку и стейкинг ALTYN TOKEN, формируя капитал, защищенный от инфляции фиатных валют.</li>
-                    </ul>
+                    <h2 class="text-xl sm:text-3xl font-orbitron font-bold text-white mt-3 mb-4">Стратегия «Финансовый центр в кармане»</h2>
+                    <p>Полнофункциональный супер-app без посредников и скрытых комиссий.</p>
                 `
             },
             16: {
                 title: "ГЛАВА 16: BUSINESS MODEL & UNIT ECONOMICS (БИЗНЕС-МОДЕЛЬ)",
                 text: `
                     <span class="text-[11px] font-mono text-cyan-400 bg-cyan-950/80 px-3 py-1 rounded border border-cyan-800 uppercase">Глава 16</span>
-                    <h2 class="text-2xl sm:text-3xl font-orbitron font-bold text-white mt-3 mb-4">Бизнес-модель и юнит-экономика</h2>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">16.1. Отказ от экономики издержек и паразитических комиссий</h3>
-                    <p>Наша бизнес-модель спроектирована на основе фундаментального принципа: технологии должны освобождать человека и бизнес от финансового ярма, а не выкачивать из них последние соки. Традиционная экономика Web 2.0 и фиатных платформ построена на извлечении ренты. Корпорации вроде Amazon, Uber, Upwork или рекламные гиганты Google и Meta забирают от 15% до 30% выручки предпринимателей в виде комиссий за эквайринг и принудительных рекламных аукционов. В нашей экосистеме этот паразитический контур полностью ликвидирован.</p>
-                    
-                    <table class="content-table">
-                        <thead>
-                            <tr>
-                                <th>Параметр сравнения</th>
-                                <th>Традиционная экономика (Web 2.0 / Фиат)</th>
-                                <th>Экосистема ZION.CITY (Web 4.0 / Алтын)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>Маркетинг и привлечение</strong></td>
-                                <td>20-30% выручки уходит ИТ-монополиям за платную рекламу.</td>
-                                <td>0% затрат. ИИ-агент приводит клиентов через оцифрованное «сарафанное радио».</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Эквайринг и расчеты</strong></td>
-                                <td>2-3% + скрытые комиссии традиционных банков и шлюзов.</td>
-                                <td>0% продавцу. Фиксированная микро-комиссия сети для покупателя (до $1).</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Кредитование</strong></td>
-                                <td>15-25% годовых, жесткие условия, риск долговой ямы.</td>
-                                <td>0% годовых (без рибы), займы на 10-30 лет с каникулами до 2 лет.</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Инвестиции / Привлечение</strong></td>
-                                <td>Долгие IPO/LSO, риск нецелевого расходования, спекулятивные обвалы.</td>
-                                <td>ЦФА с программируемым бюджетом и защитой цены (тиражированные пулы).</td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">16.2. Юнит-экономика народной платформы и транзакционный поток</h3>
-                    <p>Наша бизнес-модель опирается на огромный масштаб и колоссальный объем транзакций внутри единого супер-приложения, объединяющего маркетплейс, логистику, финансы и сервисы для 3,5 млрд пользователей стран БРИКС+:</p>
-                    <ul class="list-disc pl-5 space-y-2">
-                        <li><strong>Микро-комиссии сети:</strong> Платформа взимает скромную комиссию в размере 0.1-0.5% в ALTYN COIN за успешное завершение коммерческой транзакции.</li>
-                        <li><strong>Математика оборота:</strong> Традиционной платформе для покрытия расходов на маркетинг и мошенничество требуется закладывать высокие сборы в каждую сделку. В ZION.CITY операционные расходы стремятся к нулю благодаря ИИ-агентам:
-                            <ul class="list-circle pl-5 mt-1 space-y-1">
-                                <li>0 marketing costs: Трафик привлекается органически через агентские рекомендации (ANRC).</li>
-                                <li>0 fraud prevention costs: ИИ-агент ERIC знает контекст и пресекает мошенничество на этапе пре-скоринга.</li>
-                                <li>0 customer support costs: До 90% базовых вопросов пользователей автоматически обрабатывается персональным ИИ.</li>
-                            </ul>
-                        </li>
-                        <li><strong>Распределение добавленной стоимости:</strong> Собранные сетью микро-комиссии не оседают на счетах закрытой корпорации, а распределяются в виде дивидендов среди владельцев узлов и стейкеров ALTYN TOKEN, превращая каждого активного участника в совладельца финансовой инфраструктуры.</li>
-                    </ul>
+                    <h2 class="text-xl sm:text-3xl font-orbitron font-bold text-white mt-3 mb-4">Бизнес-модель и юнит-экономика</h2>
+                    <p>Отказ от паразитических комиссий и нулевые затраты на маркетинг благодаря ИИ-рекомендациям.</p>
                 `
             },
             17: {
                 title: "ГЛАВА 17: USER JOURNEY SCENARIOS (СЦЕНАРИИ ПУТИ)",
                 text: `
                     <span class="text-[11px] font-mono text-cyan-400 bg-cyan-950/80 px-3 py-1 rounded border border-cyan-800 uppercase">Глава 17</span>
-                    <h2 class="text-2xl sm:text-3xl font-orbitron font-bold text-white mt-3 mb-4">Сценарии пользовательского пути (User Journey)</h2>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">17.1. Сценарий №1: Гражданин и семья (Жизнь без когнитивной перегрузки)</h3>
-                    <ul class="list-disc pl-5 space-y-2">
-                        <li><strong>Вход в систему:</strong> Пользователь (например, гражданин в одном из регионов БРИКС+) регистрируется в системе через единый шлюз, создавая свой суверенный «Централизованный профиль» (ЦПКМ). Никаких десятков паролей от разных соцсетей и банков.</li>
-                        <li><strong>Повседневный опыт:</strong> Открывая приложение ZION.CITY, человек попадает в гармоничное рабочее пространство, состоящее из 8 модулей. В модуле «Семья» он планирует график детей, в «Журнале» хранит зашифрованные цифровые копии документов, а финансовые расчеты ведет в защищенном кошельке ALTYN COIN.</li>
-                        <li><strong>Агентная забота:</strong> Вместо бесконечного скроллинга новостных лент с раздражающей рекламой, персональный ИИ-агент ЭРИК напоминает о важных семейных событиях и помогает координировать быт, экономя самое главное — время и душевное спокойствие.</li>
-                    </ul>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">17.2. Сценарий №2: Предприниматель МСП (Запуск бизнеса с нуля)</h3>
-                    <ul class="list-disc pl-5 space-y-2">
-                        <li><strong>Регистрация за 15 минут:</strong> Начинающий предприниматель (например, владелец новой пекарни или ремесленного цеха) создает бизнес-профиль в модуле «Организации». Верификация происходит мгновенно через встроенную правовую инфраструктуру.</li>
-                        <li><strong>Беспроцентный старт:</strong> Предприниматель получает доступ к беспроцентному финансированию (система совместима с принципами исламского банкинга — 0% риба) под залог цифровых активов на развитие производства без кассовых разрывов.</li>
-                        <li><strong>Органический поток клиентов:</strong> Предприниматель не тратит рекламные бюджеты на продвижение в заблокированных соцсетях. Его пекарня автоматически появляется в рекомендациях у соседей благодаря алгоритму AI-Native Referral Commerce (ANRC), который оценивает высокое качество и реальный процент повторных покупок (repeat rate).</li>
-                    </ul>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">17.3. Сценарий №3: Оператор ноды и инвестор (Управление инфраструктурой)</h3>
-                    <ul class="list-disc pl-5 space-y-2">
-                        <li><strong>Развертывание узла:</strong> Инвестор развертывает стандартную ноду на домашнем сервере Mac Mini (или суперноду на базе Mac Studio M5 Ultra).</li>
-                        <li><strong>Стейкинг и обеспечение сети:</strong> Размещая в стейкинг пакет ALTYN TOKEN, узел начинает участвовать в консенсусе DPOS+A и обработке транзакций Суверенного Реестра Алтын.</li>
-                        <li><strong>Получение дивидендов:</strong> Инвестор получает стабильный пассивный доход в ALTYN COIN от каждой транзакции, проходящей через инфраструктурный контур платформы, формируя долговечный капитал нового цифрового века.</li>
-                    </ul>
+                    <h2 class="text-xl sm:text-3xl font-orbitron font-bold text-white mt-3 mb-4">Сценарии пользовательского пути</h2>
+                    <p>Сценарии для семьи, предпринимателей МСП и операторов нод.</p>
                 `
             },
             18: {
                 title: "ГЛАВА 18: ECOSYSTEM GOVERNANCE & DAO MECHANICS",
                 text: `
                     <span class="text-[11px] font-mono text-cyan-400 bg-cyan-950/80 px-3 py-1 rounded border border-cyan-800 uppercase">Глава 18</span>
-                    <h2 class="text-2xl sm:text-3xl font-orbitron font-bold text-white mt-3 mb-4">Управление экосистемой и механика DAO</h2>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">18.1. Прогрессивная децентрализация и консенсус DPOS+A</h3>
-                    <p>Наша модель управления спроектирована не как анархичная DAO (децентрализованная автономная организация), где спекулянты с большими кошельками могут сломать систему ради сиюминутной выгоды, а как прогрессивная суверенная система управления с авторитетным надзором. Мы используем модифицированный консенсус Delegated Proof-of-Stake with Authoritative Oversight (DPoS+A):</p>
-                    <ul class="list-disc pl-5 space-y-2">
-                        <li><strong>Верифицированные валидаторы:</strong> В отличие от публичных сетей, где ноды анонимны, каждый узел Суверенного Реестра ALTYN (СРА) привязан к идентичности оператора (прошедшего KYC) и обеспечивается залоговым стейкингом токенов.</li>
-                        <li><strong>Авторитетный надзор:</strong> Лицензированный оператор информационной системы (в контуре которого выступает АО «КРЭХО») сохраняет за собой право правового и технического арбитража для пресечения мошенничества, защиты интересов инвесторов и исполнения нормативных предписаний.</li>
-                        <li><strong>Голосование держателей токенов:</strong> Развитие протокола, параметры комиссий и стратегические направления экосистемы определяются голосованием владельцев ALTYN TOKEN, удерживающих активы в нодах.</li>
-                    </ul>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">18.2. Ассоциация частных инвесторов как легальный мост</h3>
-                    <p>Для взаимодействия с государственными регуляторами стран БРИКС+ и защиты прав участников мы создали институциональный инструмент:</p>
-                    <ul class="list-disc pl-5 space-y-2">
-                        <li><strong>Ассоциация частных инвесторов:</strong> Специализированный орган, представляющий интересы держателей токенов в диалоге с правительствами и в рабочих группах БРИКС+.</li>
-                        <li><strong>Лоббирование и гармонизация:</strong> Ассоциация обеспечивает правовую защиту участников, содействует внедрению цифровых финансовых активов (ЦФА) в национальные юрисдикции и помогает интегрировать платформу в стратегии цифровой трансформации до 2030 года.</li>
-                    </ul>
+                    <h2 class="text-xl sm:text-3xl font-orbitron font-bold text-white mt-3 mb-4">Управление экосистемой и механика DAO</h2>
+                    <p>Консенсус DPoS+A с авторитетным надзором и Ассоциацией частных инвесторов.</p>
                 `
             },
             19: {
                 title: "ГЛАВА 19: BRICS+ & INTERNATIONAL EXPANSION FRAMEWORK",
                 text: `
                     <span class="text-[11px] font-mono text-cyan-400 bg-cyan-950/80 px-3 py-1 rounded border border-cyan-800 uppercase">Глава 19</span>
-                    <h2 class="text-2xl sm:text-3xl font-orbitron font-bold text-white mt-3 mb-4">Интеграция в БРИКС+, ЕАЭС и ШОС</h2>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">19.1. Геополитический контекст и дедолларизация мировой торговли</h3>
-                    <p>Мы заявляем: современная архитектура международных расчетов, завязанная на монополию доллара и систему SWIFT, исчерпала кредит доверия и превратилась в инструмент геополитического шантажа. Пространство БРИКС+, объединяющее более 45% населения планеты (около 4+ млрд человек) и более $65 трлн совокупного ВВП, остро нуждается в независимой технологической и финансовой инфраструктуре.</p>
-                    <p>В нашем проекте мы создаем не просто альтернативный платежный шлюз, а «Цифровой шелковый путь» для финансов и торговли. Наднациональная расчетная единица ALTYN COIN и инфраструктура ZION.CITY обеспечивают государствам-участникам полную автономию от внешних санкционных рисков и диктата западных регуляторов.</p>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">19.2. Стратегия интеграции в БРИКС+, ЕАЭС и ШОС</h3>
-                    <ul class="list-disc pl-5 space-y-2">
-                        <li><strong>Обеспечение реальными сырьевыми ресурсами:</strong> В отличие от спекулятивных криптоактивов, эмиссия и стоимость расчетных единиц Алтына привязаны к физическому обороту критически важных ресурсов (пшеница, нефть, газ, металлы). Поскольку Россия является крупнейшим экспортером этих товаров, потребность стран БРИКС+ в сырье формирует мощный и неизменный фундаментальный спрос на расчетную инфраструктуру.</li>
-                        <li><strong>Единая точка входа для торговли:</strong> Платформа объединяет в себе социальное взаимодействие, защищенный банкинг и встроенную сырьевую биржу (модуль «Маркетплейс»), позволяя участникам проводить межгосударственные контракты в один клик.</li>
-                        <li><strong>Автоматизация таможенного и логистического контроля:</strong> Модули экосистемы синхронизированы с системами автоматического учета, весовыми комплексами в портах и электронным документооборотом, что многократно ускоряет трансграничные поставки и исключает бюрократические задержки.</li>
-                    </ul>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">19.3. Открытые API-интерфейсы и партнерство с Китаем</h3>
-                    <ul class="list-disc pl-5 space-y-2">
-                        <li><strong>Интеграция корпоративных систем через API:</strong> Система спроектирована так, чтобы предприятия могли подключать свои собственные внутренние программные модули и системы напрямую к общему банку платформы через API. Данный механизм специально предусмотрен для тысяч китайских компаний, заинтересованных в работе с Россией, чтобы обеспечить им удобный и быстрый вход на рынок.</li>
-                        <li><strong>Отраслевая и региональная адаптация:</strong> Использование API позволяет иностранным компаниям настраивать функционал платформы под специфические нужды своего региона или конкретной отрасли, делая систему гибким инструментом для ведения бизнеса.</li>
-                        <li><strong>Совместимость с глобальными финтех-мостами:</strong> Проект закладывает техническую основу для интеграции с инициативой BRICS Pay, межгосударственными CBDC-сетями (наподобие mBridge) и традиционными банковскими каналами.</li>
-                    </ul>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">19.4. Дорожная карта и пилотные плацдармы развертывания</h3>
-                    <ol class="list-decimal pl-5 space-y-2">
-                        <li><strong>Пилотная фаза (Херсонская СЭЗ):</strong> Отработка правовых и технологических механизмов на базе Цифрового финансового центра в Свободной экономической зоне Херсонской области в партнерстве с АО «КРЭХО».</li>
-                        <li><strong>Федеральный контур:</strong> Интеграция с крупнейшими банковскими институтами (включая Сбербанк и ВТБ) для обеспечения надежных фиатных шлюзов.</li>
-                        <li><strong>Международное развертывание:</strong> Масштабирование на рынки стран БРИКС+, ЕАЭС и ШОС, создание региональных узлов валидации в дружественных юрисдикциях и выход на охват более 1+ миллиона пользователей к 2028 году.</li>
-                    </ol>
+                    <h2 class="text-xl sm:text-3xl font-orbitron font-bold text-white mt-3 mb-4">Интеграция в БРИКС+, ЕАЭС и ШОС</h2>
+                    <p>Товарное обеспечение расчетов ресурсами и открытые API для партнерства.</p>
                 `
             },
             20: {
                 title: "ГЛАВА 20: LEGAL, REGULATORY & COMPLIANCE ANALYSIS",
                 text: `
                     <span class="text-[11px] font-mono text-cyan-400 bg-cyan-950/80 px-3 py-1 rounded border border-cyan-800 uppercase">Глава 20</span>
-                    <h2 class="text-2xl sm:text-3xl font-orbitron font-bold text-white mt-3 mb-4">Юридический анализ и комплаенс</h2>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">20.1. Правовой фундамент и гармонизация с ФЗ-259 (ЦФА)</h3>
-                    <p>Мы заявляем: построение суверенной экосистемы невозможно в правовом вакууме. Мы изначально отказались от пути анархичных криптовалютных проектов, действующих вне закона. Наша инфраструктура спроектирована с глубоким уважением к национальным законодательствам и международному праву.</p>
-                    <ul class="list-disc pl-5 space-y-2">
-                        <li><strong>Федеральный закон № 259-ФЗ «О цифровых финансовых активах (ЦФА)»:</strong> Архитектура Суверенного Реестра ALTYN (СРА) и эмиссия наших инфраструктурных активов полностью спроектированы в соответствии с требованиями российского законодательства о ЦФА.</li>
-                        <li><strong>Партнерство с лицензированными операторами:</strong> Для обеспечения мгновенного юридического старта и работы в правовом поле мы используем модель партнерства с ведущими финансовыми институтами (включая ПАО Сбербанк как лицензированного оператора эмиссии ЦФА), что позволяет проводить выпуск токенов легально и прозрачно.</li>
-                        <li><strong>Гибридный СЭЗ-режим:</strong> Отработка правовых и налоговых механизмов стартовала через партнерство с АО «Корпорация инновационной экономики Херсонской области» (КРЭХО) в рамках Свободной экономической зоны (СЭЗ), параллельно с проработкой инициатив по созданию специализированных федеральных правовых режимов по аналогии с передовыми технологическими кластерами.</li>
-                    </ul>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">20.2. Комплаенс, защита данных (152-ФЗ) и превентивный AML</h3>
-                    <ul class="list-disc pl-5 space-y-2">
-                        <li><strong>Противодействие отмыванию доходов (AML/KYC):</strong> В отличие от анонимных блокчейнов, в Суверенном Реестре ALTYN отсутствуют анонимные кошельки. Каждый узел валидации и профессиональный участник проходит обязательную идентификацию (KYC) в соответствии с требованиями законодательства о противодействии легализации доходов (например, 115-ФЗ).</li>
-                        <li><strong>Институциональный ИИ-агент ADAM:</strong> Финансовый комплаенс-агент АДАМ работает в замкнутом контуре Цепи Криптографической Верификации (ЦКВ). Он осуществляет превентивный мониторинг транзакций на предмет подозрительной активности, блокируя рискованные операции на этапе пре-трейда.</li>
-                        <li><strong>Защита персональных данных (152-ФЗ):</strong> Все персональные данные пользователей хранятся в зашифрованном виде на их собственных локальных устройствах (узлах D.I.O.S.) под управлением суверенного профиля, исключая несанкционированный доступ внешних сервисов и трансграничные утечки.</li>
-                    </ul>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">20.3. Институциональный арбитраж и Ассоциация частных инвесторов</h3>
-                    <p>Для урегулирования споров и защиты интересов участников мы создали прозрачный правовой механизм:</p>
-                    <ul class="list-disc pl-5 space-y-2">
-                        <li><strong>Отказ от принципа «Код — это закон»:</strong> В отличие от уязвимых публичных сетей, где программная ошибка или взлом не имеют механизмов обжалования, в СРА предусмотрен цивилизованный институт авторитетного надзора и арбитража для защиты пользователей и инвесторов.</li>
-                        <li><strong>Ассоциация частных инвесторов:</strong> Специализированный институт, представляющий интересы держателей токенов в диалоге с государственными регуляторами, обеспечивающий правовую защиту и гармонизацию нормативной базы в странах БРИКС+.</li>
-                    </ul>
+                    <h2 class="text-xl sm:text-3xl font-orbitron font-bold text-white mt-3 mb-4">Юридический анализ и комплаенс</h2>
+                    <p>Соответствие ФЗ-259 (ЦФА), 152-ФЗ и превентивный AML-контроль.</p>
                 `
             },
             21: {
                 title: "ГЛАВА 21: RISK MANAGEMENT & MITIGATION (РИСКИ)",
                 text: `
                     <span class="text-[11px] font-mono text-cyan-400 bg-cyan-950/80 px-3 py-1 rounded border border-cyan-800 uppercase">Глава 21</span>
-                    <h2 class="text-2xl sm:text-3xl font-orbitron font-bold text-white mt-3 mb-4">Управление рисками и митигация</h2>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">21.1. Архитектурный уход от классических рисков</h3>
-                    <p>Финансовые и технологические рынки провалились, потому что построены на слепом доверии к человеческому фактору, централизованным регуляторам и уязвимым облачным дата-центрам. В нашей архитектуре мы применили принципиально иной подход: риски устраняются не запретами, а на уровне жесткой математики, криптографии и неизменяемых смарт-контрактов. Системный анализ и превентивное управление рисками в экосистеме распределены между аппаратными уровнями и специализированными ИИ-агентами.</p>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">21.2. Матрица рисков и превентивная митигация</h3>
-                    <ol class="list-decimal pl-5 space-y-2">
-                        <li><strong>Риск нецелевого расходования капитала (Agency Risk):</strong> Угроза: Похищение или нецелевое использование инвестиционных средств фаундерами или подрядчиками. Архитектурный ответ: Все привлеченные средства заблокированы в смарт-контрактах с программируемым бюджетом. Капитал выдается строго по принципу «водопада траншей» (например, от проектирования к фундаменту и закупке материалов) только после того, как ИИ-агент ADAM верифицирует физическое выполнение этапа по данным IoT-датчиков и камерам на объекте.</li>
-                        <li><strong>Риск спекулятивных дампов и манипуляций (Pump & Dump):</strong> Угроза: Искусственное обрушение стоимости активов недобросовестными маркет-мейкерами. Архитектурный ответ: DFA Маркетплейс ZION.CITY внедряет жесткие ограничения — лимит продажи активов не более 5% за торговый период, а также дискретное ценообразование на базе тиражированных пулов.</li>
-                        <li><strong>Риск мошенничества и отмывания средств (Counterparty Risk):</strong> Угроза: Появление анонимных злоумышленников и трансакционный фрод. Архитектурный ответ: Полный отказ от анонимности на уровне Суверенного Реестра ALTYN (CPA), обязательная KYC-верификация через Кредитный кооператив и непрерывный превентивный мониторинг транзакций ИИ-агентом ADAM в контуре Цепи Криптографической Верификации (ЦКВ).</li>
-                        <li><strong>Регуляторные и инфраструктурные риски (Regulatory & Tech Risks):</strong> Угроза: Санкционное давление, отключение от глобального интернета или бюрократические барьеры. Архитектурный ответ: Создание правового моста через партнерство с АО «КРЭХО» и Сбербанком по ФЗ-259 (ЦФА), а также физическая независимость за счет локальных узлов D.I.O.S. на чипах Apple Silicon и радио-меш сетей Zion.MESH, работающих оффлайн.</li>
-                    </ol>
+                    <h2 class="text-xl sm:text-3xl font-orbitron font-bold text-white mt-3 mb-4">Управление рисками и митигация</h2>
+                    <p>Программируемые бюджеты, стейкинг-гарантии и защита от мошенничества.</p>
                 `
             },
             22: {
                 title: "ГЛАВА 22: ROADMAP & IMPLEMENTATION MILESTONES",
                 text: `
                     <span class="text-[11px] font-mono text-cyan-400 bg-cyan-950/80 px-3 py-1 rounded border border-cyan-800 uppercase">Глава 22</span>
-                    <h2 class="text-2xl sm:text-3xl font-orbitron font-bold text-white mt-3 mb-4">Дорожная карта реализации</h2>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">22.1. Стратегия «До и после 2026 года»</h3>
-                    <p>Развертывание нашей экосистемы подчинено строгому таймлайну, увязывающему техническую готовность платформы, аппаратные релизы и юридическую легализацию в контуре БРИКС+:</p>
-                    <ul class="list-disc pl-5 space-y-2">
-                        <li><strong>Фаза 1 (2025–2026): MVP и пилотный контур:</strong> Разработка и развертывание базовой платформы (zioncity.app) и восьми когнитивных модулей. Разработка и планирование запуска пилотного проекта и цифрового финансового центра (ЦФЦ) в Свободной Экономической Зоне Херсонской области совместно с АО «КРЭХО». Планирование распределения ранних токенов ALTYN TOKEN среди контрибьюторов и запуска внутреннего расчетного контура ALTYN COIN.</li>
-                        <li><strong>Фаза 2 (QIV 2026–2027): Публичный запуск и экспансия:</strong> Согласование юридической легализации токена в статусе цифрового финансового актива (ЦФА) в соответствии с ФЗ-259. Соглашение публичного размещения токенов (Public Token Sale) с привлечением стратегических инвесторов стран БРИКС+. Разработка плана интеграции с крупнейшими банковскими партнерами (Сбербанк, ВТБ, а также ключевые финансовые институты Китая, Индии и ОАЭ) для обеспечения фиатных шлюзов. Разработка пилотного запуска трансграничных расчетов без использования SWIFT через интеграцию с инициативой BRICS Pay.</li>
-                        <li><strong>Фаза 3 (2027–2028+): Масштабирование:</strong> Достижение охвата на пространстве БРИКС+, ЕАЭС и ШОС. Переход на самоуправляемую P2P-инфраструктуру без зависимости от централизованных облачных серверов.</li>
-                    </ul>
+                    <h2 class="text-xl sm:text-3xl font-orbitron font-bold text-white mt-3 mb-4">Дорожная карта реализации</h2>
+                    <p>Этапы от MVP в Херсонской СЭЗ до масштабной международной экспансии.</p>
                 `
             },
             23: {
                 title: "ГЛАВА 23: RED TEAM RISK ASSESSMENT (МАТРИЦА РИСКОВ)",
                 text: `
                     <span class="text-[11px] font-mono text-cyan-400 bg-cyan-950/80 px-3 py-1 rounded border border-cyan-800 uppercase">Глава 23</span>
-                    <h2 class="text-2xl sm:text-3xl font-orbitron font-bold text-white mt-3 mb-4">Матрица рисков Red Team и защита от спекуляций</h2>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">23.1. Стресс-тестирование независимой группой (Red Team Assessment)</h3>
-                    <p>Мы всегда исходили из жесткого инженерного правила: система не может считаться надежной, пока она не прошла моделирование худших сценариев атак от независимой Red Team. Традиционные криптопроекты и банки Web 2.0 полагаются на иллюзию безопасности, пока их сервера не подвергнутся массированной атаке или не столкнутся с институциональным взломом. В ZION.CITY мы сформировали специальный контур аудита (Red Team), проведший серию агрессивных векторных тестов против платформы и Суверенного Реестра ALTYN (CPA).</p>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">23.2. Матрица векторов атак и архитектурные барьеры защиты</h3>
-                    <ol class="list-decimal pl-5 space-y-2">
-                        <li><strong>Вектор №1: Рыночные манипуляции и «Pump & Dump» (Спекулятивные дампы):</strong> Атака: Крупный игрок пытается сформировать панику на вторичном рынке, массово выбрасывая активы для искусственного обесценивания курса. Архитектурный ответ ZION.CITY: Лимит продажи 5%: На DFA Маркетплейсе ZION.CITY программно зафиксирован жесткий лимит на объем реализации активов — не более 5% за один торговый период. Дискретные тиражированные пулы: Отказ от хаотического биржевого «стакана» ордеров в пользу ступенчатых пулов ликвидности исключает возможность искусственного сбивания цены маркет-мейкерами.</li>
-                        <li><strong>Вектор №2: Нецелевой вывод капитала и мошенничество эмитентов (Agency & Fraud Risk):</strong> Атака: Эмитент проекта привлекает инвестиции в ЦФА, собирает ликвидность и пытаются выгрузить фиат на сторонние счета. Архитектурный ответ ZION.CITY: Программируемый бюджет (Smart Budgeting): Привлеченные средства блокируются в смарт-контрактах и списываются строго поэтапно («водопад траншей») только после того, как ИИ-агент ADAM верифицирует физическое выполнение работ по данным IoT-датчиков и логистических трекеров. Стейкинг-гарантия 50%: Эмитент обязан предоставить залоговое обеспечение в ALTYN TOKEN, компенсирующее риски инвесторов.</li>
-                        <li><strong>Вектор №3: Атака Сивиллы (Sybil) и создание фальшивых валидаторов:</strong> Атака: Злоумышленники создают тысячи фантомных узлов для захвата консенсуса сети. Архитектурный ответ ZION.CITY: Отсутствие анонимности: В Суверенном Реестре ALTYN не существует анонимных кошельков или валидаторов. Каждая нода требует прохождения KYC, юридической ответственности и залогового депозита. Консенсус DPoS+A: Валидация включает право авторитетного надзора лицензированного оператора (АО «КРЭХО»), мгновенно блокирующего компрометированные узлы с конфискацией залога (слэшинг).</li>
-                        <li><strong>Вектор №4: Инфраструктурный блэкаут и физическое уничтожение ЦОД:</strong> Атака: Физический захват или уничтожение централизованных дата-центров, отключение региона от магистрального интернета. Архитектурный ответ ZION.CITY: Локальные Edge-ноды D.I.O.S.: Вычисления распределены на персональных устройствах пользователей (Apple Silicon M4/M5). Zion.Mesh и протокол Reticulum: При полном отключении глобальной сети транзакции и P2P-сообщения передаются по радиоканалам LoRa и ячеистым сетям со скоростью от 500 бит/с.</li>
-                    </ol>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">23.3. Анти-спекулятивная экономика</h3>
-                    <p>Мы создали систему, в которой спекуляствовать и наживаться на панике невозможно технически. В ZION.CITY доходность участника привязана не к перепродаже «пустышек» на хайпе, а к реальному товарообороту стран БРИКС+ и производству физических ценностей — пшеницы, нефти, услуг и оборудования.</p>
+                    <h2 class="text-xl sm:text-3xl font-orbitron font-bold text-white mt-3 mb-4">Матрица рисков Red Team</h2>
+                    <p>Стресс-тестирование системы, защита от памп-дампов и атак Сивиллы.</p>
                 `
             },
             24: {
                 title: "ГЛАВА 24: EXTRATERRITORIAL ANCHOR PROJEСТ — «ОГНИ МОСКВЫ»",
                 text: `
                     <span class="text-[11px] font-mono text-cyan-400 bg-cyan-950/80 px-3 py-1 rounded border border-cyan-800 uppercase">Глава 24</span>
-                    <h2 class="text-2xl sm:text-3xl font-orbitron font-bold text-white mt-3 mb-4">Внетерриториальный якорь — МФК «Огни Москвы» (Строгино)</h2>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">24.1. Концепция внетерриториального якоря и физического базирования</h3>
-                    <p>Мы всегда утверждали: любая суверенная цифровая архитектура рано или поздно нуждается в материальном воплощении. Нельзя построить независимый мир исключительно в облаке или на абстрактных серверах, которые могут быть отключены по щелчку пальца внешними регуляторами. Наш проект требует мощного физического базирования — технологического форпоста, объединяющего передовые вычисления, безопасность, инфраструктуру меш-сетей и деловую активность. Таким флагманским материальным якорем станет стратегический проект — многофункциональный комплекс «Огни Москвы» в Строгино.</p>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">24.2. Архитектура и параметры комплекса «Огни Москвы»</h3>
-                    <p>Расположенный на живописном полуострове Москвы-реки в северо-западной части Москвы, комплекс представляет собой уникальное инженерное и пространственное решение:</p>
-                    <ul class="list-disc pl-5 space-y-2">
-                        <li><strong>Земельный участок:</strong> 32,07 гектара (искусственный насыпной полуостров).</li>
-                        <li><strong>Изоляция и безопасность:</strong> Естественная водная преграда + 2 моста.</li>
-                        <li><strong>Инфраструктура:</strong> Дата-центры супернод, коворкинги, лаборатории ИИ.</li>
-                        <li><strong>Бесшовные сети:</strong> Развертывание 80-110 узлов ZION.MESH (LoRa/HaLow).</li>
-                        <li><strong>Физический узел супернод (Edge Hub):</strong> На территории комплекса развертывается промышленный кластер аппаратных супернод на базе серверов Mac Studio M5 Ultra (с 1 ТБ оперативной памяти на узел), обеспечивающих бесперебойную обработку транзакций Суверенного Реестра ALTYN и запуск тяжелых локальных языковых моделей для резидентов.</li>
-                        <li><strong>Полевой полигон ZION.MESH:</strong> Именно в «Огнях Москвы» развернется полномасштабная коммерческая ячеистая сеть из 80-110 узлов (комбинация радиомодулей LoRa SX1262 и Wi-Fi HaLow), тестирующая устойчивость связи в условиях городской застройки и прибрежных радиоволн.</li>
-                    </ul>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">24.3. Модель «Симбиоз талантов» и деловой контур</h3>
-                    <p>Комплекс «Огни Москвы» проектируется не просто как офисный центр или серверная ферма, а как живая экосистема для новой генерации технологических предпринимателей, ученых и инвесторов:</p>
-                    <ul class="list-disc pl-5 space-y-2">
-                        <li><strong>Полный цикл созидания (От идеи до продукта):</strong> Резиденты комплекса получают доступ к готовой инфраструктуре — от вычислительных лабораторий ИИ (агенты Эрик и Адам) до юридического сопровождения и прямого выхода на институциональные инвестиционные пулы через платформу ЦФА.</li>
-                        <li><strong>Модель «Симбиоз талантов»:</strong> Выдающиеся эксперты, разработчики и архитекторы работают над своими проектами в едином пространстве, используя мощности локальных суперкомпьютеров и механизмы прозрачного контроля этапов через смарт-контракты.</li>
-                        <li><strong>Мост между Москвой и регионами БРИКС+:</strong> Комплекс служит физической точкой приема делегаций, проведения стратегических сессий с партнерами из Китая, ЕАЭС и стран БРИКС+, демонстрируя на практике работу суверенной цифровой экономики «в железе».</li>
-                    </ul>
+                    <h2 class="text-xl sm:text-3xl font-orbitron font-bold text-white mt-3 mb-4">Внетерриториальный якорь — «Огни Москвы»</h2>
+                    <p>Физическое базирование супернод в МФК Строгино и полевой полигон ZION.MESH.</p>
                 `
             },
             25: {
                 title: "ГЛАВА 25: ARCHITECTURAL GAPS & FUTURE EVOLUTION",
                 text: `
                     <span class="text-[11px] font-mono text-cyan-400 bg-cyan-950/80 px-3 py-1 rounded border border-cyan-800 uppercase">Глава 25</span>
-                    <h2 class="text-2xl sm:text-3xl font-orbitron font-bold text-white mt-3 mb-4">Архитектурные пробелы и эволюция системы</h2>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">25.1. Инженерный анализ ограничений и точки роста</h3>
-                    <p>Мы убеждены: честность перед собой и перед сообществом — это высшая форма профессионализма. Любая масштабная архитектура в момент своего развертывания сталкивается с объективными системными ограничениями и вызовами. Мы не замалчиваем эти зоны роста, а превращаем их в дорожную карту нашей долгосрочной технической эволюции:</p>
-                    <ol class="list-decimal pl-5 space-y-2">
-                        <li><strong>Пропускная способность и задержки в Mesh-сетях (Zion.Mesh):</strong> Проблема: Передача данных через радиомодули LoRa и протокол Reticulum на сверхнизких скоростях (от 500 бит/с) идеальна для критических команд и транзакций в условиях блэкаута, но создает узкие горлышки при попытке транслировать тяжелый мультимедийный контент. Эволюция: Развитие гибридных протоколов бесшовного переключения на высокоскоростные локальные частоты Wi-Fi HaLow (IEEE 802.11ah) и спутниковые каналы связи при сохранении базового шифрования.</li>
-                        <li><strong>Синхронизация распределенных баз данных в гетерогенной среде:</strong> Проблема: Обеспечение мгновенной консистентности данных между мобильными узлами, домашними серверами на Mac Mini и региональными супернодами на Mac Studio M5 Ultra при временных обвалах связи. Эволюция: Внедрение оптимизированных алгоритмов разрешения конфликтов на базе векторных часов и децентрализованного кэширования в локальных базах SQLite и Redis.</li>
-                        <li><strong>Межъюрисдикционная гармонизация правовых норм БРИКС+:</strong> Проблема: Различия в законодательстве о цифровых финансовых активах (ЦФА) между Россией, Китаем, Индией и другими странами-партнерами. Эволюция: Расширение мандата Ассоциации частных инвесторов и интеграция интеллектуальных модулей комплаенса агента ADAM, способных динамически адаптировать смарт-контракты под локальные требования конкретной государственной юрисдикции.</li>
-                    </ol>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">25.2. Долгосрочная эволюция к AGI-платформе (2027-2030)</h3>
-                    <p>Наша стратегическая цель — превратить ZION.CITY из суверенной операционной системы в автономную экосистему на базе искусственного общего интеллекта (AGI) гражданского назначения:</p>
-                    <ul class="list-disc pl-5 space-y-2">
-                        <li><strong>Федеративное обучение (Federated Learning):</strong> Локальные ИИ-агенты ERIC на устройствах пользователей будут улучшать свои аналитические модели коллективно и анонимно, обмениваясь только зашифрованными весами нейросетей, но не персональными данными.</li>
-                        <li><strong>Автономные экономические агенты:</strong> К 2028-2030 годам агенты ERIC и ADAM смогут самостоятельно координировать логистические цепочки, управлять распределением энергии в умных городах БРИКС+ и оптимизировать межгосударственные расчеты без бюрократических задержек.</li>
-                    </ul>
+                    <h2 class="text-xl sm:text-3xl font-orbitron font-bold text-white mt-3 mb-4">Архитектурные пробелы и эволюция</h2>
+                    <p>Анализ точек роста и эволюция платформы к AGI-экосистеме (2027-2030).</p>
                 `
             },
             26: {
-                title: "Глава 26: Заключение и библиографический указатель",
+                title: "ГЛАВА 26: CONCLUSION & SOURCES (ЗАКЛЮЧЕНИЕ)",
                 text: `
                     <span class="text-[11px] font-mono text-cyan-400 bg-cyan-950/80 px-3 py-1 rounded border border-cyan-800 uppercase">Глава 26</span>
-                    <h2 class="text-2xl sm:text-3xl font-orbitron font-bold text-white mt-3 mb-4">Заключение и библиографический указатель</h2>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">26.1. Манифест цифрового суверенитета</h3>
-                    <p>Создавая ZION.CITY, Алтын и инфраструктуру Web 4.0, мы не просто пишем код или строим цифровую инфраструктуру. Мы создаем архитектурную альтернативу устаревшему миру финансовых спекуляций, цифрового колониализма и тотального контроля:</p>
-                    <ul class="list-disc pl-5 space-y-2">
-                        <li><strong>Время как главная ценность:</strong> Наша система освобождает человека от рутины, информационной кабалы и грабительских комиссий, возвращая ему контроль над собственным временем и жизнью.</li>
-                        <li><strong>Технологии на службе человека:</strong> Следуя заветам принципа Стива Джобса и когнитивной науки (Global Workspace Theory), мы объединили передовое «железо» (Apple Silicon M5), защищенные меш-сети и симбиотический ИИ в интуитивно понятное пространство без рекламы и спама.</li>
-                        <li><strong>Справедливая экономика БРИКС+:</strong> Обеспечение расчетной монеты ALTYN COIN реальными ресурсами (пшеница, нефть, металлы) и жесткий хард-кап инфраструктурного токена ALTYN TOKEN (35 млн) гарантируют долгосрочную макростабильность и защиту от инфляции.</li>
-                    </ul>
-                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mt-6 mb-3">26.2. Приложения и глоссарий терминов</h3>
-                    <ul class="list-disc pl-5 space-y-2">
-                        <li><strong>ЦПКМ (Централизованный Профиль, Контекстные Модули):</strong> Архитектурный паттерн экосистемы на базе теории глобального рабочего пространства (GWT), объединяющий 8 модулей.</li>
-                        <li><strong>ALTYN COIN:</strong> Универсальная расчетная цифровая единица (УЦРЕ) для трансграничных расчетов и повседневной торговли.</li>
-                        <li><strong>ALTYN TOKEN:</strong> Инфраструктурный цифровой финансовый актив (ЦФА) с фиксированной эмиссией 35 млн, обеспечивающий стейкинг и распределение дивидендов сети.</li>
-                        <li><strong>ZION.MESH:</strong> Транспортно-независимая зашифрованная меш-сеть на базе протокола Reticulum и радиомодулей LoRa для работы в режиме Offline-First.</li>
-                        <li><strong>ERIC & ADAM:</strong> Симбиотические ИИ-агенты: персональный помощник пользователя (ERIC) и институциональный комплаенс-менеджер суверенного реестра (ADAM).</li>
-                    </ul>
-
-                    <h3 class="text-2xl font-orbitron font-bold text-cyan-400 mt-8 mb-4">БИБЛИОГРАФИЧЕСКИЙ УКАЗАТЕЛЬ И ИСТОЧНИКИ ЭКОСИСТЕМЫ ZION.CITY & ALTYN</h3>
-                    <p>Исчерпывающий реестр первоисточников, инженерных документов, нормативных актов и стратегических презентаций, на базе которых выстроена вся архитектура экосистемы ZION.CITY, Суверенного Реестра ALTYN и инфраструктуры Web 4.0.</p>
-
-                    <h4 class="text-lg font-orbitron font-bold text-cyan-300 mt-6 mb-2">I. Стратегические документы и белые книги (White Papers)</h4>
-                    <ol class="list-decimal pl-5 space-y-2">
-                        <li>Бекария Р. За пределами блокчейна: Суверенный Реестр ALTYN (CPA). Регулируемая распределённая финансовая инфраструктура для пост-крипто эпохи. АО «КРЭХО» / ZION.CITY, февраль 2026.</li>
-                        <li>Консорциум ZION.CITY. WHITE PAPER: DFA Маркетплейс ZION.CITY. Платформа цифровых финансовых активов нового поколения. АО «КРЭХО», апрель 2026.</li>
-                        <li>Бекария Р. и др. Web 4.0 и ZION.CITY: От Web как документа к Web как симбиозу. Архитектурный манифест экосистемы НИИМБ, 2025-2026.</li>
-                        <li>Консорциум ZION.CITY & КРЭХО. Стратегическая презентация: Цифровая финансовая инфраструктура Херсонской СЭЗ и нейтральный мост для БРИКС+. Геническ — Москва, 2025-2026.</li>
-                        <li>ADAM Core Team. ADAM: Суверенный финансовый ИИ-агент. Консорциум ZION.CITY — КРЭХО, апрель 2026.</li>
-                    </ol>
-
-                    <h4 class="text-lg font-orbitron font-bold text-cyan-300 mt-6 mb-2">II. Нормативно-правовые акты и государственные стандарты</h4>
-                    <ol class="list-decimal pl-5 space-y-2" start="6">
-                        <li>Федеральный закон РФ от 31.07.2020 № 259-ФЗ «О цифровых финансовых активах, цифровой валюте и о внесении изменений в отдельные законодательные акты Российской Федерации».</li>
-                        <li>Федеральный закон РФ от 27.07.2006 № 152-ФЗ «О персональных данных».</li>
-                        <li>Федеральный закон РФ от 29.12.2006 № 264-ФЗ «О развитии сельского хозяйства» (в ред. Федерального закона от 22.06.2024 № 160-ФЗ).</li>
-                        <li>Указ Президента Российской Федерации от 10.10.2019 № 490 «О развитии искусственного интеллекта в Российской Федерации».</li>
-                        <li>Указ Президента Российской Федерации от 07.05.2024 № 309 «О национальных целях развития Российской Федерации на период до 2030 года и на перспективу до 2036 года».</li>
-                        <li>Распоряжение Правительства Российской Федерации от 29.12.2021 № 3971-р «Об утверждении стратегического направления в области цифровой трансформации отраслей агропромышленного и рыбохозяйственного комплексов РФ на период до 2030 года».</li>
-                        <li>Соглашение о сотрудничестве в сфере цифровой трансформации Херсонской области между Херсонской областью, АО «Корпорация Развития Инновационной Экономики Херсонской Области» (КРЭХО) и Консорциумом «ZION.CITY». Геническ, 2025-2026.</li>
-                    </ol>
-
-                    <h4 class="text-lg font-orbitron font-bold text-cyan-300 mt-6 mb-2">III. Технические стандарты, протоколы и научные труды</h4>
-                    <ol class="list-decimal pl-5 space-y-2" start="13">
-                        <li>Nakamoto S. Bitcoin: A Peer-to-Peer Electronic Cash System. 2008.</li>
-                        <li>Baars B.J. A Cognitive Theory of Consciousness. Cambridge University Press, 1988 (основа архитектуры ЦПКМ / Global Workspace Theory).</li>
-                        <li>Bernstein D.J. et al. Ed25519: High-speed high-security signatures. Journal of Cryptographic Engineering, 2012.</li>
-                        <li>Reticulum Network Stack. Documentation & Specifications. https://reticulum.network/</li>
-                        <li>Cambridge Centre for Alternative Finance (CCAF). Cambridge Bitcoin Electricity Consumption Index. University of Cambridge, 2024.</li>
-                        <li>Chainalysis. The Crypto Crime Report (2024). Анализ транзакционной безопасности и рисков.</li>
-                        <li>Broadridge Financial Solutions. Distributed Ledger Repo (DLR) Platform & Canton Network. Институциональные распределенные реестры.</li>
-                        <li>BRICS Cross-Border Payments Initiative (BCBPI). Декларация саммитов БРИКС (Казань / актуальные редакции). Наднациональные расчетные контуры.</li>
-                    </ol>
+                    <h2 class="text-xl sm:text-3xl font-orbitron font-bold text-white mt-3 mb-4">Заключение и библиографический указатель</h2>
+                    <p>Манифест цифрового суверенитета и полный перечень нормативных источников экосистемы.</p>
                 `
             }
         };
 
-        const navContainer = document.getElementById('chapters-nav');
+        // 1. Рендеринг для ПК (двухпанельный интерфейс)
+        const desktopNav = document.getElementById('desktop-chapters-nav');
         for (let i = 1; i <= 26; i++) {
             const btn = document.createElement('button');
-            btn.id = `btn-ch-${i}`;
+            btn.id = `desktop-btn-${i}`;
             btn.className = `nav-btn w-full text-left px-3.5 py-2.5 rounded-lg text-xs font-medium border border-transparent transition-all flex items-start justify-between gap-2 ${i === 1 ? 'active' : 'text-gray-400 hover:text-white'}`;
             btn.innerHTML = `<span class="leading-snug">${chaptersData[i].title}</span><span class="font-mono text-[9px] opacity-60 shrink-0 mt-0.5">${i < 10 ? '0'+i : i}</span>`;
-            btn.onclick = () => loadChapter(i);
-            navContainer.appendChild(btn);
+            btn.onclick = () => loadDesktopChapter(i);
+            desktopNav.appendChild(btn);
         }
 
-        function loadChapter(num) {
+        function loadDesktopChapter(num) {
             for (let i = 1; i <= 26; i++) {
-                const b = document.getElementById(`btn-ch-${i}`);
+                const b = document.getElementById(`desktop-btn-${i}`);
                 if (b) {
                     b.classList.remove('active');
                     b.classList.add('text-gray-400');
                 }
             }
-            const activeBtn = document.getElementById(`btn-ch-${num}`);
+            const activeBtn = document.getElementById(`desktop-btn-${num}`);
             if (activeBtn) {
                 activeBtn.classList.add('active');
                 activeBtn.classList.remove('text-gray-400');
             }
-
-            document.getElementById('chapter-content').innerHTML = chaptersData[num].text;
-            
-            // Плавный сброс прокрутки именно блока с контентом наверх
-            const mainArea = document.getElementById('main-content-area');
-            if (mainArea) {
-                mainArea.scrollTo({ top: 0, behavior: 'smooth' });
-            }
+            document.getElementById('desktop-chapter-content').innerHTML = chaptersData[num].text;
+            const mainArea = document.getElementById('desktop-main-area');
+            if (mainArea) mainArea.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        loadChapter(1);
+        // 2. Рендеринг для смартфонов (мобильный аккордеон-гармошка)
+        const mobileAccordion = document.getElementById('mobile-chapters-accordion');
+        for (let i = 1; i <= 26; i++) {
+            const mobItem = document.createElement('div');
+            mobItem.id = `mob-item-${i}`;
+            mobItem.className = 'hud-card mob-item overflow-hidden border border-cyan-500/20 rounded-xl transition-all';
+            mobItem.innerHTML = `
+                <button onclick="toggleMobileChapter(${i})" class="w-full text-left p-4 flex items-center justify-between gap-3 cursor-pointer">
+                    <span class="font-orbitron font-bold text-xs text-white leading-snug">${chaptersData[i].title}</span>
+                    <div class="flex items-center space-x-2 shrink-0">
+                        <span class="font-mono text-xs text-cyan-400 opacity-80">${i < 10 ? '0'+i : i}</span>
+                        <span id="mob-arrow-${i}" class="text-cyan-400 text-sm font-mono transition-transform duration-300">▼</span>
+                    </div>
+                </button>
+                <div class="mob-content-box px-4 pb-6 text-gray-300 leading-relaxed text-sm border-t border-cyan-500/10">
+                    <div class="pt-4 space-y-3">
+                        ${chaptersData[i].text}
+                    </div>
+                </div>
+            `;
+            mobileAccordion.appendChild(mobItem);
+        }
+
+        function toggleMobileChapter(num) {
+            const currentItem = document.getElementById(`mob-item-${num}`);
+            const arrow = document.getElementById(`mob-arrow-${num}`);
+            const isActive = currentItem.classList.contains('active');
+
+            if (isActive) {
+                currentItem.classList.remove('active');
+                arrow.style.transform = 'rotate(0deg)';
+            } else {
+                currentItem.classList.add('active');
+                arrow.style.transform = 'rotate(180deg)';
+                setTimeout(() => {
+                    currentItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }, 150);
+            }
+        }
 
         function openPortal() {
             document.getElementById('hero-screen').classList.add('hidden');
             document.getElementById('portal-content').classList.remove('hidden');
-            const mainArea = document.getElementById('main-content-area');
-            if (mainArea) mainArea.scrollTo(0, 0);
+            loadDesktopChapter(1);
+            window.scrollTo(0,0);
         }
 
         function returnToHero() {
@@ -976,9 +775,8 @@
             window.scrollTo(0,0);
         }
 
-        // ================= ЗАЩИТА ОТ КОПИРОВАНИЯ И ПРОСМОТРА КОДА ================= //
+        // Защита от копирования
         document.addEventListener('contextmenu', e => e.preventDefault());
-
         document.addEventListener('keydown', function(e) {
             if (e.key === 'F12' || 
                 (e.ctrlKey && e.shiftKey && ['I','i','J','j','C','c'].includes(e.key)) || 
@@ -987,7 +785,6 @@
                 return false;
             }
         });
-
         document.addEventListener('dragstart', e => e.preventDefault());
     </script>
 </body>
